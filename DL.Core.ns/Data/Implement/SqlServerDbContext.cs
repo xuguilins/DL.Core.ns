@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Text;
+using DL.Core.ns.Configer;
 
 namespace DL.Core.ns.Data
 {
@@ -20,6 +21,7 @@ namespace DL.Core.ns.Data
 
         public SqlServerDbContext()
         {
+            _connectString = ConfigerManager.getCofiger()?.ConnectionString?.SqlDefault;
             _sqlConnection = new SqlConnection(_connectString);
         }
 
