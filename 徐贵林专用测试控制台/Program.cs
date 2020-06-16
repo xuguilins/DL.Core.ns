@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DL.Core.ns.Data;
+using System;
 
 namespace 徐贵林专用测试控制台
 {
@@ -6,7 +7,7 @@ namespace 徐贵林专用测试控制台
     {
         private static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.ReadKey();
         }
     }
 

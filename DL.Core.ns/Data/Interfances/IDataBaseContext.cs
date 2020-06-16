@@ -12,6 +12,11 @@ namespace DL.Core.ns.Data
     public interface IDataBaseContext
     {
         /// <summary>
+        /// 获取数据库连接对象
+        /// </summary>
+        IDbConnection GetDbContext { get; }
+
+        /// <summary>
         /// 数据库类型
         /// </summary>
         DataBaseType Type { get; }

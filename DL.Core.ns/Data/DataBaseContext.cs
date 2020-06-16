@@ -21,6 +21,11 @@ namespace DL.Core.ns.Data
         public virtual DataBaseType Type { get; }
 
         /// <summary>
+        /// 获取数据库连接对象
+        /// </summary>
+        public virtual IDbConnection GetDbContext { get; }
+
+        /// <summary>
         /// 返回受影响的行数
         /// 用于增删改操作
         /// </summary>
