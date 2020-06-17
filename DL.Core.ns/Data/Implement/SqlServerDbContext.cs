@@ -5,6 +5,7 @@ using System.Data.Common;
 using System.Data.SqlClient;
 using System.Text;
 using DL.Core.ns.Configer;
+using DL.Core.ns.Logging;
 
 namespace DL.Core.ns.Data
 {
@@ -17,9 +18,7 @@ namespace DL.Core.ns.Data
         private string _connectString = string.Empty;
         private SqlTransaction _transaction = null;
         private SqlConnection _sqlConnection = null;
-        private ISqlServerDbContext _sqlDbContext;
-        public override DataBaseType Type => DataBaseType.SqlServer;
-        public override IDbConnection GetDbContext => DbContext();
+        private ILogger logger = LogManager.GetLogger<SqlServerDbContext>();
 
         public SqlServerDbContext()
         {
@@ -51,6 +50,9 @@ namespace DL.Core.ns.Data
             }
         }
 
+        public override IDbConnection GetDbContext => DbContext();
+        public override DataBaseType Type => DataBaseType.SqlServer;
+
         public override int ExecuteNonQuery(string sql, CommandType type, params DbParameter[] parameter)
         {
             try
@@ -71,6 +73,7 @@ namespace DL.Core.ns.Data
             }
             catch (Exception ex)
             {
+                logger.Error($"执行SqlServer发生异常,command:ExecuteNonQuery,sqlText:{sql},exMes:{ex.Message} ");
                 throw;
             }
             finally
@@ -101,8 +104,9 @@ namespace DL.Core.ns.Data
                     return -1;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                logger.Error($"执行SqlServer发生异常,command:ExecuteScalar,sqlText:{sql},exMes:{ex.Message} ");
                 throw;
             }
             finally
@@ -138,8 +142,9 @@ namespace DL.Core.ns.Data
                     return null;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                logger.Error($"执行SqlServer发生异常,command:GetDataSet,sqlText:{sql},exMes:{ex.Message} ");
                 throw;
             }
             finally
@@ -177,6 +182,7 @@ namespace DL.Core.ns.Data
             }
             catch (Exception ex)
             {
+                logger.Error($"执行SqlServer发生异常,command:GetDataTable,sqlText:{sql},exMes:{ex.Message} ");
                 throw;
             }
             finally
@@ -201,6 +207,7 @@ namespace DL.Core.ns.Data
                 }
                 catch (Exception ex)
                 {
+                    logger.Error($"执行SqlServer事务发生异常,command:SaveTransactionChange,exMes:{ex.Message} ");
                     result = false;
                     _transaction.Rollback();
                 }

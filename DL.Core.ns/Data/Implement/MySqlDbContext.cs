@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Text;
+using MySql.Data.MySqlClient;
+using MySql.Data.Common;
+using DL.Core.ns.Configer;
+using DL.Core.ns.Logging;
 
 namespace DL.Core.ns.Data
 {
@@ -11,24 +15,203 @@ namespace DL.Core.ns.Data
     /// </summary>
     public class MySqlDbContext : DataBaseContext, IMySqlDbContext
     {
+        private MySqlConnection _connection = null;
+        private string connectionStr = string.Empty;
+        private MySqlTransaction _transaction = null;
+        private bool _isBeginTranscation = false;
+        private ILogger logger = LogManager.GetLogger<MySqlDbContext>();
+
+        public MySqlDbContext()
+        {
+            connectionStr = ConfigerManager.getCofiger()?.ConnectionString?.MySqlDefault;
+            _connection = new MySqlConnection(connectionStr);
+            _connection.Open();
+        }
+
+        public override DataBaseType Type => DataBaseType.MySql;
+
+        public bool BeginTransation
+        {
+            get
+            {
+                return _isBeginTranscation;
+            }
+            set
+            {
+                if (value)
+                    _transaction = _connection.BeginTransaction();
+                _isBeginTranscation = value;
+            }
+        }
+
+        public void Dispose()
+        {
+            if (_connection != null)
+            {
+                _connection.Close();
+                _connection.Dispose();
+            }
+        }
+
         public override int ExecuteNonQuery(string sql, CommandType type, params DbParameter[] parameter)
         {
-            throw new NotImplementedException();
+            int result = -1;
+            try
+            {
+                if (_connection.State == ConnectionState.Open)
+                {
+                    using (MySqlCommand com = new MySqlCommand(sql, _connection, _transaction))
+                    {
+                        com.CommandType = type;
+                        com.Parameters.AddRange(parameter);
+                        result = com.ExecuteNonQuery();
+                    }
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                logger.Error($"执行MySql发生异常,command：ExecuteNonQuery，sqlText:{sql}，exMes:{ex.Message}");
+                throw;
+            }
+            finally
+            {
+                if (_connection != null)
+                {
+                    _connection.Close();
+                    _connection.Dispose();
+                }
+            }
         }
 
         public override object ExecuteScalar(string sql, CommandType type, params DbParameter[] parameter)
         {
-            throw new NotImplementedException();
+            object result = null;
+            try
+            {
+                if (_connection.State == ConnectionState.Open)
+                {
+                    using (MySqlCommand com = new MySqlCommand(sql, _connection, _transaction))
+                    {
+                        com.CommandType = type;
+                        com.Parameters.AddRange(parameter);
+                        result = com.ExecuteScalar();
+                    }
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                logger.Error($"执行MySql发生异常,command：ExecuteScalar，sqlText:{sql}，exMes:{ex.Message}");
+                throw;
+            }
+            finally
+            {
+                if (_connection != null)
+                {
+                    _connection.Close();
+                    _connection.Dispose();
+                }
+            }
         }
 
         public override DataSet GetDataSet(string sql, CommandType type, params DbParameter[] parameter)
         {
-            throw new NotImplementedException();
+            DataSet result = null;
+            try
+            {
+                if (_connection.State == ConnectionState.Open)
+                {
+                    using (MySqlCommand com = new MySqlCommand(sql, _connection, _transaction))
+                    {
+                        com.CommandType = type;
+                        com.Parameters.AddRange(parameter);
+                        using (MySqlDataAdapter da = new MySqlDataAdapter(com))
+                        {
+                            result = new DataSet();
+                            da.Fill(result);
+                        }
+                    }
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                logger.Error($"执行MySql发生异常,command：GetDataSet，sqlText:{sql}，exMes:{ex.Message}");
+                throw;
+            }
+            finally
+            {
+                if (_connection != null)
+                {
+                    _connection.Close();
+                    _connection.Dispose();
+                }
+            }
         }
 
         public override DataTable GetDataTable(string sql, CommandType type, params DbParameter[] parameter)
         {
-            throw new NotImplementedException();
+            DataTable result = null;
+            try
+            {
+                if (_connection.State == ConnectionState.Open)
+                {
+                    using (MySqlCommand com = new MySqlCommand(sql, _connection, _transaction))
+                    {
+                        com.CommandType = type;
+                        com.Parameters.AddRange(parameter);
+                        using (MySqlDataAdapter da = new MySqlDataAdapter(com))
+                        {
+                            result = new DataTable();
+                            da.Fill(result);
+                        }
+                    }
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                logger.Error($"执行MySql发生异常,command：DataTable，sqlText:{sql}，exMes:{ex.Message}");
+                throw;
+            }
+            finally
+            {
+                if (_connection != null)
+                {
+                    _connection.Close();
+                    _connection.Dispose();
+                }
+            }
+        }
+
+        public bool SaveTransactionChange()
+        {
+            try
+            {
+                bool result = false;
+                try
+                {
+                    _transaction.Commit();
+                    result = true;
+                }
+                catch (Exception ex)
+                {
+                    logger.Error($"执行MySql事务提交发生异常，command:SaveTransactionChange，exMes:{ex.Message}");
+                    result = false;
+                    _transaction.Rollback();
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            finally
+            {
+                _transaction.Dispose();
+            }
         }
     }
 }
