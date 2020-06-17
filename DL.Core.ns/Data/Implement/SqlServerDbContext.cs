@@ -85,18 +85,33 @@ namespace DL.Core.ns.Data
 
         public override object ExecuteScalar(string sql, CommandType type, params DbParameter[] parameter)
         {
-            if (_sqlConnection.State == ConnectionState.Open)
+            try
             {
-                using (SqlCommand com = new SqlCommand(sql, _sqlConnection, _transaction))
+                if (_sqlConnection.State == ConnectionState.Open)
                 {
-                    com.CommandType = type;
-                    com.Parameters.AddRange(parameter);
-                    return com.ExecuteScalar();
+                    using (SqlCommand com = new SqlCommand(sql, _sqlConnection, _transaction))
+                    {
+                        com.CommandType = type;
+                        com.Parameters.AddRange(parameter);
+                        return com.ExecuteScalar();
+                    }
+                }
+                else
+                {
+                    return -1;
                 }
             }
-            else
+            catch (Exception)
             {
-                return -1;
+                throw;
+            }
+            finally
+            {
+                if (_sqlConnection != null)
+                {
+                    _sqlConnection.Close();
+                    _sqlConnection.Dispose();
+                }
             }
         }
 
