@@ -46,18 +46,52 @@ namespace DL.Core.ns.Data
         {
             if (_sqlConnection != null)
             {
+                _sqlConnection.Close();
                 _sqlConnection.Dispose();
             }
         }
 
         public override int ExecuteNonQuery(string sql, CommandType type, params DbParameter[] parameter)
         {
+            try
+            {
+                if (_sqlConnection.State == ConnectionState.Open)
+                {
+                    using (SqlCommand com = new SqlCommand(sql, _sqlConnection, _transaction))
+                    {
+                        com.CommandType = type;
+                        com.Parameters.AddRange(parameter);
+                        return com.ExecuteNonQuery();
+                    }
+                }
+                else
+                {
+                    return -1;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            finally
+            {
+                if (_sqlConnection != null)
+                {
+                    _sqlConnection.Close();
+                    _sqlConnection.Dispose();
+                }
+            }
+        }
+
+        public override object ExecuteScalar(string sql, CommandType type, params DbParameter[] parameter)
+        {
             if (_sqlConnection.State == ConnectionState.Open)
             {
                 using (SqlCommand com = new SqlCommand(sql, _sqlConnection, _transaction))
                 {
+                    com.CommandType = type;
                     com.Parameters.AddRange(parameter);
-                    return com.ExecuteNonQuery();
+                    return com.ExecuteScalar();
                 }
             }
             else
@@ -66,35 +100,106 @@ namespace DL.Core.ns.Data
             }
         }
 
-        public override object ExecuteScalar(string sql, CommandType type, params DbParameter[] parameter)
-        {
-            throw new NotImplementedException();
-        }
-
         public override DataSet GetDataSet(string sql, CommandType type, params DbParameter[] parameter)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (_sqlConnection.State == ConnectionState.Open)
+                {
+                    DataSet ds = new DataSet();
+                    using (SqlCommand com = new SqlCommand(sql, _sqlConnection, _transaction))
+                    {
+                        com.CommandType = type;
+                        com.Parameters.AddRange(parameter);
+                        using (SqlDataAdapter da = new SqlDataAdapter(com))
+                        {
+                            da.Fill(ds);
+                        }
+                    }
+                    return ds;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                if (_sqlConnection != null)
+                {
+                    _sqlConnection.Close();
+                    _sqlConnection.Dispose();
+                }
+            }
         }
 
         public override DataTable GetDataTable(string sql, CommandType type, params DbParameter[] parameter)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (_sqlConnection.State == ConnectionState.Open)
+                {
+                    DataTable ds = new DataTable();
+                    using (SqlCommand com = new SqlCommand(sql, _sqlConnection, _transaction))
+                    {
+                        com.CommandType = type;
+                        com.Parameters.AddRange(parameter);
+                        using (SqlDataAdapter da = new SqlDataAdapter(com))
+                        {
+                            da.Fill(ds);
+                        }
+                    }
+                    return ds;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            finally
+            {
+                if (_sqlConnection != null)
+                {
+                    _sqlConnection.Close();
+                    _sqlConnection.Dispose();
+                }
+            }
         }
 
         public bool SaveTransactionChange()
         {
-            bool result = false;
             try
             {
-                _transaction.Commit();
-                result = true;
+                bool result = false;
+                try
+                {
+                    _transaction.Commit();
+                    result = true;
+                }
+                catch (Exception ex)
+                {
+                    result = false;
+                    _transaction.Rollback();
+                }
+
+                return result;
             }
             catch (Exception ex)
             {
-                result = false;
-                _transaction.Rollback();
+                throw;
             }
-            return result;
+            finally
+            {
+                _transaction.Dispose();
+            }
         }
 
         private IDbConnection DbContext()

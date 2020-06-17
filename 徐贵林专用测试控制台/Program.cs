@@ -1,5 +1,8 @@
 ﻿using DL.Core.ns.Data;
+using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Data.Common;
+using System.Data.SqlClient;
 
 namespace 徐贵林专用测试控制台
 {
@@ -7,6 +10,21 @@ namespace 徐贵林专用测试控制台
     {
         private static void Main(string[] args)
         {
+            IServiceCollection services = new ServiceCollection();
+            services.AddScoped<IDataBaseContext, SqlServerDbContext>();
+            IServiceProvider provider = services.BuildServiceProvider();
+            var service = provider.GetService<IDataBaseContext>();
+            // service.BeginTransation = false;
+            var sql = "INSERT INTO UserInfO(ID,Name,Age,CreateTime)VALUES(@ID,@Name,@Age,@CreateTime)";
+            SqlParameter[] ps =
+            {
+                 new SqlParameter("@ID",Guid.NewGuid()),
+                 new SqlParameter("@Name","测试"),
+                 new SqlParameter("@Age",10),
+                 new SqlParameter("@CreateTime",DateTime.Now)
+            };
+            var data = service.ExecuteNonQuery(sql, System.Data.CommandType.Text, ps);
+            //service.SaveTransactionChange();
             Console.ReadKey();
         }
     }
