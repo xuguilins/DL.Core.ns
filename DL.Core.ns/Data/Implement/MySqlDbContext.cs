@@ -29,6 +29,7 @@ namespace DL.Core.ns.Data
         }
 
         public override DataBaseType Type => DataBaseType.MySql;
+        public override IDbConnection GetDbContext => new MySqlConnection(connectionStr);
 
         public bool BeginTransation
         {
@@ -71,12 +72,12 @@ namespace DL.Core.ns.Data
             }
             catch (Exception ex)
             {
-                logger.Error($"执行MySql发生异常,command：ExecuteNonQuery，sqlText:{sql}，exMes:{ex.Message}");
+                logger.Error($"执行MySql发生异常,command：ExecuteNonQuery\r\nsqlText:{sql}\r\nexMes:{ex.Message}");
                 throw;
             }
             finally
             {
-                if (_connection != null)
+                if (_connection != null && !_isBeginTranscation)
                 {
                     _connection.Close();
                     _connection.Dispose();
@@ -107,7 +108,7 @@ namespace DL.Core.ns.Data
             }
             finally
             {
-                if (_connection != null)
+                if (_connection != null && !_isBeginTranscation)
                 {
                     _connection.Close();
                     _connection.Dispose();
@@ -142,7 +143,7 @@ namespace DL.Core.ns.Data
             }
             finally
             {
-                if (_connection != null)
+                if (_connection != null && !_isBeginTranscation)
                 {
                     _connection.Close();
                     _connection.Dispose();
@@ -177,7 +178,7 @@ namespace DL.Core.ns.Data
             }
             finally
             {
-                if (_connection != null)
+                if (_connection != null && !_isBeginTranscation)
                 {
                     _connection.Close();
                     _connection.Dispose();
@@ -210,7 +211,16 @@ namespace DL.Core.ns.Data
             }
             finally
             {
-                _transaction.Dispose();
+                if (_transaction != null)
+                {
+                    _transaction.Dispose();
+                }
+
+                if (_connection != null)
+                {
+                    _connection.Close();
+                    _connection.Dispose();
+                }
             }
         }
     }

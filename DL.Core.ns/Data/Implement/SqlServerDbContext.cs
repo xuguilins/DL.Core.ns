@@ -50,7 +50,7 @@ namespace DL.Core.ns.Data
             }
         }
 
-        public override IDbConnection GetDbContext => DbContext();
+        public override IDbConnection GetDbContext => new SqlConnection(_connectString);
         public override DataBaseType Type => DataBaseType.SqlServer;
 
         public override int ExecuteNonQuery(string sql, CommandType type, params DbParameter[] parameter)
@@ -78,7 +78,7 @@ namespace DL.Core.ns.Data
             }
             finally
             {
-                if (_sqlConnection != null)
+                if (_sqlConnection != null && !_beginTransaction)
                 {
                     _sqlConnection.Close();
                     _sqlConnection.Dispose();
@@ -111,7 +111,7 @@ namespace DL.Core.ns.Data
             }
             finally
             {
-                if (_sqlConnection != null)
+                if (_sqlConnection != null && !_beginTransaction)
                 {
                     _sqlConnection.Close();
                     _sqlConnection.Dispose();
@@ -149,7 +149,7 @@ namespace DL.Core.ns.Data
             }
             finally
             {
-                if (_sqlConnection != null)
+                if (_sqlConnection != null && !_beginTransaction)
                 {
                     _sqlConnection.Close();
                     _sqlConnection.Dispose();
@@ -187,7 +187,7 @@ namespace DL.Core.ns.Data
             }
             finally
             {
-                if (_sqlConnection != null)
+                if (_sqlConnection != null && !_beginTransaction)
                 {
                     _sqlConnection.Close();
                     _sqlConnection.Dispose();
@@ -207,7 +207,7 @@ namespace DL.Core.ns.Data
                 }
                 catch (Exception ex)
                 {
-                    logger.Error($"执行SqlServer事务发生异常,command:SaveTransactionChange,exMes:{ex.Message} ");
+                    logger.Error($"执行SqlServer事务发生异常,\r\n command:SaveTransactionChange \r\n exMes:{ex.Message} ");
                     result = false;
                     _transaction.Rollback();
                 }
@@ -220,13 +220,22 @@ namespace DL.Core.ns.Data
             }
             finally
             {
-                _transaction.Dispose();
+                if (_transaction != null)
+                {
+                    _transaction.Dispose();
+                }
+                if (_sqlConnection != null)
+                {
+                    _sqlConnection.Close();
+                    _sqlConnection.Dispose();
+                }
             }
         }
 
         private IDbConnection DbContext()
         {
-            return _sqlConnection;
+            IDbConnection db = new SqlConnection();
+            return db;
         }
     }
 }
