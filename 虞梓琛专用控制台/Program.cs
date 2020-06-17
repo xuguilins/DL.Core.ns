@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace 虞梓琛专用控制台
+namespace 虞专用控制台
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
         }

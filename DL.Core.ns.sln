@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.29509.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DL.Core.ns", "DL.Core.ns\DL.Core.ns.csproj", "{7D7396F3-8D50-4C41-BA8A-85763370E644}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "徐贵林专用测试控制台", "徐贵林专用测试控制台\徐贵林专用测试控制台.csproj", "{096CA445-3D7F-42BB-ABF8-06895A839450}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "徐专用控制台", "徐贵林专用测试控制台\徐专用控制台.csproj", "{096CA445-3D7F-42BB-ABF8-06895A839450}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "虞梓琛专用控制台", "虞梓琛专用控制台\虞梓琛专用控制台.csproj", "{37C3DB3F-57AE-45C4-A0C9-59D4D7C16E70}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "虞专用控制台", "虞梓琛专用控制台\虞专用控制台.csproj", "{37C3DB3F-57AE-45C4-A0C9-59D4D7C16E70}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

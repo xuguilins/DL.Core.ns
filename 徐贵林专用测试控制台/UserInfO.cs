@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace 徐贵林专用测试控制台
+namespace 徐专用测试控制台
 {
     public class UserInfO
     {

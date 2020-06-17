@@ -4,7 +4,7 @@ using System;
 using System.Data.Common;
 using System.Data.SqlClient;
 
-namespace 徐贵林专用测试控制台
+namespace 徐专用测试控制台
 {
     internal class Program
     {
