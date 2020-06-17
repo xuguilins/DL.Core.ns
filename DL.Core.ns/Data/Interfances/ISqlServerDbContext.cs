@@ -7,7 +7,7 @@ namespace DL.Core.ns.Data
     /// <summary>
     /// SqlServer操作接口
     /// </summary>
-    public interface ISqlServerDbContext : IDataBaseContext
+    public interface ISqlServerDbContext : IDataBaseContext, IDisposable
     {
         /// <summary>
         /// 是否允许开启事务

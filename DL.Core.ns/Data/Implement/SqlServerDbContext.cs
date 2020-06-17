@@ -11,7 +11,7 @@ namespace DL.Core.ns.Data
     /// <summary>
     /// 操作SqlServer 数据库
     /// </summary>
-    public class SqlServerDbContext : DataBaseContext, ISqlServerDbContext, IDisposable
+    public class SqlServerDbContext : DataBaseContext, ISqlServerDbContext
     {
         private bool _beginTransaction = false;
         private string _connectString = string.Empty;
