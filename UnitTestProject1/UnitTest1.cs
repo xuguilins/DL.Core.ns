@@ -8,6 +8,7 @@ using DL.Core.ns.Extensiton;
 using System.Collections.Generic;
 using DL.Core.ns.Table;
 using System.Data;
+using DL.Core.ns.EventBus;
 
 namespace UnitTestProject1
 {
@@ -54,9 +55,19 @@ namespace UnitTestProject1
                 var d = row["Name"];
             }
         }
+
+        [TestMethod]
+        public void EventTest()
+        {
+            IServiceCollection services = new ServiceCollection();
+            services.AddScoped<IEventBus, EventBus>();
+            IServiceProvider provider = services.BuildServiceProvider();
+            var service = provider.GetService<IEventBus>();
+            service.Publish(new LoginData());
+        }
     }
 
-    public class User
+    public class User : EventData
     {
         public string Name { get; set; }
         public string Age { get; set; }
