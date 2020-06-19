@@ -9,6 +9,11 @@ using System.Collections.Generic;
 using DL.Core.ns.Table;
 using System.Data;
 using DL.Core.ns.EventBus;
+using DL.Core.ns.CommandFactory;
+using Microsoft.EntityFrameworkCore;
+using DL.Core.ns.Dependency;
+using DL.Core.ns.Finder;
+using System.Linq;
 
 namespace UnitTestProject1
 {
@@ -57,20 +62,44 @@ namespace UnitTestProject1
         }
 
         [TestMethod]
-        public void EventTest()
+        public void CommmandTest()
         {
             IServiceCollection services = new ServiceCollection();
-            services.AddScoped<IEventBus, EventBus>();
+            services.AddScoped<ICommandExecutor, CommandExecutor>();
             IServiceProvider provider = services.BuildServiceProvider();
-            var service = provider.GetService<IEventBus>();
-            service.Publish(new LoginData());
+            var service = provider.GetService<ICommandExecutor>();
+            service.Execute(new UserLoginCommand());
+        }
+
+        [TestMethod]
+        public void DbContextMethod()
+        {
+            //IDbContext
+            IServiceCollection services = new ServiceCollection();
+            services.AddScoped<IFinderBase, IntertalContextFinder>();
+            IServiceProvider provider = services.BuildServiceProvider();
+            var service = provider.GetService<IFinderBase>();
+            var type = service.FinderAll();
+            //  var context = Activator.CreateInstance(type) as TestDbContext;
         }
     }
 
-    public class User : EventData
+    public class TestDbContext : DbContext
+    {
+    }
+
+    public class User
     {
         public string Name { get; set; }
         public string Age { get; set; }
         public string Pass { get; set; }
+    }
+
+    public class UserLoginCommand : ICommand<User>
+    {
+        public User Execute()
+        {
+            return new User { Age = "100", Name = "√¸¡Ó÷¥––’ﬂ", Pass = "÷¥––√¸¡Ó" };
+        }
     }
 }
