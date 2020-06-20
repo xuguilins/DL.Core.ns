@@ -6,5 +6,6 @@ namespace DL.Core.ns.Finder
 {
     public interface IDependencyFinder : IFinderBase
     {
+        Type[] DependencyType { get; }
     }
 }

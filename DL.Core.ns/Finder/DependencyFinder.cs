@@ -15,12 +15,7 @@ namespace DL.Core.ns.Finder
     /// </summary>
     public class DependencyFinder : FinderBase, IDependencyFinder
     {
-        private Type[] DependencyType = null;
-
-        public DependencyFinder()
-        {
-            DependencyType = new Type[] { typeof(IScopeDependcy), typeof(ISingletonDependcy), typeof(ITransientDependcy) };
-        }
+        public Type[] DependencyType => new Type[] { typeof(IScopeDependcy), typeof(ISingletonDependcy), typeof(ITransientDependcy) };
 
         public override Type[] Find()
         {

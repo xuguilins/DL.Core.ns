@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using DL.Core.ns.Dependency;
 using DL.Core.ns.Finder;
 using System.Linq;
+using DL.Core.ns.CorePack;
 
 namespace UnitTestProject1
 {
@@ -81,6 +82,14 @@ namespace UnitTestProject1
             var service = provider.GetService<IFinderBase>();
             var type = service.FinderAll();
             //  var context = Activator.CreateInstance(type) as TestDbContext;
+        }
+
+        [TestMethod]
+        public void DependcyPackLoad()
+        {
+            PackBase p = new DependencyPack();
+            IServiceCollection services = new ServiceCollection();
+            p.AddService(services);
         }
     }
 
