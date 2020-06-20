@@ -21,7 +21,7 @@ namespace DL.Core.ns.CorePack
             var types = finder.FinderAll();
             foreach (var type in types)
             {
-                var interfance = type.GetInterfaces().FirstOrDefault();
+                var interfance = type.GetInterfaces().FirstOrDefault(x => x.IsInterface && !x.IsDefined(typeof(IgnoreDependency), false));
                 if (interfance != null)
                 {
                     if (typeof(IScopeDependcy).IsAssignableFrom(interfance))

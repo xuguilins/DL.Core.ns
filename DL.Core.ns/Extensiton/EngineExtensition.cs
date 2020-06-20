@@ -20,6 +20,7 @@ namespace DL.Core.ns.Extensiton
             Stopwatch watch = new Stopwatch();
             watch.Start();
             IDLEnginePack service = new DLEnginePack();
+            services.AddMemoryCache();
             service.AddEnginePack(services);
             watch.Stop();
             sb.Append($"DL引擎初始化完成\r\n");

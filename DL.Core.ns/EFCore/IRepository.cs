@@ -1,4 +1,5 @@
-﻿using DL.Core.ns.Entity;
+﻿using DL.Core.ns.Dependency;
+using DL.Core.ns.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace DL.Core.ns.EFCore
 {
+    [IgnoreDependency]
     public interface IRepository<TEntity> where TEntity : EntityBase
     {
         #region [同步方法]

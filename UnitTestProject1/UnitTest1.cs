@@ -15,6 +15,9 @@ using DL.Core.ns.Dependency;
 using DL.Core.ns.Finder;
 using System.Linq;
 using DL.Core.ns.CorePack;
+using DL.Core.ns.Configer;
+using DL.Core.ns.EFCore;
+using DL.Core.ns.Entity;
 
 namespace UnitTestProject1
 {
@@ -89,27 +92,94 @@ namespace UnitTestProject1
         {
             PackBase p = new DependencyPack();
             IServiceCollection services = new ServiceCollection();
+            services.AddDbContext<TestDbContext>();
+            services.AddScoped<IUnitOfWork, UnitOfWork<TestDbContext>>();
             services.AddPack();
+            IServiceProvider provider = services.BuildServiceProvider();
+            var service = provider.GetService<IChatUserService>();
+            var uni = provider.GetService<IUnitOfWork>();
+            var sqlservice = provider.GetService<ISqlServerDbContext>();
+            sqlservice.ExecuteNonQuery("sd", CommandType.Text);
+            uni.BeginTransaction = true;
+            var data = service.AddEntity(new ChatUser { ConnectionId = StrExtensition.GetGuid(), CreatedTime = StrExtensition.GetDateTime(), Id = StrExtensition.GetGuid(), IsRead = 0, TargetId = "11", TargetName = "老王", UserId = "zzlls" });
+            var a = data;
+            uni.CommitTransaction();
             // p.AddService(services);
         }
     }
 
     public class TestDbContext : DbContext
     {
-    }
-
-    public class User
-    {
-        public string Name { get; set; }
-        public string Age { get; set; }
-        public string Pass { get; set; }
-    }
-
-    public class UserLoginCommand : ICommand<User>
-    {
-        public User Execute()
+        public TestDbContext(DbContextOptions<TestDbContext> options) : base(options)
         {
-            return new User { Age = "100", Name = "命令执行者", Pass = "执行命令" };
         }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            var config = ConfigerManager.getCofiger();
+            if (config != null)
+            {
+                var sql = config.ConnectionString.Default;
+                optionsBuilder.UseSqlServer(sql);
+            }
+        }
+
+        public DbSet<ChatUser> ChatUser { get; set; }
+    }
+
+    public interface IChatUserService : IRepository<ChatUser>, IScopeDependcy
+    {
+    }
+
+    public class ChatUserService : Repository<ChatUser>, IChatUserService
+    {
+        //  private TestDbContext context = null;
+
+        public ChatUserService(TestDbContext context) : base(context)
+        {
+        }
+    }
+}
+
+public class ChatUser : EntityBase
+{
+    /// <summary>
+    ///
+    /// </summary>
+    public string ConnectionId { get; set; }
+
+    /// <summary>
+    ///
+    /// </summary>
+    public int IsRead { get; set; }
+
+    /// <summary>
+    ///
+    /// </summary>
+    public string TargetId { get; set; }
+
+    /// <summary>
+    ///
+    /// </summary>
+    public string TargetName { get; set; }
+
+    /// <summary>
+    ///
+    /// </summary>
+    public string UserId { get; set; }
+}
+
+public class User
+{
+    public string Name { get; set; }
+    public string Age { get; set; }
+    public string Pass { get; set; }
+}
+
+public class UserLoginCommand : ICommand<User>
+{
+    public User Execute()
+    {
+        return new User { Age = "100", Name = "命令执行者", Pass = "执行命令" };
     }
 }
