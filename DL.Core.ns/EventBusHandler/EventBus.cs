@@ -4,15 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace DL.Core.ns.EventBus
+namespace DL.Core.ns.EventBusHandler
 {
     public class EventBus : IEventBus
     {
         private ConcurrentDictionary<Type, List<Type>> Store = null;
-        private IEventStore _store = new EventStore();
+        private IEventStore _store;
 
-        public EventBus()
+        public EventBus(IEventStore store)
         {
+            _store = store;
             Store = _store.GetStore();
         }
 

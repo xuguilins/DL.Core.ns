@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using DL.Core.ns.Extensiton;
 
-namespace DL.Core.ns.EventBus
+namespace DL.Core.ns.EventBusHandler
 {
     public class EventData : IEventData
     {

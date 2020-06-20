@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 
-namespace DL.Core.ns.EventBus
+namespace DL.Core.ns.EventBusHandler
 {
     public class EventStore : IEventStore
     {

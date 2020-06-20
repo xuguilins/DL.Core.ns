@@ -8,7 +8,7 @@ using DL.Core.ns.Extensiton;
 using System.Collections.Generic;
 using DL.Core.ns.Table;
 using System.Data;
-using DL.Core.ns.EventBus;
+using DL.Core.ns.EventBusHandler;
 using DL.Core.ns.CommandFactory;
 using Microsoft.EntityFrameworkCore;
 using DL.Core.ns.Dependency;
@@ -89,7 +89,8 @@ namespace UnitTestProject1
         {
             PackBase p = new DependencyPack();
             IServiceCollection services = new ServiceCollection();
-            p.AddService(services);
+            services.AddPack();
+            // p.AddService(services);
         }
     }
 

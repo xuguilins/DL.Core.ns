@@ -5,22 +5,18 @@ using System.Text;
 
 namespace DL.Core.ns.CorePack
 {
-    /// <summary>
-    /// 模块包基类
-    /// </summary>
-    public abstract class PackBase
+    public interface IDLEnginePack
     {
         /// <summary>
-        /// 启动级别
-        /// 数字越小启动越快
+        /// 获取所有PACK
         /// </summary>
-        public abstract int StarLevel { get; }
+        List<PackBase> LoadPacks { get; }
 
         /// <summary>
-        /// 注入基类
+        /// 加载引擎内置Pack
         /// </summary>
         /// <param name="services"></param>
         /// <returns></returns>
-        public abstract IServiceCollection AddService(IServiceCollection services);
+        IServiceCollection AddEnginePack(IServiceCollection services);
     }
 }
