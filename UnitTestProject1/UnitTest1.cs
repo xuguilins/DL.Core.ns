@@ -18,6 +18,7 @@ using DL.Core.ns.CorePack;
 using DL.Core.ns.Configer;
 using DL.Core.ns.EFCore;
 using DL.Core.ns.Entity;
+using DL.Core.ns.Tools;
 
 namespace UnitTestProject1
 {
@@ -90,11 +91,12 @@ namespace UnitTestProject1
         [TestMethod]
         public void DependcyPackLoad()
         {
-            PackBase p = new DependencyPack();
-            IServiceCollection services = new ServiceCollection();
-            services.AddDbContext<TestDbContext>();
-            services.AddScoped<IUnitOfWork, UnitOfWork<TestDbContext>>();
-            services.AddPack();
+            ValidateCodeHelper.CreateValidteCode(5, true);
+            //PackBase p = new DependencyPack();
+            //IServiceCollection services = new ServiceCollection();
+            //services.AddDbContext<TestDbContext>();
+            //services.AddScoped<IUnitOfWork, UnitOfWork<TestDbContext>>();
+            //services.AddPack();
             //IServiceProvider provider = services.BuildServiceProvider();
             //var service = provider.GetService<IChatUserService>();
             //var uni = provider.GetService<IUnitOfWork>();
