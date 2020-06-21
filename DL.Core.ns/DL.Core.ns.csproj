@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Authors>余温</Authors>
+    <Description>常用工具类的封装,模块化的注入</Description>
   </PropertyGroup>
 
   <ItemGroup>
