@@ -95,15 +95,15 @@ namespace UnitTestProject1
             services.AddDbContext<TestDbContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork<TestDbContext>>();
             services.AddPack();
-            IServiceProvider provider = services.BuildServiceProvider();
-            var service = provider.GetService<IChatUserService>();
-            var uni = provider.GetService<IUnitOfWork>();
-            var sqlservice = provider.GetService<ISqlServerDbContext>();
-            sqlservice.ExecuteNonQuery("sd", CommandType.Text);
-            uni.BeginTransaction = true;
-            var data = service.AddEntity(new ChatUser { ConnectionId = StrExtensition.GetGuid(), CreatedTime = StrExtensition.GetDateTime(), Id = StrExtensition.GetGuid(), IsRead = 0, TargetId = "11", TargetName = "老王", UserId = "zzlls" });
-            var a = data;
-            uni.CommitTransaction();
+            //IServiceProvider provider = services.BuildServiceProvider();
+            //var service = provider.GetService<IChatUserService>();
+            //var uni = provider.GetService<IUnitOfWork>();
+            //var sqlservice = provider.GetService<ISqlServerDbContext>();
+            //sqlservice.ExecuteNonQuery("sd", CommandType.Text);
+            //uni.BeginTransaction = true;
+            //var data = service.AddEntity(new ChatUser { ConnectionId = StrExtensition.GetGuid(), CreatedTime = StrExtensition.GetDateTime(), Id = StrExtensition.GetGuid(), IsRead = 0, TargetId = "11", TargetName = "老王", UserId = "zzlls" });
+            //var a = data;
+            //uni.CommitTransaction();
             // p.AddService(services);
         }
     }
