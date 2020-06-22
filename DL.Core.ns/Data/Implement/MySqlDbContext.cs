@@ -23,7 +23,7 @@ namespace DL.Core.ns.Data
 
         public MySqlDbContext()
         {
-            connectionStr = ConfigerManager.getCofiger()?.ConnectionString?.MySqlDefault;
+            connectionStr = ConfigerManager.Instance.getCofiger()?.ConnectionString?.MySqlDefault;
             _connection = new MySqlConnection(connectionStr);
             _connection.Open();
         }

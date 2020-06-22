@@ -1,0 +1,8 @@
+<?xml version="1.0" standalone="yes"?>
+<DL>
+  <DataBase>
+    <SqlServer value="sd">SqlA</SqlServer>
+    <MySql>MySqlA</MySql>
+    <Oracle>OracleA</Oracle>
+  </DataBase>
+</DL>

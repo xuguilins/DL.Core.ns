@@ -36,7 +36,7 @@ namespace DL.Core.ns.Logging
                 }
                 else
                 {
-                    var config = ConfigerManager.getCofiger();
+                    var config = ConfigerManager.Instance.getCofiger();
                     if (config != null)
                     {
                         if (string.IsNullOrWhiteSpace(config.CodeConfig.LogPath))

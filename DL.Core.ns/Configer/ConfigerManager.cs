@@ -10,33 +10,30 @@ namespace DL.Core.ns.Configer
     /// <summary>
     /// 读取配置文件
     /// </summary>
-    public static class ConfigerManager
+    public class ConfigerManager : ConfigFileBase
     {
-        private static IConfiguration configuration;
+        private static Lazy<ConfigerManager> lazyList = new Lazy<ConfigerManager>(() => new ConfigerManager());
+        private IConfiguration configuration;
 
-        static ConfigerManager()
+        private ConfigerManager()
         {
             configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).AddJsonFile("appsettings.Development.json", optional: true)
              .Build();
         }
 
-        /// <summary>
-        /// 配置路径
-        /// </summary>
-        private static string[] BasePath = { "./", "./../", "./../../", "./../../../../", "./../../../../../", "./../../../../../../", "./../../../../../../../" };
-
-        private static string Name = "appsettings.json";
+        public override string FileName => "appsettings.json";
+        public static ConfigerManager Instance = lazyList.Value;
 
         /// <summary>
         /// 读取配置文件
         /// </summary>
         /// <returns></returns>
-        public static AppJsonConfig getCofiger()
+        public AppJsonConfig getCofiger()
         {
             AppJsonConfig config = null;
             foreach (var item in BasePath)
             {
-                var path = item + Name;
+                var path = item + FileName;
                 if (File.Exists(path))
                 {
                     using (StreamReader stream = new StreamReader(path, Encoding.UTF8))
@@ -56,7 +53,7 @@ namespace DL.Core.ns.Configer
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public static string GetValue(string key)
+        public string GetValue(string key)
         {
             return configuration[key];
         }
@@ -67,7 +64,7 @@ namespace DL.Core.ns.Configer
         /// <typeparam name="T">返回的对象</typeparam>
         /// <param name="key">节点</param>
         /// <returns></returns>
-        public static T GetValue<T>(string key) where T : class
+        public T GetValue<T>(string key) where T : class
         {
             return configuration.GetSection(key).Get<T>();
         }

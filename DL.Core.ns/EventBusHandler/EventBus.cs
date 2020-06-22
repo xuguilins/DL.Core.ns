@@ -17,6 +17,11 @@ namespace DL.Core.ns.EventBusHandler
             Store = _store.GetStore();
         }
 
+        /// <summary>
+        /// 事件发布
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="event"></param>
         public void Publish<T>(T @event) where T : EventData
         {
             var type = @event.GetType();
@@ -35,6 +40,18 @@ namespace DL.Core.ns.EventBusHandler
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// 事件移除
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="event"></param>
+        public void Remove<T>(T @event) where T : EventData
+        {
+            List<Type> list = new List<Type>();
+            var type = @event.GetType();
+            Store.TryRemove(type, out list);
         }
     }
 }

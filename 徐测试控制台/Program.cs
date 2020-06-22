@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DL.Core.ns.Configer;
+using System;
 using System.Linq;
 
 namespace 徐测试控制台
@@ -7,15 +8,8 @@ namespace 徐测试控制台
     {
         private static void Main(string[] args)
         {
-            var type = typeof(UserInfo);
-            var list = type.GetInterfaces().FirstOrDefault();
-            Console.WriteLine(list.Name);
-            var d = list.GetInterfaces().FirstOrDefault();
-            Console.WriteLine(d.Name);
-            //foreach (var item in list)
-            //{
-            //    Console.WriteLine($"name:{item.Name},fullname:{item.FullName}");
-            //}
+            //XmlConfigerManager.Instance.GetConfiger();
+            ConfigerManager.Instance.getCofiger();
             Console.ReadKey();
         }
     }

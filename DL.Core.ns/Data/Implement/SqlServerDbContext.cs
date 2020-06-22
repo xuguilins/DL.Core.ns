@@ -22,7 +22,7 @@ namespace DL.Core.ns.Data
 
         public SqlServerDbContext()
         {
-            _connectString = ConfigerManager.getCofiger()?.ConnectionString?.SqlDefault;
+            _connectString = ConfigerManager.Instance.getCofiger()?.ConnectionString?.SqlDefault;
             _sqlConnection = new SqlConnection(_connectString);
             _sqlConnection.Open();
         }
