@@ -1,6 +1,10 @@
 ﻿using DL.Core.ns.Configer;
 using System;
 using System.Linq;
+using DL.Core.ns.Data;
+using DL.Core.ns.Table;
+using System.Data;
+using System.Collections.Generic;
 
 namespace 徐测试控制台
 {
@@ -8,8 +12,11 @@ namespace 徐测试控制台
     {
         private static void Main(string[] args)
         {
-            //XmlConfigerManager.Instance.GetConfiger();
-            ConfigerManager.Instance.getCofiger();
+            var sql = "SELECT * FROM UserInfO ";
+            ISqlServerDbContext context = new SqlServerDbContext();
+            DataTable Table = context.GetDataTable(sql, System.Data.CommandType.Text);
+            var list = Table.ToObjectList<UserInfo>();
+
             Console.ReadKey();
         }
     }
@@ -19,10 +26,6 @@ namespace 徐测试控制台
     }
 
     public interface ITestB
-    {
-    }
-
-    public class UserInfo : ItestA, ITestB
     {
     }
 
@@ -61,5 +64,13 @@ namespace 徐测试控制台
 
             //command.Execute();
         }
+    }
+
+    public class UserInfo
+    {
+        public string ID { get; set; }
+        public string Name { get; set; }
+        public int Age { get; set; }
+        public DateTime CreateTime { get; set; }
     }
 }

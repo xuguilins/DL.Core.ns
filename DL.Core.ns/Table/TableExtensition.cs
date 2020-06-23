@@ -93,7 +93,7 @@ namespace DL.Core.ns.Table
             if (dt != null && dt.Rows.Count > 0)
             {
                 List<T> list = new List<T>();
-                T model = null;
+                T model = new T();
                 var proList = model.GetType().GetProperties();
                 foreach (DataRow row in dt.Rows)
                 {
