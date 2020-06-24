@@ -12,6 +12,9 @@ using DL.Core.ns.Extensiton;
 using DL.Core.ns.EFCore;
 using DL.Core.ns.Dependency;
 using DL.Core.ns.Locator;
+using DL.Core.ns.Cacheing;
+using System.Threading;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace 徐测试控制台
 {
@@ -21,10 +24,11 @@ namespace 徐测试控制台
         {
             IServiceCollection services = new ServiceCollection();
             services.AddPack<UserContext>();
-            var service = ServiceLocator.Instance.GetService<IUserService>();
-            int result = service.AddEntity(new UserTest { CreatedTime = DateTime.Now, Id = StrExtensition.GetGuid(), UsePass = "111", UserName = "222" });
-            Console.WriteLine(result);
-            Console.ReadKey();
+            var service = ServiceLocator.Instance.GetService<IMemoryCache>();
+            Console.WriteLine("设置缓存。。。");
+            service.Set("zll", "666", TimeSpan.FromSeconds(3));
+            var value = service.Get("zll");
+            Console.WriteLine($"取出缓存：{value}");
             Console.ReadKey();
         }
     }

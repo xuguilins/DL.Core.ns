@@ -9,6 +9,7 @@ using DL.Core.ns.Locator;
 using DL.Core.ns.Finder;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace DL.Core.ns.Extensiton
 {
@@ -23,8 +24,7 @@ namespace DL.Core.ns.Extensiton
             Stopwatch watch = new Stopwatch();
             watch.Start();
             IDLEnginePack service = new DLEnginePack();
-            //添加缓存
-            services.AddMemoryCache();
+            services.AddService();
             //模块注入
             service.AddEnginePack(services);
             //上下文注入
@@ -39,6 +39,14 @@ namespace DL.Core.ns.Extensiton
             sb.Append($"DL框架引擎初始化完成\r\n");
             sb.Append($"总共花费:{watch.ElapsedMilliseconds}毫秒");
             logger.Info(sb.ToString());
+            return services;
+        }
+
+        private static IServiceCollection AddService(this IServiceCollection services)
+        {
+            //添加缓存
+            services.AddMemoryCache();
+            services.AddScoped<IMemoryCache, MemoryCache>();
             return services;
         }
     }
