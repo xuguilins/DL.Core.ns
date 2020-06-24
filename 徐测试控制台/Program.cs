@@ -5,6 +5,13 @@ using DL.Core.ns.Data;
 using DL.Core.ns.Table;
 using System.Data;
 using System.Collections.Generic;
+using DL.Core.ns.Entity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using DL.Core.ns.Extensiton;
+using DL.Core.ns.EFCore;
+using DL.Core.ns.Dependency;
+using DL.Core.ns.Locator;
 
 namespace 徐测试控制台
 {
@@ -12,65 +19,45 @@ namespace 徐测试控制台
     {
         private static void Main(string[] args)
         {
-            var sql = "SELECT * FROM UserInfO ";
-            ISqlServerDbContext context = new SqlServerDbContext();
-            DataTable Table = context.GetDataTable(sql, System.Data.CommandType.Text);
-            var list = Table.ToObjectList<UserInfo>();
-
+            IServiceCollection services = new ServiceCollection();
+            services.AddPack<UserContext>();
+            var service = ServiceLocator.Instance.GetService<IUserService>();
+            int result = service.AddEntity(new UserTest { CreatedTime = DateTime.Now, Id = StrExtensition.GetGuid(), UsePass = "111", UserName = "222" });
+            Console.WriteLine(result);
+            Console.ReadKey();
             Console.ReadKey();
         }
     }
 
-    public interface ItestA : ITestB
+    // [Table("UserTest")]
+    public class UserTest : EntityBase
     {
+        public string UserName { get; set; }
+        public string UsePass { get; set; }
     }
 
-    public interface ITestB
+    public class UserContext : DbContext
     {
-    }
-
-    public class ResultData
-    {
-    }
-
-    public abstract class Command
-    {
-        public abstract void Execute();
-    }
-
-    public class UserLoginCommand : Command
-    {
-        public override void Execute()
+        public UserContext(DbContextOptions<UserContext> options) : base(options)
         {
-            Console.WriteLine("我在执行方法");
         }
-    }
 
-    public class CommandExecuter
-    {
-        public void ExeCom<T>(T command) where T : Command
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var typeinfo = command.GetType();
-            if (typeof(Command).IsAssignableFrom(typeinfo))
-            {
-                var method = typeinfo.GetMethod("Execute");
-                if (method != null)
-                {
-                    //创建执行对象
-                    var instance = Activator.CreateInstance(typeinfo);
-                    method.Invoke(instance, null);
-                }
-            }
-
-            //command.Execute();
+            optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=CoreNs;User ID=sa;Password=0103");
         }
+
+        public DbSet<UserTest> UserTest { get; set; }
     }
 
-    public class UserInfo
+    public interface IUserService : IRepository<UserTest>, IScopeDependcy
     {
-        public string ID { get; set; }
-        public string Name { get; set; }
-        public int Age { get; set; }
-        public DateTime CreateTime { get; set; }
+    }
+
+    public class UserService : Repository<UserTest>, IUserService
+    {
+        public UserService(UserContext context) : base(context)
+        {
+        }
     }
 }

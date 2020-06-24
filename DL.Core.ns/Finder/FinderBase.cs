@@ -18,7 +18,11 @@ namespace DL.Core.ns.Finder
             var files = Directory.GetFiles(path, "*.dll", SearchOption.TopDirectoryOnly)
            .ToArray();
             var assemblies = files.Select(Assembly.LoadFrom).Distinct().ToArray();
-            var assmably = assemblies.Select(x => x);
+            var assmably = assemblies.Select(x => x).ToList();
+            foreach (var item in assemblies)
+            {
+                var d = item.GetTypes();
+            }
             var types = assemblies.SelectMany(x => x.GetTypes()).ToList();
             LoadTypes = types;
         }
