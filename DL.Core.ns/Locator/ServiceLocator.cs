@@ -54,7 +54,7 @@ namespace DL.Core.ns.Locator
         /// <typeparam name="T"></typeparam>
         /// <param name="type"></param>
         /// <returns></returns>
-        public object GetService<T>(Type type)
+        public object GetService(Type type)
         {
             return _provider.GetService(type);
         }
