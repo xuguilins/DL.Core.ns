@@ -32,9 +32,48 @@ namespace DL.Core.ns.CorePack
                     {
                         services.AddTransient(interfance, type);
                     }
-                    else
+                    else if (typeof(ISingletonDependcy).IsAssignableFrom(interfance))
                     {
                         services.AddSingleton(interfance, type);
+                    }
+                    else
+                    {
+                        services = AddAttbuiteDependenty(services, interfance, type);
+                    }
+                }
+            }
+            return services;
+        }
+
+        /// <summary>
+        /// 特性注入
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="interfance"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        private IServiceCollection AddAttbuiteDependenty(IServiceCollection services, Type interfance, Type type)
+        {
+            //检查当前类的特性
+            var attbuite = type.GetCustomAttributes(false);
+            if (attbuite != null && attbuite.Length > 0)
+            {
+                var attb = attbuite[0] as AttbuiteDependency;
+                if (attb != null)
+                {
+                    switch (attb.Lifetime)
+                    {
+                        case ServiceLifetime.Scoped:
+                            services.AddScoped(interfance, type);
+                            break;
+
+                        case ServiceLifetime.Singleton:
+                            services.AddSingleton(interfance, type);
+                            break;
+
+                        case ServiceLifetime.Transient:
+                            services.AddTransient(interfance, type);
+                            break;
                     }
                 }
             }

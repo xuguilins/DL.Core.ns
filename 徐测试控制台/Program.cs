@@ -15,6 +15,8 @@ using DL.Core.ns.Locator;
 using DL.Core.ns.Cacheing;
 using System.Threading;
 using Microsoft.Extensions.Caching.Memory;
+using System.Reflection;
+using System.ComponentModel;
 
 namespace 徐测试控制台
 {
@@ -23,45 +25,29 @@ namespace 徐测试控制台
         private static void Main(string[] args)
         {
             IServiceCollection services = new ServiceCollection();
-            services.AddPack<UserContext>();
-            var service = ServiceLocator.Instance.GetService<IMemoryCache>();
-            Console.WriteLine("设置缓存。。。");
-            service.Set("zll", "666", TimeSpan.FromSeconds(3));
-            var value = service.Get("zll");
-            Console.WriteLine($"取出缓存：{value}");
+            services.AddPack<EfContext>();
+            var service = ServiceLocator.Instance.GetService<IUserSerivce>();
+            service.Speak();
             Console.ReadKey();
         }
     }
 
-    // [Table("UserTest")]
-    public class UserTest : EntityBase
+    // [DL.Core.ns.Dependency.AttbuiteDependency(ServiceLifetime.Scoped)]
+    public interface IUserSerivce
     {
-        public string UserName { get; set; }
-        public string UsePass { get; set; }
+        void Speak();
     }
 
-    public class UserContext : DbContext
+    [DL.Core.ns.Dependency.AttbuiteDependency(ServiceLifetime.Scoped)]
+    public class UserService : IUserSerivce
     {
-        public UserContext(DbContextOptions<UserContext> options) : base(options)
+        public void Speak()
         {
+            Console.WriteLine("我是特性注入");
         }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=CoreNs;User ID=sa;Password=0103");
-        }
-
-        public DbSet<UserTest> UserTest { get; set; }
     }
 
-    public interface IUserService : IRepository<UserTest>, IScopeDependcy
+    public class EfContext : DbContext
     {
-    }
-
-    public class UserService : Repository<UserTest>, IUserService
-    {
-        public UserService(UserContext context) : base(context)
-        {
-        }
     }
 }

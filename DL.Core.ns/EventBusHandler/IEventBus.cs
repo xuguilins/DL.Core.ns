@@ -22,6 +22,18 @@ namespace DL.Core.ns.EventBusHandler
 
     public interface IEventBus
     {
+        /// <summary>
+        /// 事件发布
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="event"></param>
         void Publish<T>(T @event) where T : EventData;
+
+        /// <summary>
+        /// 事件移除
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="event"></param>
+        void Remove<T>(T @event) where T : EventData;
     }
 }

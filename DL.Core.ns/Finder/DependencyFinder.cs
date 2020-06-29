@@ -19,9 +19,13 @@ namespace DL.Core.ns.Finder
 
         public override Type[] Find()
         {
+            //var b = LoadTypes.ToList();
             //查找类型:当前类型不是抽象类，不是接口，没有忽略注入特性。且当前类型是实现了 三种生命周期
-            var typeList = LoadTypes.Where(x => !x.IsAbstract && !x.IsInterface && !x.IsDefined(typeof(IgnoreDependency)) && DependencyType.Any(m => m.IsAssignableFrom(x))).ToArray();
-            return typeList;
+            var typeList = LoadTypes.Where(x => !x.IsAbstract && !x.IsInterface && !x.IsDefined(typeof(IgnoreDependency)) && DependencyType.Any(m => m.IsAssignableFrom(x))).ToList();
+            //查找类型：
+            var attbuitList = LoadTypes.Where(x => !x.IsAbstract && !x.IsInterface && x.IsDefined(typeof(AttbuiteDependency))).ToList();
+            typeList.AddRange(attbuitList);
+            return typeList.Distinct().ToArray();
         }
     }
 }
