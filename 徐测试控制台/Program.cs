@@ -17,21 +17,45 @@ using System.Threading;
 using Microsoft.Extensions.Caching.Memory;
 using System.Reflection;
 using System.ComponentModel;
+using System.Threading.Tasks;
+using System.Collections.Concurrent;
 
 namespace 徐测试控制台
 {
     internal class Program
     {
+        private static ConcurrentQueue<string> quee = new ConcurrentQueue<string>();
+
         private static void Main(string[] args)
         {
             IServiceCollection services = new ServiceCollection();
-            services.AddPack<EfContext>();
-            var service = ServiceLocator.Instance.GetService(typeof(IUserSerivce));
-            // service.GetType().InvokeMember()
-            // var cser = ServiceLocator.Instance.GetService<TeacherSerivce>();
-            // service.Speak();
-            // cser.Speak();
+            services.AddPack();
+
+            Task[] task = new Task[3];
+
+            for (int i = 0; i < task.Count(); i++)
+            {
+                if (i == 0)
+                {
+                    task[i] = Task.Run(() => InOrder());
+                }
+                else
+                {
+                }
+            }
+
             Console.ReadKey();
+        }
+
+        public static void InOrder()
+        {
+            Console.WriteLine("第一批订单入列");
+            for (int i = 0; i < 100; i++)
+            {
+                quee.Enqueue($"编号：{i}入列成功");
+            }
+
+            Console.WriteLine("我在入列");
         }
     }
 

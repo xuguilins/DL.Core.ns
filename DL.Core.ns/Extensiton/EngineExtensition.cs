@@ -17,6 +17,12 @@ namespace DL.Core.ns.Extensiton
     {
         private static ILogger logger = LogManager.GetLogger();
 
+        /// <summary>
+        /// 包含EF上下文
+        /// </summary>
+        /// <typeparam name="TDbContext">EF上下文</typeparam>
+        /// <param name="services"></param>
+        /// <returns></returns>
         public static IServiceCollection AddPack<TDbContext>(this IServiceCollection services) where TDbContext : DbContext
         {
             StringBuilder sb = new StringBuilder();
@@ -29,6 +35,34 @@ namespace DL.Core.ns.Extensiton
             service.AddEnginePack(services);
             //上下文注入
             services.AddDbContext<TDbContext>();
+            //服务构建
+            IServiceProvider provider = services.BuildServiceProvider();
+            //服务集合器设置
+            ServiceLocator.Instance.SetServiceCollection(services);
+            //服务构建器设置
+            ServiceLocator.Instance.SetProvider(provider);
+            watch.Stop();
+            sb.Append($"DL框架引擎初始化完成\r\n");
+            sb.Append($"总共花费:{watch.ElapsedMilliseconds}毫秒");
+            logger.Info(sb.ToString());
+            return services;
+        }
+
+        /// <summary>
+        ///不包含数据库上下文
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddPack(this IServiceCollection services)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("DL框架引擎初始化...\r\n");
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
+            IDLEnginePack service = new DLEnginePack();
+            services.AddService();
+            //模块注入
+            service.AddEnginePack(services);
             //服务构建
             IServiceProvider provider = services.BuildServiceProvider();
             //服务集合器设置
