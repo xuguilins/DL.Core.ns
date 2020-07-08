@@ -10,6 +10,7 @@ using DL.Core.ns.Finder;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using Microsoft.Extensions.Caching.Memory;
+using DL.Core.ns.EFCore;
 
 namespace DL.Core.ns.Extensiton
 {
@@ -35,6 +36,7 @@ namespace DL.Core.ns.Extensiton
             service.AddEnginePack(services);
             //上下文注入
             services.AddDbContext<TDbContext>();
+            services.AddScoped<IUnitOfWork, UnitOfWork<TDbContext>>();
             //服务构建
             IServiceProvider provider = services.BuildServiceProvider();
             //服务集合器设置
@@ -81,6 +83,7 @@ namespace DL.Core.ns.Extensiton
             //添加缓存
             services.AddMemoryCache();
             services.AddScoped<IMemoryCache, MemoryCache>();
+
             return services;
         }
     }
