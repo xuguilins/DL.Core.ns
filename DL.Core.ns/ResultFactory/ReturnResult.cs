@@ -12,10 +12,16 @@ namespace DL.Core.ns.ResultFactory
 
         public ReturnResult(ReturnResultCode code, T data = null) : this(code, data, null)
         {
+            Code = code;
+            Data = data;
+            Message = string.Empty;
         }
 
         public ReturnResult(ReturnResultCode code, T data, string message = null)
         {
+            Code = code;
+            Data = data;
+            Message = message;
         }
 
         /// <summary>
