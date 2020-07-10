@@ -15,6 +15,7 @@ namespace DL.Core.ns.CorePack
             services.AddScoped<IMySqlDbContext, MySqlDbContext>();
             services.AddScoped<ISqlServerDbContext, SqlServerDbContext>();
             services.AddScoped<IOracleDbContext, OracleDbContext>();
+            services.AddScoped<IDataBaseDbContextManager, DataBaseDbContextManager>();
             return services;
         }
     }

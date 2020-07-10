@@ -63,6 +63,7 @@ namespace DL.Core.ns.Data
                     _dbContext = new OracleDbContext();
                     break;
             }
+
             _typecontexts.TryAdd(type, _dbContext);
             return _dbContext;
         }
