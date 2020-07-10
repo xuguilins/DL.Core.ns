@@ -30,7 +30,8 @@ namespace 徐测试控制台
         private static void Main(string[] args)
         {
             IServiceCollection services = new ServiceCollection();
-            services.AddScoped<IUserSerivce, UserSerivce>();
+            services.AddPack();
+            var sevice = ServiceLocator.Instance.GetService<ISqlServerDbContext>();
 
             Console.ReadKey();
         }

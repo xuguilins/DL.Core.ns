@@ -39,7 +39,7 @@ namespace DL.Core.ns.Logging
                     var config = ConfigerManager.Instance.getCofiger();
                     if (config != null)
                     {
-                        if (string.IsNullOrWhiteSpace(config.CodeConfig.LogPath))
+                        if (string.IsNullOrWhiteSpace(config?.CodeConfig?.LogPath))
                         {
                             logDirPath = AppDomain.CurrentDomain.BaseDirectory;
                         }

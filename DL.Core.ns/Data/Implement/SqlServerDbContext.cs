@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Text;
 using DL.Core.ns.Configer;
 using DL.Core.ns.Logging;
+using DL.Core.ns.Extensiton;
 
 namespace DL.Core.ns.Data
 {
@@ -23,6 +24,7 @@ namespace DL.Core.ns.Data
         public SqlServerDbContext()
         {
             _connectString = ConfigerManager.Instance.getCofiger()?.ConnectionString?.SqlDefault;
+            _connectString.ChekcNotNull();
             _sqlConnection = new SqlConnection(_connectString);
             _sqlConnection.Open();
         }
