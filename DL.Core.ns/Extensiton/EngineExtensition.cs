@@ -19,6 +19,11 @@ namespace DL.Core.ns.Extensiton
         private static ILogger logger = LogManager.GetLogger();
 
         /// <summary>
+        /// 是否设置自动迁移
+        /// </summary>
+        private static bool IsAutoMigration { get; set; }
+
+        /// <summary>
         /// 包含EF上下文
         /// </summary>
         /// <typeparam name="TDbContext">EF上下文</typeparam>
@@ -43,6 +48,12 @@ namespace DL.Core.ns.Extensiton
             ServiceLocator.Instance.SetServiceCollection(services);
             //服务构建器设置
             ServiceLocator.Instance.SetProvider(provider);
+            sb.Append($"准备检查是否开启自动迁移...==={IsAutoMigration}、\r\n");
+            if (IsAutoMigration)
+            {
+                var result = AutoMigration(typeof(TDbContext));
+                sb.Append(result + "\r\n");
+            }
             watch.Stop();
             sb.Append($"DL框架引擎初始化完成\r\n");
             sb.Append($"总共花费:{watch.ElapsedMilliseconds}毫秒");
@@ -85,6 +96,35 @@ namespace DL.Core.ns.Extensiton
             services.AddScoped<IMemoryCache, MemoryCache>();
 
             return services;
+        }
+
+        /// <summary>
+        /// 启用自动迁移
+        /// 需要在 AddPack<TDbContext> 之前
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="flag"></param>
+        public static void EnableMigration(this IServiceCollection services, bool flag = false)
+        {
+            IsAutoMigration = flag;
+        }
+
+        /// <summary>
+        /// 自动迁移
+        /// </summary>
+        /// <param name="context"></param>
+        private static string AutoMigration(Type context)
+        {
+            var dbcontext = Activator.CreateInstance(context) as DbContext;
+            if (dbcontext.Database.GetPendingMigrations().Any())
+            {
+                dbcontext.Database.Migrate();
+                return "启动迁移完毕";
+            }
+            else
+            {
+                return "未检测到含有启动迁移的文件,请尝试允许 Add-Migration 指令";
+            }
         }
     }
 }

@@ -29,9 +29,16 @@ namespace 徐测试控制台
 
         private static void Main(string[] args)
         {
+            IServiceCollection services = new ServiceCollection();
+            services.EnableMigration(true);
+            EngineExtensition.IsAutoMigration = true;
             var da = UserType.Student.GetEnumModel();
             Console.ReadKey();
         }
+    }
+
+    public class MyContext : DbContext
+    {
     }
 
     public enum UserType
