@@ -30,11 +30,23 @@ namespace 徐测试控制台
         private static void Main(string[] args)
         {
             IServiceCollection services = new ServiceCollection();
-            services.EnableMigration(true);
-            EngineExtensition.IsAutoMigration = true;
-            var da = UserType.Student.GetEnumModel();
+            services.AddScoped<IUserSerivce, UserSerivce>();
+
             Console.ReadKey();
         }
+    }
+
+    public interface IUserSerivce
+    {
+    }
+
+    public class UserSerivce : BaseSerivce, IUserSerivce
+    {
+    }
+
+    public class BaseSerivce
+    {
+        public int MyProperty { get; set; }
     }
 
     public class MyContext : DbContext

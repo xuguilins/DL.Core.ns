@@ -99,11 +99,10 @@ namespace DL.Core.ns.Extensiton
         }
 
         /// <summary>
-        /// 启用自动迁移
-        /// 需要在 AddPack<TDbContext> 之前
+        /// 启用自动迁移,需要在 AddPack<TDbContext> 之前
         /// </summary>
         /// <param name="services"></param>
-        /// <param name="flag"></param>
+        /// <param name="flag">是否启用启动迁移，默认false</param>
         public static void EnableMigration(this IServiceCollection services, bool flag = false)
         {
             IsAutoMigration = flag;
