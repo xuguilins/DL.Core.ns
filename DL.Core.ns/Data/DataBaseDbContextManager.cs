@@ -11,6 +11,7 @@ namespace DL.Core.ns.Data
     public class DataBaseDbContextManager : IDataBaseDbContextManager
     {
         private ConcurrentDictionary<Type, IDataBaseContext> _contexts = new ConcurrentDictionary<Type, IDataBaseContext>();
+        private ConcurrentDictionary<DataBaseType, IDataBaseContext> _typecontexts = new ConcurrentDictionary<DataBaseType, IDataBaseContext>();
 
         public IDataBaseContext GetDataBaseDbContext(Type type)
         {
@@ -36,6 +37,34 @@ namespace DL.Core.ns.Data
             }
             _contexts.TryAdd(type, dbContext);
             return dbContext;
+        }
+
+        /// <summary>
+        /// 获取指定的数据库上下文
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public IDataBaseContext GetDataBaseDbContext(DataBaseType type)
+        {
+            IDataBaseContext _dbContext = null;
+            if (_typecontexts.ContainsKey(type))
+                return _typecontexts[type];
+            switch (type)
+            {
+                case DataBaseType.SqlServer:
+                    _dbContext = new SqlServerDbContext();
+                    break;
+
+                case DataBaseType.MySql:
+                    _dbContext = new MySqlDbContext();
+                    break;
+
+                case DataBaseType.Oracle:
+                    _dbContext = new OracleDbContext();
+                    break;
+            }
+            _typecontexts.TryAdd(type, _dbContext);
+            return _dbContext;
         }
     }
 }

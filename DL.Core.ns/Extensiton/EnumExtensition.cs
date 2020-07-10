@@ -1,52 +1,15 @@
-﻿using DL.Core.ns.Configer;
-using System;
-using System.Linq;
-using DL.Core.ns.Data;
-using DL.Core.ns.Table;
-using System.Data;
+﻿using System;
 using System.Collections.Generic;
-using DL.Core.ns.Entity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using DL.Core.ns.Extensiton;
-using DL.Core.ns.EFCore;
-using DL.Core.ns.Dependency;
-using DL.Core.ns.Locator;
-using DL.Core.ns.Cacheing;
-using System.Threading;
-using Microsoft.Extensions.Caching.Memory;
-using System.Reflection;
 using System.ComponentModel;
-using System.Threading.Tasks;
-using System.Collections.Concurrent;
-using System.Linq.Expressions;
+using System.Reflection;
+using System.Text;
 
-namespace 徐测试控制台
+namespace DL.Core.ns.Extensiton
 {
-    internal class Program
-    {
-        private static ConcurrentQueue<string> quee = new ConcurrentQueue<string>();
-
-        private static void Main(string[] args)
-        {
-            var da = UserType.Student.GetEnumModel();
-            Console.ReadKey();
-        }
-    }
-
-    public enum UserType
-    {
-        [Description("学生")]
-        Student = 0,
-
-        [Description("老师")]
-        Teacher = 1,
-
-        [Description("老板")]
-        Boss = 2
-    }
-
-    public static class EnumeExtensiton
+    /// <summary>
+    /// 针对枚举的扩展
+    /// </summary>
+    public static class EnumExtensiton
     {
         /// <summary>
         /// 获取当前枚举值的描述
@@ -118,69 +81,5 @@ namespace 徐测试控制台
         public string EnumeText { get; set; }
         public int EnumeValue { get; set; }
         public string EnumeDesc { get; set; }
-    }
-}
-
-public class RequestDto
-{
-    /// <summary>
-    /// 请假人
-    /// </summary>
-    public string UserName { get; set; }
-
-    /// <summary>
-    /// 请假天数
-    /// </summary>
-    public int Day { get; set; }
-}
-
-/// <summary>
-/// 请假处理者
-/// </summary>
-public abstract class Approve
-{
-    public Approve NextStep;
-
-    public abstract void HanderApprove(RequestDto dto);
-}
-
-public class Mannger : Approve
-{
-    public override void HanderApprove(RequestDto dto)
-    {
-        if (dto.Day >= 7 && dto.Day < 15)
-        {
-            Console.WriteLine($"我是主管,我可以批{dto.UserName}请的{dto.Day}天假期");
-        }
-        else if (NextStep != null)
-        {
-            NextStep.HanderApprove(dto);
-        }
-    }
-}
-
-public class Teacher : Approve
-{
-    public override void HanderApprove(RequestDto dto)
-    {
-        if (dto.Day < 7)
-        {
-            Console.WriteLine($"我是老师,我可以批{dto.UserName}请的{dto.Day}天假期");
-        }
-        else if (NextStep != null)
-        {
-            NextStep.HanderApprove(dto);
-        }
-    }
-}
-
-public class Ceo : Approve
-{
-    public override void HanderApprove(RequestDto dto)
-    {
-        if (dto.Day >= 15)
-        {
-            Console.WriteLine($"我是CEO,我可以批{dto.UserName}请的{dto.Day}天假期");
-        }
     }
 }

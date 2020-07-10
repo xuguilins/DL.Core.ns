@@ -15,5 +15,12 @@ namespace DL.Core.ns.Data
         /// <param name="type"></param>
         /// <returns></returns>
         IDataBaseContext GetDataBaseDbContext(Type type);
+
+        /// <summary>
+        /// 获取指定的数据库上下文
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        IDataBaseContext GetDataBaseDbContext(DataBaseType type);
     }
 }
