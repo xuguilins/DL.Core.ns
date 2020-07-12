@@ -34,8 +34,11 @@ namespace 徐测试控制台
             IServiceCollection services = new ServiceCollection();
             services.EnableMigration(true);
             services.AddPack<MyContext>();
-            //   var sevice = ServiceLocator.Instance.GetService<ISqlServerDbContext>();
-
+            var service = ServiceLocator.Instance.GetService<ITestUserInfoService>();
+            var uniservice = ServiceLocator.Instance.GetService<IUnitOfWork>();
+            uniservice.BeginTransaction = true;
+            service.AddEntity(new TestUserInfo { UserName = "余温" });
+            uniservice.CommitTransaction();
             Console.ReadKey();
         }
     }
@@ -65,6 +68,18 @@ namespace 徐测试控制台
         public void Configure(EntityTypeBuilder<TestUserInfo> builder)
         {
             builder.ToTable("TestUserInfO").HasKey(P => P.Id);
+        }
+    }
+
+    public interface ITestUserInfoService : IRepository<TestUserInfo>, IScopeDependcy
+    {
+    }
+
+    //[AttbuiteDependency(ServiceLifetime.Scoped)]
+    public class TestUserInfoService : Repository<TestUserInfo>, ITestUserInfoService
+    {
+        public TestUserInfoService(MyContext context) : base(context)
+        {
         }
     }
 }

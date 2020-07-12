@@ -76,5 +76,11 @@ namespace DL.Core.ns.Configer
         /// Code日志存放路径
         /// </summary>
         public string LogPath { get; set; }
+
+        /// <summary>
+        /// 启用自动迁移,此配置不生效
+        /// 默认为：false
+        /// </summary>
+        public bool Enable { get; set; }
     }
 }
