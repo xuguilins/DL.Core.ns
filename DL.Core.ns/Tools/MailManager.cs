@@ -84,7 +84,15 @@ namespace DL.Core.ns.Tools
             {
                 SmtpClient smtp = new SmtpClient();
                 var config = Configer.ConfigerManager.Instance.getCofiger()?.CodeConfig;
-                smtp.Port = string.IsNullOrWhiteSpace(config.StmpPort) ? 587 : Convert.ToInt32(config.StmpPort);
+                if (useSsl)
+                {
+                    smtp.Port = string.IsNullOrWhiteSpace(config.StmpPort) ? 587 : Convert.ToInt32(config.StmpPort);
+                }
+                else
+                {
+                    smtp.Port = string.IsNullOrWhiteSpace(config.StmpPort) ? 25 : Convert.ToInt32(config.StmpPort);
+                }
+
                 smtp.EnableSsl = useSsl;
                 if (string.IsNullOrWhiteSpace(config.SendUser) && string.IsNullOrWhiteSpace(config.SendPass))
                 {
