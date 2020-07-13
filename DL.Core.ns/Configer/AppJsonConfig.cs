@@ -82,5 +82,25 @@ namespace DL.Core.ns.Configer
         /// 默认为：false
         /// </summary>
         public bool Enable { get; set; }
+
+        /// <summary>
+        /// 邮件发送服务器
+        /// </summary>
+        public string StmpHost { get; set; }
+
+        /// <summary>
+        /// 邮件发送端口
+        /// </summary>
+        public string StmpPort { get; set; }
+
+        /// <summary>
+        /// 发件人
+        /// </summary>
+        public string SendUser { get; set; }
+
+        /// <summary>
+        /// 授权码
+        /// </summary>
+        public string SendPass { get; set; }
     }
 }
