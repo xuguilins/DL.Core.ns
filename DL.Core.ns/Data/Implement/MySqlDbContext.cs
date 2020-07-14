@@ -23,9 +23,6 @@ namespace DL.Core.ns.Data
 
         public MySqlDbContext()
         {
-            connectionStr = ConfigerManager.Instance.getCofiger()?.ConnectionString?.MySqlDefault;
-            _connection = new MySqlConnection(connectionStr);
-            _connection.Open();
         }
 
         public override DataBaseType Type => DataBaseType.MySql;
@@ -184,6 +181,18 @@ namespace DL.Core.ns.Data
                     _connection.Dispose();
                 }
             }
+        }
+
+        /// <summary>
+        /// 创建数据连接
+        /// </summary>
+        /// <param name="connectionString"></param>
+        /// <returns></returns>
+        public MySqlConnection CreateDbConnection(string connectionString)
+        {
+            _connection = new MySqlConnection(connectionString);
+            _connection.Open();
+            return _connection;
         }
 
         public bool SaveTransactionChange()

@@ -23,10 +23,6 @@ namespace DL.Core.ns.Data
 
         public SqlServerDbContext()
         {
-            _connectString = ConfigerManager.Instance.getCofiger()?.ConnectionString?.SqlDefault;
-            _connectString.ChekcNotNull();
-            _sqlConnection = new SqlConnection(_connectString);
-            _sqlConnection.Open();
         }
 
         public bool BeginTransation
@@ -232,6 +228,18 @@ namespace DL.Core.ns.Data
                     _sqlConnection.Dispose();
                 }
             }
+        }
+
+        /// <summary>
+        /// 创建数据连接
+        /// </summary>
+        /// <param name="connectionString"></param>
+        /// <returns></returns>
+        public SqlConnection CreateDbConnection(string connectionString)
+        {
+            _sqlConnection = new SqlConnection(connectionString);
+            _sqlConnection.Open();
+            return _sqlConnection;
         }
 
         private IDbConnection DbContext()

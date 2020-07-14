@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Text;
 
 namespace DL.Core.ns.Data
@@ -19,5 +20,12 @@ namespace DL.Core.ns.Data
         /// </summary>
         /// <returns></returns>
         bool SaveTransactionChange();
+
+        /// <summary>
+        /// 创建数据连接
+        /// </summary>
+        /// <param name="connectionString">数据库连接字符串</param>
+        /// <returns></returns>
+        SqlConnection CreateDbConnection(string connectionString);
     }
 }
