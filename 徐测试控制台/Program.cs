@@ -31,14 +31,8 @@ namespace 徐测试控制台
 
         private static void Main(string[] args)
         {
-            IServiceCollection services = new ServiceCollection();
-            services.EnableMigration(true);
-            services.AddPack<MyContext>();
-            var service = ServiceLocator.Instance.GetService<ITestUserInfoService>();
-            var uniservice = ServiceLocator.Instance.GetService<IUnitOfWork>();
-            uniservice.BeginTransaction = true;
-            service.AddEntity(new TestUserInfo { UserName = "余温" });
-            uniservice.CommitTransaction();
+            DL.Core.ns.Tools.MailManager.SendMail("1352249378@qq.com", "yuyuyu992@qq.com", "DL测试邮件", "测试测试");
+
             Console.ReadKey();
         }
     }

@@ -54,7 +54,7 @@ namespace DL.Core.ns.Tools
         /// <param name="ishtml">是否为html</param>
         /// <param name="useSsl">采用ssl</param>
         /// <returns></returns>
-        public static ReturnResult SendMail(string fromUser, string toUser, string subTitle, string body, Dictionary<string, string> ccPairs = null, bool ishtml = false, bool useSsl = false)
+        public static ReturnResult SendMail(string fromUser, string toUser, string subTitle, string body, Dictionary<string, string> ccPairs = null, bool ishtml = false, bool useSsl = true)
         {
             return Send(fromUser, toUser, subTitle, body, ccPairs, ishtml, useSsl);
         }
@@ -73,35 +73,38 @@ namespace DL.Core.ns.Tools
         /// <param name="useSsl">采用ssl</param>
         /// <returns></returns>
         public static ReturnResult SendMail(string fromUser, string toUser, string subTitle, string body,
-            string senduser, string sendpass, Dictionary<string, string> ccPairs = null, bool ishtml = false, bool useSsl = false)
+            string senduser, string sendpass, Dictionary<string, string> ccPairs = null, bool ishtml = false, bool useSsl = true)
         {
             return Send(fromUser, toUser, subTitle, body, ccPairs, ishtml, useSsl, senduser, sendpass);
         }
 
-        private static ReturnResult Send(string fromUser, string toUser, string subTitle, string body, Dictionary<string, string> ccPairs = null, bool ishtml = false, bool useSsl = false, string senduser = null, string sendpass = null)
+        private static ReturnResult Send(string fromUser, string toUser, string subTitle, string body, Dictionary<string, string> ccPairs = null, bool ishtml = false, bool useSsl = true, string senduser = null, string sendpass = null)
         {
             try
             {
                 SmtpClient smtp = new SmtpClient();
                 var config = Configer.ConfigerManager.Instance.getCofiger()?.CodeConfig;
-                if (useSsl)
+                if (config != null)
                 {
-                    smtp.Port = string.IsNullOrWhiteSpace(config.StmpPort) ? 587 : Convert.ToInt32(config.StmpPort);
+                    smtp.Host = config.StmpHost;
+                    if (useSsl)
+                    {
+                        smtp.Port = string.IsNullOrWhiteSpace(config.StmpPort) ? 587 : Convert.ToInt32(config.StmpPort);
+                    }
+                    else
+                    {
+                        smtp.Port = string.IsNullOrWhiteSpace(config.StmpPort) ? 25 : Convert.ToInt32(config.StmpPort);
+                    }
+                    if (string.IsNullOrWhiteSpace(config.SendUser) && string.IsNullOrWhiteSpace(config.SendPass))
+                    {
+                        smtp.Credentials = new NetworkCredential(senduser, sendpass);
+                    }
+                    else
+                    {
+                        smtp.Credentials = new NetworkCredential(config.SendUser, config.SendPass);
+                    }
                 }
-                else
-                {
-                    smtp.Port = string.IsNullOrWhiteSpace(config.StmpPort) ? 25 : Convert.ToInt32(config.StmpPort);
-                }
-
                 smtp.EnableSsl = useSsl;
-                if (string.IsNullOrWhiteSpace(config.SendUser) && string.IsNullOrWhiteSpace(config.SendPass))
-                {
-                    smtp.Credentials = new NetworkCredential(senduser, sendpass);
-                }
-                else
-                {
-                    smtp.Credentials = new NetworkCredential(config.SendUser, config.SendPass);
-                }
                 MailMessage message = new MailMessage();
                 if (!string.IsNullOrWhiteSpace(toUser))
                 {
