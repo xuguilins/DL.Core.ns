@@ -72,14 +72,6 @@ namespace DL.Core.ns.Data
                 logger.Error($"执行MySql发生异常,command：ExecuteNonQuery\r\nsqlText:{sql}\r\nexMes:{ex.Message}");
                 throw;
             }
-            finally
-            {
-                if (_connection != null && !_isBeginTranscation)
-                {
-                    _connection.Close();
-                    _connection.Dispose();
-                }
-            }
         }
 
         public override object ExecuteScalar(string sql, CommandType type, params DbParameter[] parameter)
@@ -102,14 +94,6 @@ namespace DL.Core.ns.Data
             {
                 logger.Error($"执行MySql发生异常,command：ExecuteScalar，sqlText:{sql}，exMes:{ex.Message}");
                 throw;
-            }
-            finally
-            {
-                if (_connection != null && !_isBeginTranscation)
-                {
-                    _connection.Close();
-                    _connection.Dispose();
-                }
             }
         }
 
@@ -138,14 +122,6 @@ namespace DL.Core.ns.Data
                 logger.Error($"执行MySql发生异常,command：GetDataSet，sqlText:{sql}，exMes:{ex.Message}");
                 throw;
             }
-            finally
-            {
-                if (_connection != null && !_isBeginTranscation)
-                {
-                    _connection.Close();
-                    _connection.Dispose();
-                }
-            }
         }
 
         public override DataTable GetDataTable(string sql, CommandType type, params DbParameter[] parameter)
@@ -172,14 +148,6 @@ namespace DL.Core.ns.Data
             {
                 logger.Error($"执行MySql发生异常,command：DataTable，sqlText:{sql}，exMes:{ex.Message}");
                 throw;
-            }
-            finally
-            {
-                if (_connection != null && !_isBeginTranscation)
-                {
-                    _connection.Close();
-                    _connection.Dispose();
-                }
             }
         }
 
@@ -217,19 +185,6 @@ namespace DL.Core.ns.Data
             catch (Exception ex)
             {
                 throw;
-            }
-            finally
-            {
-                if (_transaction != null)
-                {
-                    _transaction.Dispose();
-                }
-
-                if (_connection != null)
-                {
-                    _connection.Close();
-                    _connection.Dispose();
-                }
             }
         }
     }

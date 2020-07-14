@@ -74,14 +74,6 @@ namespace DL.Core.ns.Data
                 logger.Error($"执行SqlServer发生异常,command:ExecuteNonQuery,sqlText:{sql},exMes:{ex.Message} ");
                 throw;
             }
-            finally
-            {
-                if (_sqlConnection != null && !_beginTransaction)
-                {
-                    _sqlConnection.Close();
-                    _sqlConnection.Dispose();
-                }
-            }
         }
 
         public override object ExecuteScalar(string sql, CommandType type, params DbParameter[] parameter)
@@ -106,14 +98,6 @@ namespace DL.Core.ns.Data
             {
                 logger.Error($"执行SqlServer发生异常,command:ExecuteScalar,sqlText:{sql},exMes:{ex.Message} ");
                 throw;
-            }
-            finally
-            {
-                if (_sqlConnection != null && !_beginTransaction)
-                {
-                    _sqlConnection.Close();
-                    _sqlConnection.Dispose();
-                }
             }
         }
 
@@ -145,14 +129,6 @@ namespace DL.Core.ns.Data
                 logger.Error($"执行SqlServer发生异常,command:GetDataSet,sqlText:{sql},exMes:{ex.Message} ");
                 throw;
             }
-            finally
-            {
-                if (_sqlConnection != null && !_beginTransaction)
-                {
-                    _sqlConnection.Close();
-                    _sqlConnection.Dispose();
-                }
-            }
         }
 
         public override DataTable GetDataTable(string sql, CommandType type, params DbParameter[] parameter)
@@ -183,14 +159,6 @@ namespace DL.Core.ns.Data
                 logger.Error($"执行SqlServer发生异常,command:GetDataTable,sqlText:{sql},exMes:{ex.Message} ");
                 throw;
             }
-            finally
-            {
-                if (_sqlConnection != null && !_beginTransaction)
-                {
-                    _sqlConnection.Close();
-                    _sqlConnection.Dispose();
-                }
-            }
         }
 
         public bool SaveTransactionChange()
@@ -216,18 +184,6 @@ namespace DL.Core.ns.Data
             {
                 throw;
             }
-            finally
-            {
-                if (_transaction != null)
-                {
-                    _transaction.Dispose();
-                }
-                if (_sqlConnection != null)
-                {
-                    _sqlConnection.Close();
-                    _sqlConnection.Dispose();
-                }
-            }
         }
 
         /// <summary>
@@ -237,8 +193,12 @@ namespace DL.Core.ns.Data
         /// <returns></returns>
         public SqlConnection CreateDbConnection(string connectionString)
         {
-            _sqlConnection = new SqlConnection(connectionString);
-            _sqlConnection.Open();
+            if (_sqlConnection == null)
+            {
+                _sqlConnection = new SqlConnection(connectionString);
+                _sqlConnection.Open();
+            }
+
             return _sqlConnection;
         }
 
