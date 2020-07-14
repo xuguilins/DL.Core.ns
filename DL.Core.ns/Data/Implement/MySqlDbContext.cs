@@ -7,6 +7,7 @@ using MySql.Data.MySqlClient;
 using MySql.Data.Common;
 using DL.Core.ns.Configer;
 using DL.Core.ns.Logging;
+using System.Collections.Concurrent;
 
 namespace DL.Core.ns.Data
 {
@@ -15,11 +16,12 @@ namespace DL.Core.ns.Data
     /// </summary>
     public class MySqlDbContext : DataBaseContext, IMySqlDbContext
     {
-        private MySqlConnection _connection = null;
+        private static MySqlConnection _connection = null;
         private string connectionStr = string.Empty;
-        private MySqlTransaction _transaction = null;
+        private static MySqlTransaction _transaction = null;
         private bool _isBeginTranscation = false;
-        private ILogger logger = LogManager.GetLogger<MySqlDbContext>();
+        private static ILogger logger = LogManager.GetLogger<MySqlDbContext>();
+        private static ConcurrentDictionary<string, MySqlConnection> pairs = new ConcurrentDictionary<string, MySqlConnection>();
 
         public MySqlDbContext()
         {
@@ -37,7 +39,13 @@ namespace DL.Core.ns.Data
             set
             {
                 if (value)
-                    _transaction = _connection.BeginTransaction();
+                {
+                    if (_transaction == null)
+                    {
+                        _transaction = _connection.BeginTransaction();
+                    }
+                }
+
                 _isBeginTranscation = value;
             }
         }
@@ -158,9 +166,17 @@ namespace DL.Core.ns.Data
         /// <returns></returns>
         public MySqlConnection CreateDbConnection(string connectionString)
         {
-            _connection = new MySqlConnection(connectionString);
-            _connection.Open();
-            return _connection;
+            if (pairs.ContainsKey(connectionString))
+            {
+                return pairs[connectionString];
+            }
+            else
+            {
+                _connection = new MySqlConnection(connectionString);
+                _connection.Open();
+                pairs.TryAdd(connectionString, _connection);
+                return _connection;
+            }
         }
 
         public bool SaveTransactionChange()

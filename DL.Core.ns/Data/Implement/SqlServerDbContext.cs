@@ -7,6 +7,7 @@ using System.Text;
 using DL.Core.ns.Configer;
 using DL.Core.ns.Logging;
 using DL.Core.ns.Extensiton;
+using System.Collections.Concurrent;
 
 namespace DL.Core.ns.Data
 {
@@ -17,9 +18,10 @@ namespace DL.Core.ns.Data
     {
         private bool _beginTransaction = false;
         private string _connectString = string.Empty;
-        private SqlTransaction _transaction = null;
-        private SqlConnection _sqlConnection = null;
-        private ILogger logger = LogManager.GetLogger<SqlServerDbContext>();
+        private static SqlTransaction _transaction = null;
+        private static SqlConnection _sqlConnection = null;
+        private static ILogger logger = LogManager.GetLogger<SqlServerDbContext>();
+        private static ConcurrentDictionary<string, SqlConnection> pairs = new ConcurrentDictionary<string, SqlConnection>();
 
         public SqlServerDbContext()
         {
@@ -34,7 +36,10 @@ namespace DL.Core.ns.Data
             set
             {
                 if (value)
-                    _transaction = _sqlConnection.BeginTransaction();
+                {
+                    if (_transaction == null)
+                        _transaction = _sqlConnection.BeginTransaction();
+                }
                 _beginTransaction = value;
             }
         }
@@ -193,13 +198,17 @@ namespace DL.Core.ns.Data
         /// <returns></returns>
         public SqlConnection CreateDbConnection(string connectionString)
         {
-            if (_sqlConnection == null)
+            if (pairs.ContainsKey(connectionString))
+            {
+                return pairs[connectionString];
+            }
+            else
             {
                 _sqlConnection = new SqlConnection(connectionString);
                 _sqlConnection.Open();
+                pairs.TryAdd(connectionString, _sqlConnection);
+                return _sqlConnection;
             }
-
-            return _sqlConnection;
         }
 
         private IDbConnection DbContext()

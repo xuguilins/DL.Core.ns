@@ -38,7 +38,12 @@ namespace 徐测试控制台
             service.CreateDbConnection("Data Source=.;Initial Catalog=ChatEngine;User ID=sa;Password=0103");
             var sql = string.Format("INSERT INTO ChatUser(Id,CreatedTime,UserId,TargetId,TargetName,ConnectionId,IsRead)VALUES('{0}','{1}','{2}','{3}','{4}','{5}','{6}')", StrExtensition.GetGuid(), StrExtensition.GetDateTime(), "ds", "sdf", "sdf", "ds", "2");
             service.ExecuteNonQuery(sql, CommandType.Text);
+            //  service.CreateDbConnection("Data Source=.;Initial Catalog=HospitalManager;User ID=sa;Password=0103");
+            sql = string.Format("INSERT INTO ChatUser(Id,CreatedTime,UserId,TargetId,TargetName,ConnectionId,IsRead)VALUES('{0}','{1}','{2}','{3}','{4}','{5}','{6}')", StrExtensition.GetGuid(), StrExtensition.GetDateTime(), "ds", "sdf", "sdf", "ds", "2");
+            service.ExecuteNonQuery(sql, CommandType.Text);
+
             service.CreateDbConnection("Data Source=.;Initial Catalog=ChatEngine;User ID=sa;Password=0103");
+
             sql = string.Format("INSERT INTO ChatUser(Id,CreatedTime,UserId,TargetId,TargetName,ConnectionId,IsRead)VALUES('{0}','{1}','{2}','{3}','{4}','{5}','{6}')", StrExtensition.GetGuid(), StrExtensition.GetDateTime(), "ds", "sdf", "sdf", "ds", "2");
             service.ExecuteNonQuery(sql, CommandType.Text);
             service.Dispose();
