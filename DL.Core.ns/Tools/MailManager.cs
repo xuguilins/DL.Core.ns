@@ -70,7 +70,7 @@ namespace DL.Core.ns.Tools
         /// <param name="ishtml">是否为html</param>
         /// <param name="sendpass">邮箱授权码</param>
         /// <param name="senduser">发件人邮箱,单个邮箱！</param>
-        /// <param name="useSsl">采用ssl</param>
+        /// <param name="useSsl">采用ssl默认为true</param>
         /// <returns></returns>
         public static ReturnResult SendMail(string fromUser, string toUser, string subTitle, string body,
             string senduser, string sendpass, Dictionary<string, string> ccPairs = null, bool ishtml = false, bool useSsl = true)
