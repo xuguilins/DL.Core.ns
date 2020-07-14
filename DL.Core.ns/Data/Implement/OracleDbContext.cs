@@ -10,7 +10,7 @@ namespace DL.Core.ns.Data
 {
     /// <summary>
     /// 操作Oracle数据库
-    /// 暂不支持！
+    /// 暂不支持，无用
     /// </summary>
     public class OracleDbContext : DataBaseContext, IOracleDbContext
     {
