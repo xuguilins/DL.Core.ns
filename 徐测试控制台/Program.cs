@@ -22,6 +22,7 @@ using System.Collections.Concurrent;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore.SqlServer;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using DL.Core.ns.Web;
 
 namespace 徐测试控制台
 {
@@ -32,22 +33,11 @@ namespace 徐测试控制台
         private static void Main(string[] args)
         {
             IServiceCollection services = new ServiceCollection();
-            services.AddScoped<ISqlServerDbContext, SqlServerDbContext>();
-            IServiceProvider provider = services.BuildServiceProvider();
-            var service = provider.GetService<ISqlServerDbContext>();
-            service.CreateDbConnection("Data Source=.;Initial Catalog=ChatEngine;User ID=sa;Password=0103");
-            var sql = string.Format("INSERT INTO ChatUser(Id,CreatedTime,UserId,TargetId,TargetName,ConnectionId,IsRead)VALUES('{0}','{1}','{2}','{3}','{4}','{5}','{6}')", StrExtensition.GetGuid(), StrExtensition.GetDateTime(), "ds", "sdf", "sdf", "ds", "2");
-            service.ExecuteNonQuery(sql, CommandType.Text);
-            //  service.CreateDbConnection("Data Source=.;Initial Catalog=HospitalManager;User ID=sa;Password=0103");
-            sql = string.Format("INSERT INTO ChatUser(Id,CreatedTime,UserId,TargetId,TargetName,ConnectionId,IsRead)VALUES('{0}','{1}','{2}','{3}','{4}','{5}','{6}')", StrExtensition.GetGuid(), StrExtensition.GetDateTime(), "ds", "sdf", "sdf", "ds", "2");
-            service.ExecuteNonQuery(sql, CommandType.Text);
-
-            service.CreateDbConnection("Data Source=.;Initial Catalog=ChatEngine;User ID=sa;Password=0103");
-
-            sql = string.Format("INSERT INTO ChatUser(Id,CreatedTime,UserId,TargetId,TargetName,ConnectionId,IsRead)VALUES('{0}','{1}','{2}','{3}','{4}','{5}','{6}')", StrExtensition.GetGuid(), StrExtensition.GetDateTime(), "ds", "sdf", "sdf", "ds", "2");
-            service.ExecuteNonQuery(sql, CommandType.Text);
-            service.Dispose();
-            // service.CreateDbConnection("Data Source=.;Initial Catalog=ChatEngine;User ID=sa;Password=0103");
+            // services.AddPack();
+            //IHttpServerClient service = new HttpServerClient();
+            //var service = ServiceLocator.Instance.GetService<IHttpServerClient>();
+            //  service.HttpClient.BaseAddress = new Uri("http://dev.iduo.cc:4501");
+            // var data = service.GetApi("/api/ToEngine/GetDetailUser?userId=iduo/xgl");
             Console.ReadKey();
         }
     }

@@ -7,9 +7,21 @@ using System.Threading.Tasks;
 
 namespace DL.Core.ns.Web
 {
+    /// <summary>
+    /// 简单请求接口,
+    /// 需开发者自主在startup注册,注册方式【services.AddHttpClient<IHttpServerClient, HttpServerClient>()】
+    /// </summary>
     public class HttpServerClient : IHttpServerClient
     {
-        private static readonly System.Net.Http.HttpClient client = new System.Net.Http.HttpClient();
+        //  private static readonly System.Net.Http.HttpClient client = new System.Net.Http.HttpClient();
+
+        public HttpClient HttpClient { get; set; }
+
+        public HttpServerClient(HttpClient httpclient)
+        {
+            httpclient.DefaultRequestHeaders.Add("Accept", "application/json");
+            HttpClient = httpclient;
+        }
 
         /// <summary>
         /// 设置token
@@ -17,7 +29,7 @@ namespace DL.Core.ns.Web
         /// <param name="token"></param>
         public void SetBearerToken(string token)
         {
-            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            HttpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
         }
 
         #region [GetAndPost-Api-Params is String]
@@ -148,7 +160,7 @@ namespace DL.Core.ns.Web
                 }
             }
             url += sb.ToString();
-            var result = await client.GetAsync(url);
+            var result = await HttpClient.GetAsync(url);
             return result;
         }
 
@@ -157,21 +169,21 @@ namespace DL.Core.ns.Web
             if (pairs != null)
             {
                 StringContent content = new StringContent(pairs.ToJson(), Encoding.UTF8, "application/json");
-                var data = await client.PostAsync(url, content);
+                var data = await HttpClient.PostAsync(url, content);
                 return await data.toTask();
             }
             else
             {
-                var data = await client.PostAsync(url, null);
+                var data = await HttpClient.PostAsync(url, null);
                 return await data.toTask();
             }
         }
 
         public void Dispose()
         {
-            if (client != null)
+            if (HttpClient != null)
             {
-                client.Dispose();
+                HttpClient.Dispose();
             }
         }
 

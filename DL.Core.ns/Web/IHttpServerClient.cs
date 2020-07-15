@@ -1,13 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using DL.Core.ns.Dependency;
 
 namespace DL.Core.ns.Web
 {
-    public interface IHttpServerClient : ITransientDependcy, IDisposable
+    /// <summary>
+    /// 简单请求接口,
+    /// 需开发者自主在startup注册,注册方式【services.AddHttpClient<IHttpServerClient, HttpServerClient>()】
+    /// </summary>
+    public interface IHttpServerClient : IDisposable
     {
+        public HttpClient HttpClient { get; set; }
+
         /// <summary>
         /// 设置token
         /// </summary>
