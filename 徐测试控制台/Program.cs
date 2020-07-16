@@ -23,6 +23,7 @@ using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore.SqlServer;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using DL.Core.ns.Web;
+using DL.Core.ns.Tools;
 
 namespace 徐测试控制台
 {
@@ -32,12 +33,9 @@ namespace 徐测试控制台
 
         private static void Main(string[] args)
         {
-            IServiceCollection services = new ServiceCollection();
-            // services.AddPack();
-            //IHttpServerClient service = new HttpServerClient();
-            //var service = ServiceLocator.Instance.GetService<IHttpServerClient>();
-            //  service.HttpClient.BaseAddress = new Uri("http://dev.iduo.cc:4501");
-            // var data = service.GetApi("/api/ToEngine/GetDetailUser?userId=iduo/xgl");
+            List<string> list = new List<string>();
+            list.Add("D:\\test.txt");
+            MailManager.SendMail("1352249378@qq.com", "1245402632@qq.com", "测试附件", "附件发送", list);
             Console.ReadKey();
         }
     }
