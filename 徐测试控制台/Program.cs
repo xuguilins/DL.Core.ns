@@ -24,6 +24,7 @@ using Microsoft.EntityFrameworkCore.SqlServer;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using DL.Core.ns.Web;
 using DL.Core.ns.Tools;
+using System.IO;
 
 namespace 徐测试控制台
 {
@@ -33,9 +34,9 @@ namespace 徐测试控制台
 
         private static void Main(string[] args)
         {
-            List<string> list = new List<string>();
-            list.Add("D:\\test.txt");
-            MailManager.SendMail("1352249378@qq.com", "1245402632@qq.com", "测试附件", "附件发送", list);
+            var a = "2";
+            //  var b = (string)
+
             Console.ReadKey();
         }
     }

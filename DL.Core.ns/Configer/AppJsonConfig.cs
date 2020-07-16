@@ -68,7 +68,7 @@ namespace DL.Core.ns.Configer
     }
 
     /// <summary>
-    /// 日志存放路径
+    /// DL类库专用配置
     /// </summary>
     public class CodeConfig
     {
