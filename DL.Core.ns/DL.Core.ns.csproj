@@ -3,8 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <Authors>余温</Authors>
-    <Description>修复写入日志的问题</Description>
-    <Version>1.3.2</Version>
+    <Description>修复创建数据库上下文的问题
+修复已知bug
+</Description>
+    <Version>1.4.0</Version>
     <Copyright>余温</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
