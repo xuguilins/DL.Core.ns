@@ -28,7 +28,7 @@ namespace DL.Core.ns.Data
         }
 
         public override DataBaseType Type => DataBaseType.MySql;
-        public override IDbConnection GetDbContext => new MySqlConnection(connectionStr);
+        public override IDbConnection GetDbContext { get; set; }
 
         public bool BeginTransation
         {
@@ -168,6 +168,7 @@ namespace DL.Core.ns.Data
         {
             if (pairs.ContainsKey(connectionString))
             {
+                GetDbContext = pairs[connectionString];
                 return pairs[connectionString];
             }
             else
@@ -175,6 +176,7 @@ namespace DL.Core.ns.Data
                 _connection = new MySqlConnection(connectionString);
                 _connection.Open();
                 pairs.TryAdd(connectionString, _connection);
+                GetDbContext = _connection;
                 return _connection;
             }
         }

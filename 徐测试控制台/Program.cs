@@ -34,7 +34,13 @@ namespace 徐测试控制台
 
         private static void Main(string[] args)
         {
-            var a = "2";
+            IDataBaseDbContextManager context = new DataBaseDbContextManager();
+            var dbcontext = context.GetDataBaseDbContext(DataBaseType.SqlServer);
+            var datacontext = dbcontext.GetDbContext as ISqlServerDbContext;
+            datacontext.cre
+            //dbcontext.GetDbContext
+            //.GetDataBaseDbContext(DataBaseType.SqlServer);
+            //   var a = "2";
             //  var b = (string)
 
             Console.ReadKey();

@@ -23,7 +23,7 @@ namespace DL.Core.ns.Data
         /// <summary>
         /// 获取数据库连接对象
         /// </summary>
-        public virtual IDbConnection GetDbContext { get; }
+        public virtual IDbConnection GetDbContext { get; set; }
 
         /// <summary>
         /// 返回受影响的行数

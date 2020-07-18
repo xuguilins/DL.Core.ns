@@ -53,7 +53,9 @@ namespace DL.Core.ns.Data
             }
         }
 
-        public override IDbConnection GetDbContext => new SqlConnection(_connectString);
+        //public override IDbConnection GetDbContext { get;  }
+        public override IDbConnection GetDbContext { get; set; }
+
         public override DataBaseType Type => DataBaseType.SqlServer;
 
         public override int ExecuteNonQuery(string sql, CommandType type, params DbParameter[] parameter)
@@ -200,6 +202,7 @@ namespace DL.Core.ns.Data
         {
             if (pairs.ContainsKey(connectionString))
             {
+                GetDbContext = pairs[connectionString];
                 return pairs[connectionString];
             }
             else
@@ -207,6 +210,7 @@ namespace DL.Core.ns.Data
                 _sqlConnection = new SqlConnection(connectionString);
                 _sqlConnection.Open();
                 pairs.TryAdd(connectionString, _sqlConnection);
+                GetDbContext = _sqlConnection;
                 return _sqlConnection;
             }
         }
