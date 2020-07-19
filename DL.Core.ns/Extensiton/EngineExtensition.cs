@@ -51,7 +51,6 @@ namespace DL.Core.ns.Extensiton
                 //服务构建器设置
                 ServiceLocator.Instance.SetProvider(provider);
                 sb.Append($"准备检查是否开启自动迁移.【{IsAutoMigration}】\r\n");
-
                 if (IsAutoMigration)
                 {
                     var result = AutoMigration(typeof(TDbContext));
