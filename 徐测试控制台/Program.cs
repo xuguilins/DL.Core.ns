@@ -34,14 +34,12 @@ namespace 徐测试控制台
 
         private static void Main(string[] args)
         {
-            IDataBaseDbContextManager context = new DataBaseDbContextManager();
-            var dbcontext = context.GetDataBaseDbContext(DataBaseType.SqlServer);
-            var datacontext = dbcontext.GetDbContext as ISqlServerDbContext;
-            datacontext.cre
-            //dbcontext.GetDbContext
-            //.GetDataBaseDbContext(DataBaseType.SqlServer);
-            //   var a = "2";
-            //  var b = (string)
+            IServiceCollection services = new ServiceCollection();
+            services.AddPack();
+            var service = ServiceLocator.Instance.GetService<ISqlServerDbContext>();
+            service.CreateDbConnection("Data Source=.;Initial Catalog=PawnManager;Integrated Security=True");
+            var sql = "select name from sysobjects where xtype='U'";
+            var table = service.GetDataTable(sql, System.Data.CommandType.Text);
 
             Console.ReadKey();
         }

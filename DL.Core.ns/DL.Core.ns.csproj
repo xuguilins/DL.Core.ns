@@ -5,8 +5,8 @@
     <Authors>余温</Authors>
     <Description>修复创建数据库上下文的问题
 修复已知bug
-</Description>
-    <Version>1.4.0</Version>
+修复EF上下文的问题</Description>
+    <Version>1.4.1</Version>
     <Copyright>余温</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
