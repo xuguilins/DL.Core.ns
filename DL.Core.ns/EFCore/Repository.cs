@@ -7,6 +7,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using DL.Core.ns.EFCore;
 
 namespace DL.Core.ns.EFCore
 {
@@ -20,9 +21,9 @@ namespace DL.Core.ns.EFCore
         private DbContext _dbContext;
         private DbSet<TEntity> DbSet = null;
 
-        public Repository(DbContext context)
+        public Repository()
         {
-            _dbContext = context;
+            _dbContext = DbContextManager.GetDbContext();
             DbSet = _dbContext.Set<TEntity>();
         }
 

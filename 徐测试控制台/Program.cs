@@ -35,11 +35,9 @@ namespace 徐测试控制台
         private static void Main(string[] args)
         {
             IServiceCollection services = new ServiceCollection();
-            services.AddPack();
-            var service = ServiceLocator.Instance.GetService<ISqlServerDbContext>();
-            service.CreateDbConnection("Data Source=.;Initial Catalog=PawnManager;Integrated Security=True");
-            var sql = "select name from sysobjects where xtype='U'";
-            var table = service.GetDataTable(sql, System.Data.CommandType.Text);
+            services.AddPack<MyContext>();
+            var service = ServiceLocator.Instance.GetService<ITestUserInfoService>();
+            service.Create();
 
             Console.ReadKey();
         }
@@ -73,15 +71,24 @@ namespace 徐测试控制台
         }
     }
 
-    public interface ITestUserInfoService : IRepository<TestUserInfo>, IScopeDependcy
+    public interface ITestUserInfoService : IScopeDependcy
     {
+        void Create();
     }
 
     //[AttbuiteDependency(ServiceLifetime.Scoped)]
-    public class TestUserInfoService : Repository<TestUserInfo>, ITestUserInfoService
+    public class TestUserInfoService : ITestUserInfoService
     {
-        public TestUserInfoService(MyContext context) : base(context)
+        private IRepository<TestUserInfo> userinfosevice;
+
+        public TestUserInfoService(IRepository<TestUserInfo> repository)
         {
+            userinfosevice = repository;
+        }
+
+        public void Create()
+        {
+            userinfosevice.AddEntity(new TestUserInfo { UserName = "aaaa" });
         }
     }
 }

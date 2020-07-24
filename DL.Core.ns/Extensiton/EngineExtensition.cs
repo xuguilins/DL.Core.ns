@@ -44,12 +44,15 @@ namespace DL.Core.ns.Extensiton
                 //上下文注入
                 services.AddDbContext<TDbContext>();
                 services.AddScoped<IUnitOfWork, UnitOfWork<TDbContext>>();
+                services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
                 //服务构建
                 IServiceProvider provider = services.BuildServiceProvider();
                 //服务集合器设置
                 ServiceLocator.Instance.SetServiceCollection(services);
                 //服务构建器设置
                 ServiceLocator.Instance.SetProvider(provider);
+                //设置EF数据上下文
+                DbContextManager.SetDbContext<TDbContext>();
                 sb.Append($"准备检查是否开启自动迁移.【{IsAutoMigration}】\r\n");
                 if (IsAutoMigration)
                 {
