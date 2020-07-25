@@ -3,10 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <Authors>余温</Authors>
-    <Description>修复创建数据库上下文的问题
-修复已知bug
-修复EF上下文的问题</Description>
-    <Version>1.4.1</Version>
+    <Description>增加基类的注入
+优化写服务时需要继承基类的弱点
+增加EF上下文获取器</Description>
+    <Version>1.4.5</Version>
     <Copyright>余温</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>

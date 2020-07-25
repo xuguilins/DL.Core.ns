@@ -71,12 +71,13 @@ namespace 徐测试控制台
         }
     }
 
-    public interface ITestUserInfoService : IScopeDependcy
+    public interface ITestUserInfoService //: IScopeDependcy
     {
         void Create();
     }
 
     //[AttbuiteDependency(ServiceLifetime.Scoped)]
+    [AttbuiteDependency(ServiceLifetime.Transient)]
     public class TestUserInfoService : ITestUserInfoService
     {
         private IRepository<TestUserInfo> userinfosevice;
