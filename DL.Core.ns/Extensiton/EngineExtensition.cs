@@ -143,7 +143,7 @@ namespace DL.Core.ns.Extensiton
                 }
                 else
                 {
-                    return "未检测到含有启动迁移的文件或数据实体未发生任何改变,请尝试允许 Add-Migration 指令";
+                    return "未检测到含有启动迁移的文件或数据实体未发生任何改变,请尝试运行 Add-Migration 指令";
                 }
             }
             catch (Exception ex)
