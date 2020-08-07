@@ -8,23 +8,23 @@ namespace 徐测试控制台.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "TestUser",
+                name: "TeacherInfo",
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
                     CreatedTime = table.Column<DateTime>(nullable: false),
-                    UserName = table.Column<string>(nullable: true)
+                    TeachName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TestUser", x => x.Id);
+                    table.PrimaryKey("PK_TeacherInfo", x => x.Id);
                 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "TestUser");
+                name: "TeacherInfo");
         }
     }
 }

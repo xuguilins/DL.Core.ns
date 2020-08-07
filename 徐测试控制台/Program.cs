@@ -25,71 +25,54 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using DL.Core.ns.Web;
 using DL.Core.ns.Tools;
 using System.IO;
+using DL.Core.ns.Finder;
 
 namespace 徐测试控制台
 {
     internal class Program
     {
-        private static ConcurrentQueue<string> quee = new ConcurrentQueue<string>();
-
         private static void Main(string[] args)
         {
             IServiceCollection services = new ServiceCollection();
+            services.EnableMigration(true);
             services.AddPack<MyContext>();
-            var service = ServiceLocator.Instance.GetService<ITestUserInfoService>();
-            service.Create();
-
+            var service = ServiceLocator.Instance.GetService<IUserService>();
+            service.AddTeacher();
             Console.ReadKey();
         }
     }
 
-    public class MyContext : DbContext
+    public interface IUserService : IScopeDependcy
+    {
+        void AddTeacher();
+    }
+
+    public class UserService : IUserService
+    {
+        private IRepository<TeacherInfo> TeachRepository;
+
+        public UserService(IRepository<TeacherInfo> repository)
+        {
+            TeachRepository = repository;
+        }
+
+        public void AddTeacher()
+        {
+            TeachRepository.AddEntity(new TeacherInfo { CreatedTime = DateTime.Now, TeachName = "666" });
+        }
+    }
+
+    public class MyContext : DbContextBase<MyContext>
     {
         public MyContext()
         {
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            var model = ConfigerManager.Instance.getCofiger().ConnectionString.SqlDefault;
-            optionsBuilder.UseSqlServer(model);
-        }
-
-        public DbSet<TestUserInfo> TestUser { get; set; }
+        public override string ConnectionString { get; set; } = "Data Source=.;Initial Catalog=EFTESTDEMO;User ID=sa;Password=0103";
     }
 
-    public class TestUserInfo : EntityBase
+    public class TeacherInfo : EntityBase
     {
-        public string UserName { get; set; }
-    }
-
-    public class TestUserInfoConfiguratioin : IEntityTypeConfiguration<TestUserInfo>
-    {
-        public void Configure(EntityTypeBuilder<TestUserInfo> builder)
-        {
-            builder.ToTable("TestUserInfO").HasKey(P => P.Id);
-        }
-    }
-
-    public interface ITestUserInfoService //: IScopeDependcy
-    {
-        void Create();
-    }
-
-    //[AttbuiteDependency(ServiceLifetime.Scoped)]
-    [AttbuiteDependency(ServiceLifetime.Transient)]
-    public class TestUserInfoService : ITestUserInfoService
-    {
-        private IRepository<TestUserInfo> userinfosevice;
-
-        public TestUserInfoService(IRepository<TestUserInfo> repository)
-        {
-            userinfosevice = repository;
-        }
-
-        public void Create()
-        {
-            userinfosevice.AddEntity(new TestUserInfo { UserName = "aaaa" });
-        }
+        public string TeachName { get; set; }
     }
 }
