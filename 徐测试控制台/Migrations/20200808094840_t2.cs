@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace 徐测试控制台.Migrations
 {
-    public partial class initbase : Migration
+    public partial class t2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,9 +11,10 @@ namespace 徐测试控制台.Migrations
                 name: "TeacherInfo",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<string>(maxLength: 50, nullable: false),
                     CreatedTime = table.Column<DateTime>(nullable: false),
-                    TeachName = table.Column<string>(nullable: true)
+                    TeacherName = table.Column<string>(maxLength: 50, nullable: true),
+                    TeacherAdderss = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

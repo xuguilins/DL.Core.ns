@@ -1,4 +1,5 @@
-﻿using DL.Core.ns.Finder;
+﻿using DL.Core.ns.Entity;
+using DL.Core.ns.Finder;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -18,13 +19,21 @@ namespace DL.Core.ns.EFCore
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            #region [实体注册]
+
             IEntityFinder finder = new EntityFinder();
             var typeList = finder.FinderAll();
             foreach (var item in typeList)
             {
                 builder.Entity(item);
             }
+
+            #endregion [实体注册]
+
+            RegistConfiguration(builder);
             base.OnModelCreating(builder);
         }
+
+        public abstract void RegistConfiguration(ModelBuilder builder);
     }
 }

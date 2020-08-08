@@ -4,6 +4,9 @@ using System.Text;
 
 namespace DL.Core.ns.Finder
 {
+    /// <summary>
+    /// 基类查找器接口
+    /// </summary>
     public interface IFinderBase
     {
         /// <summary>

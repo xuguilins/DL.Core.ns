@@ -10,8 +10,8 @@ using 徐测试控制台;
 namespace 徐测试控制台.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20200807095052_initbase")]
-    partial class initbase
+    [Migration("20200808094840_t2")]
+    partial class t2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,13 +24,18 @@ namespace 徐测试控制台.Migrations
             modelBuilder.Entity("徐测试控制台.TeacherInfo", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("TeachName")
+                    b.Property<string>("TeacherAdderss")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TeacherName")
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.HasKey("Id");
 

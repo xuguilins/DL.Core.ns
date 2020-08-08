@@ -36,9 +36,23 @@ namespace 徐测试控制台
             IServiceCollection services = new ServiceCollection();
             services.EnableMigration(true);
             services.AddPack<MyContext>();
-            var service = ServiceLocator.Instance.GetService<IUserService>();
-            service.AddTeacher();
-            Console.ReadKey();
+            //var service = ServiceLocator.Instance.GetService<IUserService>();
+            //service.AddTeacher();
+            //Assembly assembly = Assembly.GetExecutingAssembly();
+            //var types = assembly.GetTypes().Where(x => x.IsClass && !x.IsAbstract);
+            //var data = typeof(ConfigurationBase<>).GetMembers().ToList();
+            //var type = typeof(ConfigurationBase<>);
+            //var childtype = typeof(TeacherInfoConfiguration).BaseType.GetGenericTypeDefinition();
+            //if (type == childtype)
+            //{
+            //}
+            //foreach (var item in types)
+            //{
+            //    if (typeof(ConfigurationBase<>).IsAssignableFrom(item))
+            //    {
+            //    }
+            //}
+            //Console.ReadKey();
         }
     }
 
@@ -58,7 +72,7 @@ namespace 徐测试控制台
 
         public void AddTeacher()
         {
-            TeachRepository.AddEntity(new TeacherInfo { CreatedTime = DateTime.Now, TeachName = "666" });
+            // TeachRepository.AddEntity(new TeacherInfo { CreatedTime = DateTime.Now, TeachName = "666" });
         }
     }
 
@@ -69,10 +83,27 @@ namespace 徐测试控制台
         }
 
         public override string ConnectionString { get; set; } = "Data Source=.;Initial Catalog=EFTESTDEMO;User ID=sa;Password=0103";
+
+        public override void RegistConfiguration(ModelBuilder builder)
+        {
+            builder.ApplyConfiguration(new TeacherInfoConfiguration());
+        }
     }
 
     public class TeacherInfo : EntityBase
     {
-        public string TeachName { get; set; }
+        public string TeacherName { get; set; }
+        public string TeacherAdderss { get; set; }
+    }
+
+    public class TeacherInfoConfiguration : ConfigurationBase<TeacherInfo>
+    {
+        public override void Configure(EntityTypeBuilder<TeacherInfo> builder)
+        {
+            builder.ToTable("TeacherInfo");
+            builder.Property(x => x.TeacherName).HasMaxLength(50);
+            builder.Property(x => x.Id).HasMaxLength(50).IsRequired();
+            builder.HasKey(x => x.Id);
+        }
     }
 }

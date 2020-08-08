@@ -4,10 +4,7 @@ using System.Text;
 
 namespace DL.Core.ns.Finder
 {
-    /// <summary>
-    /// 实体查找器
-    /// </summary>
-    public interface IEntityFinder : IFinderBase
+    public interface IEntityTypeConfiguraFinder : IFinderBase
     {
     }
 }
