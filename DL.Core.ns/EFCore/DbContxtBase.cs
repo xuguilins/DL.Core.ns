@@ -10,7 +10,7 @@ namespace DL.Core.ns.EFCore
 {
     public abstract class DbContextBase<TDContext> : DbContext where TDContext : DbContext
     {
-        public abstract string ConnectionString { get; set; }
+        public abstract string ConnectionString { get; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

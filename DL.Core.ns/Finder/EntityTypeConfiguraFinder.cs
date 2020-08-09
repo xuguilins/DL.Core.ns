@@ -10,7 +10,7 @@ namespace DL.Core.ns.Finder
     {
         public override Type[] Find()
         {
-            var types = LoadTypes.Where(x => !x.IsInterface && !x.IsAbstract && x.BaseType.GetGenericTypeDefinition() == typeof(ConfigurationBase<>)).ToArray();
+            var types = LoadTypes.Where(x => !x.IsInterface && !x.IsAbstract && typeof(IEntityTypeRegiest).IsAssignableFrom(x)).ToArray();
             return types;
         }
     }

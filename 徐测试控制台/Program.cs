@@ -34,25 +34,45 @@ namespace 徐测试控制台
         private static void Main(string[] args)
         {
             IServiceCollection services = new ServiceCollection();
-            services.EnableMigration(true);
             services.AddPack<MyContext>();
-            //var service = ServiceLocator.Instance.GetService<IUserService>();
-            //service.AddTeacher();
-            //Assembly assembly = Assembly.GetExecutingAssembly();
-            //var types = assembly.GetTypes().Where(x => x.IsClass && !x.IsAbstract);
-            //var data = typeof(ConfigurationBase<>).GetMembers().ToList();
-            //var type = typeof(ConfigurationBase<>);
-            //var childtype = typeof(TeacherInfoConfiguration).BaseType.GetGenericTypeDefinition();
-            //if (type == childtype)
+            var service = ServiceLocator.Instance.GetService<IUserService>();
+            service.AddTeacher();
+            //IEntityTypeConfiguraFinder finder = new EntityTypeConfiguraFinder();
+            //var entityList = finder.FinderAll().ToList();
+            //List<IEntityTypeRegiest> list = new List<IEntityTypeRegiest>();
+            //foreach (var item in entityList)
             //{
-            //}
-            //foreach (var item in types)
-            //{
-            //    if (typeof(ConfigurationBase<>).IsAssignableFrom(item))
+            //    var obj = Activator.CreateInstance(item) as IEntityTypeRegiest;
+            //    if (obj != null)
             //    {
+            //        list.Add(obj);
             //    }
             //}
-            //Console.ReadKey();
+            //ConcurrentDictionary<Type, List<IEntityTypeRegiest>> diclist = new ConcurrentDictionary<Type, List<IEntityTypeRegiest>>();
+            //var result = list.GroupBy(x => x.DbContextType).ToList();
+            //foreach (IGrouping<Type, IEntityTypeRegiest> item in result)
+            //{
+            //    List<IEntityTypeRegiest> f = new List<IEntityTypeRegiest>();
+            //    if (diclist.ContainsKey(item.Key))
+            //    {
+            //        var temp = diclist[item.Key];
+            //        temp.AddRange(item.ToList());
+            //    }
+            //    else
+            //    {
+            //        diclist.TryAdd(item.Key, item.ToList());
+            //    }
+            //}
+            //var entiType = typeof(TeacherInfo);
+            //foreach (var item in diclist)
+            //{
+            //    if (item.Value.Any(x => x.EntityType == entiType))
+            //    {
+            //        var d = item.Key;
+            //    }
+            //}
+
+            Console.ReadKey();
         }
     }
 
@@ -64,30 +84,62 @@ namespace 徐测试控制台
     public class UserService : IUserService
     {
         private IRepository<TeacherInfo> TeachRepository;
+        private IRepository<TestUserInfo> TestUserRepository;
 
-        public UserService(IRepository<TeacherInfo> repository)
+        public UserService(IRepository<TeacherInfo> repository, IRepository<TestUserInfo> xrepository)
         {
             TeachRepository = repository;
+            TestUserRepository = xrepository;
         }
 
         public void AddTeacher()
         {
-            // TeachRepository.AddEntity(new TeacherInfo { CreatedTime = DateTime.Now, TeachName = "666" });
+            TeachRepository.AddEntity(new TeacherInfo { CreatedTime = DateTime.Now, TeacherName = "666", TeacherAdderss = "江西省赣州市" });
+            TestUserRepository.AddEntity(new TestUserInfo { CreatedTime = DateTime.Now, UsePass = "sdfsdfsd", UserName = "新的数据赏上下文" });
         }
     }
 
+    /// <summary>
+    /// 上下文1
+    /// </summary>
     public class MyContext : DbContextBase<MyContext>
     {
         public MyContext()
         {
         }
 
-        public override string ConnectionString { get; set; } = "Data Source=.;Initial Catalog=EFTESTDEMO;User ID=sa;Password=0103";
+        public override string ConnectionString => "Data Source=.;Initial Catalog=EFTESTDEMO;User ID=sa;Password=0103";
 
         public override void RegistConfiguration(ModelBuilder builder)
         {
             builder.ApplyConfiguration(new TeacherInfoConfiguration());
         }
+    }
+
+    public class NsDbContext : DbContextBase<NsDbContext>
+    {
+        public override string ConnectionString => "Data Source=.;Initial Catalog=CoreNs;User ID=sa;Password=0103";
+
+        public override void RegistConfiguration(ModelBuilder builder)
+        {
+            builder.ApplyConfiguration(new TestUserInfoConfiguration());
+        }
+    }
+
+    public class TestUserInfoConfiguration : ConfigurationBase<TestUserInfo>
+    {
+        public override Type DbContextType => typeof(NsDbContext);
+
+        public override void Configure(EntityTypeBuilder<TestUserInfo> builder)
+        {
+            builder.ToTable("UserTest");
+        }
+    }
+
+    public class TestUserInfo : EntityBase
+    {
+        public string UserName { get; set; }
+        public string UsePass { get; set; }
     }
 
     public class TeacherInfo : EntityBase
@@ -98,6 +150,8 @@ namespace 徐测试控制台
 
     public class TeacherInfoConfiguration : ConfigurationBase<TeacherInfo>
     {
+        public override Type DbContextType => typeof(MyContext);
+
         public override void Configure(EntityTypeBuilder<TeacherInfo> builder)
         {
             builder.ToTable("TeacherInfo");

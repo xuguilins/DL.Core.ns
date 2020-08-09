@@ -23,7 +23,7 @@ namespace DL.Core.ns.EFCore
 
         public Repository()
         {
-            _dbContext = DbContextManager.GetDbContext() ?? throw new Exception("数据库上下文不存在");
+            _dbContext = DbContextManager.GetDb(typeof(TEntity)) ?? throw new Exception("数据库上下文不存在");
             DbSet = _dbContext.Set<TEntity>();
         }
 

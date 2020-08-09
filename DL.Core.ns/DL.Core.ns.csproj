@@ -3,10 +3,9 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <Authors>余温</Authors>
-    <Description>增加基类的注入
-优化写服务时需要继承基类的弱点
-增加EF上下文获取器</Description>
-    <Version>1.4.5</Version>
+    <Description>实现多个不同数据库的数据上下文的操作
+</Description>
+    <Version>1.6.0</Version>
     <Copyright>余温</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>

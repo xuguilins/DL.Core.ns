@@ -52,7 +52,8 @@ namespace DL.Core.ns.Extensiton
                 //服务构建器设置
                 ServiceLocator.Instance.SetProvider(provider);
                 //设置EF数据上下文
-                DbContextManager.SetDbContext<TDbContext>();
+                // DbContextManager.SetDbContext<TDbContext>();
+                DbContextManager.InitDbContext();
                 sb.Append($"准备检查是否开启自动迁移.【{IsAutoMigration}】\r\n");
                 if (IsAutoMigration)
                 {
