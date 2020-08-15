@@ -40,12 +40,9 @@ namespace DL.Core.ns.Locator
         /// <returns></returns>
         public T GetService<T>()
         {
-            if (_provider != null)
-                return _provider.GetService<T>();
-            else
-            {
-                return default(T);
-            }
+            if (_provider == null)
+                throw new Exception("无效的服务提供者");
+            return _provider.GetService<T>();
         }
 
         /// <summary>
@@ -57,6 +54,18 @@ namespace DL.Core.ns.Locator
         public object GetService(Type type)
         {
             return _provider.GetService(type);
+        }
+
+        /// <summary>
+        /// 获取多个服务
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public IEnumerable<T> GetServices<T>()
+        {
+            if (_provider == null)
+                throw new Exception("无效的服务提供者");
+            return _provider.GetServices<T>();
         }
     }
 }

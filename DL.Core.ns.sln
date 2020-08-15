@@ -11,6 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "徐测试控制台", "徐�
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{D0DA86D2-81A1-498E-A43A-B942D3D28F70}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DL.EFCore.ns", "DL.EFCore.ns\DL.EFCore.ns.csproj", "{B6F13B9D-CC33-4180-8FFA-63ADA4E55F4C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DL.EFCore.Mongo.ns", "DL.EFCore.Mongo.ns\DL.EFCore.Mongo.ns.csproj", "{3DE5C182-4E94-4F52-BCEA-B5322838AAA5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{D0DA86D2-81A1-498E-A43A-B942D3D28F70}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0DA86D2-81A1-498E-A43A-B942D3D28F70}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0DA86D2-81A1-498E-A43A-B942D3D28F70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6F13B9D-CC33-4180-8FFA-63ADA4E55F4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6F13B9D-CC33-4180-8FFA-63ADA4E55F4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6F13B9D-CC33-4180-8FFA-63ADA4E55F4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6F13B9D-CC33-4180-8FFA-63ADA4E55F4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DE5C182-4E94-4F52-BCEA-B5322838AAA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DE5C182-4E94-4F52-BCEA-B5322838AAA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DE5C182-4E94-4F52-BCEA-B5322838AAA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DE5C182-4E94-4F52-BCEA-B5322838AAA5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

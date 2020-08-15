@@ -81,7 +81,7 @@ namespace DL.Core.ns.Configer
         /// 启用自动迁移,此配置不生效
         /// 默认为：false
         /// </summary>
-        public bool Enable { get; set; }
+        public bool AutoMigrationEnable { get; set; }
 
         /// <summary>
         /// 邮件发送服务器

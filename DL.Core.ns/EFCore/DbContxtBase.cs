@@ -10,6 +10,10 @@ namespace DL.Core.ns.EFCore
 {
     public abstract class DbContextBase<TDContext> : DbContext where TDContext : DbContext
     {
+        public DbContextBase()
+        {
+        }
+
         public abstract string ConnectionString { get; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -19,17 +23,15 @@ namespace DL.Core.ns.EFCore
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            #region [实体注册]
-
-            IEntityFinder finder = new EntityFinder();
-            var typeList = finder.FinderAll();
-            foreach (var item in typeList)
+            var type = GetType();
+            IEntityTypeConfiguraFinder finder = new EntityTypeConfiguraFinder();
+            var entityList = finder.FinderAll().ToList();
+            List<IEntityTypeRegiest> list = entityList.Select(type => Activator.CreateInstance(type) as IEntityTypeRegiest).ToList();
+            var data = list.Where(x => x.DbContextType == type).ToList();
+            foreach (IEntityTypeRegiest regist in data)
             {
-                builder.Entity(item);
+                builder.Entity(regist.EntityType);
             }
-
-            #endregion [实体注册]
-
             RegistConfiguration(builder);
             base.OnModelCreating(builder);
         }

@@ -34,44 +34,8 @@ namespace 徐测试控制台
         private static void Main(string[] args)
         {
             IServiceCollection services = new ServiceCollection();
-            services.AddPack<MyContext>();
-            var service = ServiceLocator.Instance.GetService<IUserService>();
-            service.AddTeacher();
-            //IEntityTypeConfiguraFinder finder = new EntityTypeConfiguraFinder();
-            //var entityList = finder.FinderAll().ToList();
-            //List<IEntityTypeRegiest> list = new List<IEntityTypeRegiest>();
-            //foreach (var item in entityList)
-            //{
-            //    var obj = Activator.CreateInstance(item) as IEntityTypeRegiest;
-            //    if (obj != null)
-            //    {
-            //        list.Add(obj);
-            //    }
-            //}
-            //ConcurrentDictionary<Type, List<IEntityTypeRegiest>> diclist = new ConcurrentDictionary<Type, List<IEntityTypeRegiest>>();
-            //var result = list.GroupBy(x => x.DbContextType).ToList();
-            //foreach (IGrouping<Type, IEntityTypeRegiest> item in result)
-            //{
-            //    List<IEntityTypeRegiest> f = new List<IEntityTypeRegiest>();
-            //    if (diclist.ContainsKey(item.Key))
-            //    {
-            //        var temp = diclist[item.Key];
-            //        temp.AddRange(item.ToList());
-            //    }
-            //    else
-            //    {
-            //        diclist.TryAdd(item.Key, item.ToList());
-            //    }
-            //}
-            //var entiType = typeof(TeacherInfo);
-            //foreach (var item in diclist)
-            //{
-            //    if (item.Value.Any(x => x.EntityType == entiType))
-            //    {
-            //        var d = item.Key;
-            //    }
-            //}
-
+            services.InitUnitOfWork<MyContext, NsDbContext>();
+            services.AddPack();
             Console.ReadKey();
         }
     }

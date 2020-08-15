@@ -12,25 +12,20 @@ namespace DL.Core.ns.EFCore
     public static class DbContextManager
     {
         private static ConcurrentDictionary<Type, List<IEntityTypeRegiest>> diclist = new ConcurrentDictionary<Type, List<IEntityTypeRegiest>>();
+        private static List<DbContext> dbContextList = new List<DbContext>();
 
         public static DbContext GetDb(Type type)
         {
-            if (diclist.Any())
-            {
-                var dbContext = GetDbContext(type);
-                return Activator.CreateInstance(dbContext) as DbContext;
-            }
-            else
-            {
-                InitDbContext();
-                return null;
-            }
+            if (!diclist.Any())
+                throw new AggregateException("未设置对应的实体配置且未设置实体对应的数据上下文");
+            var dbContext = GetDbContext(type);
+            return Activator.CreateInstance(dbContext) as DbContext;
         }
 
         /// <summary>
         /// 初始化数据库实体上下文
         /// </summary>
-        public static void InitDbContext()
+        public static void InitEngityDbContext()
         {
             IEntityTypeConfiguraFinder finder = new EntityTypeConfiguraFinder();
             var entityList = finder.FinderAll().ToList();
@@ -54,22 +49,31 @@ namespace DL.Core.ns.EFCore
         public static Type GetDbContext(Type type)
         {
             Type dbType = null;
-            if (diclist.Any())
+            if (!diclist.Any())
+                throw new Exception("未设置对应的实体配置且未设置实体对应的数据上下文");
+            foreach (var item in diclist)
             {
-                foreach (var item in diclist)
+                if (item.Value.Any(x => x.EntityType == type))
                 {
-                    if (item.Value.Any(x => x.EntityType == type))
-                    {
-                        dbType = item.Key;
-                        return dbType;
-                    }
+                    dbType = item.Key;
+                    return dbType;
                 }
-                return dbType;
             }
-            else
-            {
-                return null;
-            }
+            return dbType;
+        }
+
+        public static void InitUnitDbContext(DbContext type)
+        {
+            dbContextList.Add(type);
+        }
+
+        /// <summary>
+        /// 获取内存设定好的数据库上下文
+        /// </summary>
+        /// <returns></returns>
+        public static List<DbContext> GetMeomryDbContxt()
+        {
+            return dbContextList;
         }
     }
 }

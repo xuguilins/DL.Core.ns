@@ -19,62 +19,53 @@ namespace DL.Core.ns.Extensiton
         private static ILogger logger = LogManager.GetLogger();
 
         /// <summary>
-        /// 是否设置自动迁移
+        /// 初始化单个数据库上下文
         /// </summary>
-        private static bool IsAutoMigration { get; set; }
-
-        /// <summary>
-        /// 包含EF上下文
-        /// </summary>
-        /// <typeparam name="TDbContext">EF上下文</typeparam>
+        /// <typeparam name="TDbCotnext">EF数据库上下文</typeparam>
         /// <param name="services"></param>
         /// <returns></returns>
-        public static IServiceCollection AddPack<TDbContext>(this IServiceCollection services) where TDbContext : DbContext
+        public static IServiceCollection InitUnitOfWork<TDbCotnext>(this IServiceCollection services) where TDbCotnext : DbContext
         {
-            try
-            {
-                StringBuilder sb = new StringBuilder();
-                sb.Append("DL框架引擎初始化...\r\n");
-                Stopwatch watch = new Stopwatch();
-                watch.Start();
-                IDLEnginePack service = new DLEnginePack();
-                services.AddService();
-                //模块注入
-                service.AddEnginePack(services);
-                //上下文注入
-                services.AddDbContext<TDbContext>();
-                services.AddScoped<IUnitOfWork, UnitOfWork<TDbContext>>();
-                services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-                //服务构建
-                IServiceProvider provider = services.BuildServiceProvider();
-                //服务集合器设置
-                ServiceLocator.Instance.SetServiceCollection(services);
-                //服务构建器设置
-                ServiceLocator.Instance.SetProvider(provider);
-                //设置EF数据上下文
-                // DbContextManager.SetDbContext<TDbContext>();
-                DbContextManager.InitDbContext();
-                sb.Append($"准备检查是否开启自动迁移.【{IsAutoMigration}】\r\n");
-                if (IsAutoMigration)
-                {
-                    var result = AutoMigration(typeof(TDbContext));
-                    sb.Append(result + "\r\n");
-                }
-                watch.Stop();
-                sb.Append($"DL框架引擎初始化完成\r\n");
-                sb.Append($"总共花费:{watch.ElapsedMilliseconds}毫秒");
-                logger.Info(sb.ToString());
-                return services;
-            }
-            catch (Exception ex)
-            {
-                logger.Error($"初始化DL框架发生异常[AddPack<TDbContext>]，异常信息：{ex.Message}");
-                throw;
-            }
+            services.AddDbContext<TDbCotnext>();
+            services.AddScoped<IUnitOfWork, UnitOfWork<TDbCotnext>>();
+            var type = typeof(TDbCotnext);
+            var db = Activator.CreateInstance(type) as DbContext;
+            DbContextManager.InitUnitDbContext(db);
+            //设置EF数据实体上下文
+            DbContextManager.InitEngityDbContext();
+            return services;
         }
 
         /// <summary>
-        ///不包含数据库上下文
+        /// 初始化多个EF数据库上下文
+        /// <see cref="TDbContext1">数据库上下文1</see>
+        /// <see cref="TDbContext2">数据库上下文2</see>
+        /// </summary>
+        /// <typeparam name="TDbContext1">数据库上下文1</typeparam>
+        /// <typeparam name="TDbContext2">数据库上下文2</typeparam>
+        /// <param name="services"></param>
+        /// <returns></returns>
+        public static IServiceCollection InitUnitOfWork<TDbContext1, TDbContext2>(this IServiceCollection services)
+            where TDbContext1 : DbContext
+            where TDbContext2 : DbContext
+        {
+            services.AddDbContext<TDbContext1>();
+            services.AddDbContext<TDbContext2>();
+            services.AddScoped<IUnitOfWork, UnitOfWork<TDbContext1>>();
+            services.AddScoped<IUnitOfWork, UnitOfWork<TDbContext2>>();
+            var type1 = typeof(TDbContext1);
+            var db = Activator.CreateInstance(type1) as DbContext;
+            DbContextManager.InitUnitDbContext(db);
+            var type2 = typeof(TDbContext2);
+            var db2 = Activator.CreateInstance(type2) as DbContext;
+            DbContextManager.InitUnitDbContext(db2);
+            //设置EF数据实体上下文
+            DbContextManager.InitEngityDbContext();
+            return services;
+        }
+
+        /// <summary>
+        /// 模块包注入
         /// </summary>
         /// <param name="services"></param>
         /// <returns></returns>
@@ -90,12 +81,30 @@ namespace DL.Core.ns.Extensiton
                 services.AddService();
                 //模块注入
                 service.AddEnginePack(services);
+                services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
                 //服务构建
                 IServiceProvider provider = services.BuildServiceProvider();
                 //服务集合器设置
                 ServiceLocator.Instance.SetServiceCollection(services);
                 //服务构建器设置
                 ServiceLocator.Instance.SetProvider(provider);
+                var autoConfig = Configer.ConfigerManager.Instance.getCofiger().CodeConfig.AutoMigrationEnable;
+                sb.Append($"准备检查是否开启自动迁移.【{autoConfig}】\r\n");
+                if (autoConfig)
+                {
+                    var contexts = DbContextManager.GetMeomryDbContxt();
+                    sb.Append($"统计数据库上下文数量:{contexts.Count}\r\n");
+                    if (contexts.Any())
+                    {
+                        contexts.ForEach(context =>
+                        {
+                            sb.Append($"准备迁移数据库上下文{context.GetType().Name}的数据实体");
+                            var result = AutoMigration(context);
+                            sb.Append(result + "\r\n");
+                        });
+                    }
+                }
+
                 watch.Stop();
                 sb.Append($"DL框架引擎初始化完成\r\n");
                 sb.Append($"总共花费:{watch.ElapsedMilliseconds}毫秒");
@@ -104,7 +113,7 @@ namespace DL.Core.ns.Extensiton
             }
             catch (Exception ex)
             {
-                logger.Error($"初始化DL框架发生异常[AddPack()]，异常信息：{ex.Message}");
+                logger.Error($"初始化DL框架发生异常[AddPack<TDbContext>]，异常信息：{ex.Message}");
                 throw;
             }
         }
@@ -114,40 +123,20 @@ namespace DL.Core.ns.Extensiton
             //添加缓存
             services.AddMemoryCache();
             services.AddScoped<IMemoryCache, MemoryCache>();
-
             return services;
-        }
-
-        /// <summary>
-        /// 启用自动迁移需要在<see cref="AddPack{TDbContext}(IServiceCollection)"/>之前
-        /// </summary>
-        /// <param name="services"></param>
-        /// <param name="flag"></param>
-        public static void EnableMigration(this IServiceCollection services, bool flag = false)
-        {
-            IsAutoMigration = flag;
-        }
-
-        /// <summary>
-        /// 测试
-        /// </summary>
-        /// <param name="services"></param>
-        public static void Test(this IServiceCollection services)
-        {
         }
 
         /// <summary>
         /// 自动迁移
         /// </summary>
         /// <param name="context"></param>
-        private static string AutoMigration(Type context)
+        private static string AutoMigration(DbContext context)
         {
             try
             {
-                DbContext dbcontext = Activator.CreateInstance(context) as DbContext;
-                if (dbcontext.Database.GetPendingMigrations().Any())
+                if (context.Database.GetPendingMigrations().Any())
                 {
-                    dbcontext.Database.Migrate();
+                    context.Database.Migrate();
                     return "启动迁移完毕";
                 }
                 else
