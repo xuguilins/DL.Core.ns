@@ -36,6 +36,7 @@ namespace 徐测试控制台
             IServiceCollection services = new ServiceCollection();
             services.InitUnitOfWork<MyContext, NsDbContext>();
             services.AddPack();
+            Console.WriteLine("完毕");
             Console.ReadKey();
         }
     }
