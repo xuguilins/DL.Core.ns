@@ -126,6 +126,24 @@ namespace DL.Core.ns.Extensiton
         /// <returns></returns>
         public static string GetGuid(string formatter = "N") => Guid.NewGuid().ToString(formatter);
 
+        /// <summary>
+        /// 对象转字典
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static Dictionary<string, object> ToDictionary(this object value)
+        {
+            Dictionary<string, object> dic = new Dictionary<string, object>();
+            var propList = value.GetType().GetProperties();
+            foreach (var item in propList)
+            {
+                var name = item.Name;
+                var val = item.GetValue(value, null);
+                dic.Add(name, val);
+            }
+            return dic;
+        }
+
         #region 【字符串非空验证】
 
         /// <summary>

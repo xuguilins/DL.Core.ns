@@ -215,6 +215,51 @@ namespace DL.Core.ns.Data
             }
         }
 
+        /// <summary>
+        /// 参数化匿名对象获取数据表格
+        /// </summary>
+        /// <param name="sql">查询语句</param>
+        /// <param name="type">SQL语句类型</param>
+        /// <param name="parameter">匿名对象 new { }</param>
+        /// <returns></returns>
+        public DataTable GetDataTable(string sql, CommandType type, object parameter)
+        {
+            string newSql = sql;
+            if (parameter != null)
+            {
+                var dictionary = parameter.ToDictionary();
+                foreach (var item in dictionary)
+                {
+                    newSql = sql.Replace($"@{item.Key}", $"'{item.Value}'");
+                }
+            }
+            try
+            {
+                if (_sqlConnection.State == ConnectionState.Open)
+                {
+                    DataTable ds = new DataTable();
+                    using (SqlCommand com = new SqlCommand(sql, _sqlConnection, _transaction))
+                    {
+                        com.CommandType = type;
+                        using (SqlDataAdapter da = new SqlDataAdapter(com))
+                        {
+                            da.Fill(ds);
+                        }
+                    }
+                    return ds;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error($"执行SqlServer发生异常,command:参数化匿名对象获取数据表格 GetDataTable,sqlText:{sql},exMes:{ex.Message} ");
+                throw;
+            }
+        }
+
         private IDbConnection DbContext()
         {
             IDbConnection db = new SqlConnection();

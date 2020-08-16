@@ -27,6 +27,7 @@ using DL.Core.ns.Tools;
 using System.IO;
 using DL.Core.ns.Finder;
 using Microsoft.Extensions.Configuration;
+using System.Collections.Specialized;
 
 namespace 徐测试控制台
 {
@@ -34,13 +35,45 @@ namespace 徐测试控制台
     {
         private static void Main(string[] args)
         {
-            IServiceCollection services = new ServiceCollection();
-            //   IConfiguration configuration =configuration.buige
-            ConfigerManager.Instance.getCofiger();
-            //services.InitUnitOfWork<MyContext, NsDbContext>();
-            /// services.AddPack();
-            Console.WriteLine("完毕");
+            ISqlService service = new SqlServer();
+            service.GetTable("SELECT * FROM USERINFO WHERE UserName=@UserName", new { UserName = "徐文" });
+
             Console.ReadKey();
+        }
+    }
+
+    public interface ISqlService
+    {
+        DataTable GetTable(string sql, object parameter = null);
+    }
+
+    public class SqlServer : ISqlService
+    {
+        public DataTable GetTable(string sql, object parameter = null)
+        {
+            var parmas = parameter.toDictory();
+            foreach (var item in parmas)
+            {
+                sql = sql.Replace($"@{item.Key}", $"'{item.Value}'");
+            }
+            Console.WriteLine(sql);
+            return null;
+        }
+    }
+
+    public static class Extendsiton
+    {
+        public static Dictionary<string, object> toDictory(this object value)
+        {
+            Dictionary<string, object> dic = new Dictionary<string, object>();
+            var propList = value.GetType().GetProperties();
+            foreach (var item in propList)
+            {
+                var name = item.Name;
+                var val = item.GetValue(value, null);
+                dic.Add(name, val);
+            }
+            return dic;
         }
     }
 
