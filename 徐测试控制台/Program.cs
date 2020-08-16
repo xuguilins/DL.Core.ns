@@ -26,6 +26,7 @@ using DL.Core.ns.Web;
 using DL.Core.ns.Tools;
 using System.IO;
 using DL.Core.ns.Finder;
+using Microsoft.Extensions.Configuration;
 
 namespace 徐测试控制台
 {
@@ -34,8 +35,10 @@ namespace 徐测试控制台
         private static void Main(string[] args)
         {
             IServiceCollection services = new ServiceCollection();
-            services.InitUnitOfWork<MyContext, NsDbContext>();
-            services.AddPack();
+            //   IConfiguration configuration =configuration.buige
+            ConfigerManager.Instance.getCofiger();
+            //services.InitUnitOfWork<MyContext, NsDbContext>();
+            /// services.AddPack();
             Console.WriteLine("完毕");
             Console.ReadKey();
         }

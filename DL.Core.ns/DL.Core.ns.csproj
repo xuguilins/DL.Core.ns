@@ -3,9 +3,12 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <Authors>余温</Authors>
-    <Description>实现多个不同数据库的数据上下文的操作
-</Description>
-    <Version>1.6.0</Version>
+    <Description>
+      修复匹配读取的问题
+      增加第三个工作单元
+      v1.7暂不提供维护
+    </Description>
+    <Version>1.7.0</Version>
     <Copyright>余温</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
@@ -26,4 +29,10 @@
     <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
     <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
   </ItemGroup>
+
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties appsettings_1json__JsonSchema="" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

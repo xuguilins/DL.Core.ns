@@ -24,7 +24,7 @@ namespace DL.Core.ns.Extensiton
         /// <typeparam name="TDbCotnext">EF数据库上下文</typeparam>
         /// <param name="services"></param>
         /// <returns></returns>
-        public static IServiceCollection InitUnitOfWork<TDbCotnext>(this IServiceCollection services) where TDbCotnext : DbContext
+        public static IServiceCollection AddEngineDbContextPack<TDbCotnext>(this IServiceCollection services) where TDbCotnext : DbContext
         {
             services.AddDbContext<TDbCotnext>();
             services.AddScoped<IUnitOfWork, UnitOfWork<TDbCotnext>>();
@@ -45,7 +45,7 @@ namespace DL.Core.ns.Extensiton
         /// <typeparam name="TDbContext2">数据库上下文2</typeparam>
         /// <param name="services"></param>
         /// <returns></returns>
-        public static IServiceCollection InitUnitOfWork<TDbContext1, TDbContext2>(this IServiceCollection services)
+        public static IServiceCollection AddEngineDbContextPack<TDbContext1, TDbContext2>(this IServiceCollection services)
             where TDbContext1 : DbContext
             where TDbContext2 : DbContext
         {
@@ -65,11 +65,42 @@ namespace DL.Core.ns.Extensiton
         }
 
         /// <summary>
+        /// 初始化多个EF数据库上下文
+        /// </summary>
+        /// <typeparam name="TDbContext1">数据库上下文1</typeparam>
+        /// <typeparam name="TDbContext2">数据库上下文2</typeparam>
+        /// <typeparam name="TDbContext3">数据库上下文3</typeparam>
+        /// <param name="services"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddEngineDbContextPack<TDbContext1, TDbContext2, TDbContext3>(this IServiceCollection services)
+            where TDbContext1 : DbContext
+            where TDbContext2 : DbContext
+            where TDbContext3 : DbContext
+        {
+            services.AddDbContext<TDbContext1>();
+            services.AddDbContext<TDbContext2>();
+            services.AddScoped<IUnitOfWork, UnitOfWork<TDbContext1>>();
+            services.AddScoped<IUnitOfWork, UnitOfWork<TDbContext2>>();
+            var type1 = typeof(TDbContext1);
+            var db = Activator.CreateInstance(type1) as DbContext;
+            DbContextManager.InitUnitDbContext(db);
+            var type2 = typeof(TDbContext2);
+            var db2 = Activator.CreateInstance(type2) as DbContext;
+            DbContextManager.InitUnitDbContext(db2);
+            var type3 = typeof(TDbContext3);
+            var db3 = Activator.CreateInstance(type3) as DbContext;
+            DbContextManager.InitUnitDbContext(db3);
+            //设置EF数据实体上下文
+            DbContextManager.InitEngityDbContext();
+            return services;
+        }
+
+        /// <summary>
         /// 模块包注入
         /// </summary>
         /// <param name="services"></param>
         /// <returns></returns>
-        public static IServiceCollection AddPack(this IServiceCollection services)
+        public static IServiceCollection AddEnginePack(this IServiceCollection services)
         {
             try
             {
@@ -98,9 +129,10 @@ namespace DL.Core.ns.Extensiton
                     {
                         contexts.ForEach(context =>
                         {
-                            sb.Append($"准备迁移数据库上下文{context.GetType().Name}的数据实体");
+                            var name = context.GetType().Name;
+                            sb.Append($"准备迁移数据库上下文[{name}]的数据实体");
                             var result = AutoMigration(context);
-                            sb.Append(result + "\r\n");
+                            sb.Append($"上下文：[{name}]" + result + "\r\n");
                         });
                     }
                 }
@@ -137,7 +169,7 @@ namespace DL.Core.ns.Extensiton
                 if (context.Database.GetPendingMigrations().Any())
                 {
                     context.Database.Migrate();
-                    return "启动迁移完毕";
+                    return "迁移完毕";
                 }
                 else
                 {
@@ -147,7 +179,7 @@ namespace DL.Core.ns.Extensiton
             catch (Exception ex)
             {
                 logger.Error($"自动迁移发生异常，异常原因：{ex.Message}");
-                throw;
+                throw new Exception($"自动迁移发生异常，异常原因：{ex.Message}");
             }
         }
     }
