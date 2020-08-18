@@ -1,33 +1,14 @@
-﻿using DL.Core.ns.Configer;
-using System;
-using System.Linq;
-using DL.Core.ns.Data;
+﻿using System;
 using DL.Core.ns.Table;
 using System.Data;
 using System.Collections.Generic;
 using DL.Core.ns.Entity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using DL.Core.ns.Extensiton;
 using DL.Core.ns.EFCore;
 using DL.Core.ns.Dependency;
-using DL.Core.ns.Locator;
-using DL.Core.ns.Cacheing;
-using System.Threading;
-using Microsoft.Extensions.Caching.Memory;
-using System.Reflection;
-using System.ComponentModel;
-using System.Threading.Tasks;
-using System.Collections.Concurrent;
-using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore.SqlServer;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using DL.Core.ns.Web;
-using DL.Core.ns.Tools;
-using System.IO;
-using DL.Core.ns.Finder;
-using Microsoft.Extensions.Configuration;
-using System.Collections.Specialized;
+using Microsoft.Extensions.DependencyInjection;
+using DL.Core.ns.Extensiton;
 
 namespace 徐测试控制台
 {
@@ -35,9 +16,14 @@ namespace 徐测试控制台
     {
         private static void Main(string[] args)
         {
-            ISqlService service = new SqlServer();
-            service.GetTable("SELECT * FROM USERINFO WHERE UserName=@UserName", new { UserName = "徐文" });
-
+            IServiceCollection services = new ServiceCollection();
+            ///引入DL.Core.ns 的扩展
+            ///1.如果需要操作数据库，直接使用 AddEngineDbContextPack<你的EF数据库上下文>
+            ///2.此上下文可以支持多个,最多支持3个数据库上下文
+            services.AddEngineDbContextPack<MyContext>();
+            ///3.初始化模块注入
+            services.AddEnginePack();
+            ///
             Console.ReadKey();
         }
     }
@@ -77,11 +63,12 @@ namespace 徐测试控制台
         }
     }
 
-    public interface IUserService : IScopeDependcy
+    public interface IUserService : ISingletonDependcy
     {
         void AddTeacher();
     }
 
+    [AttbuiteDependency(ServiceLifetime.Scoped)]
     public class UserService : IUserService
     {
         private IRepository<TeacherInfo> TeachRepository;
