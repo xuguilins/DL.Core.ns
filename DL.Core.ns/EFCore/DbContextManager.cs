@@ -14,6 +14,11 @@ namespace DL.Core.ns.EFCore
         private static ConcurrentDictionary<Type, List<IEntityTypeRegiest>> diclist = new ConcurrentDictionary<Type, List<IEntityTypeRegiest>>();
         private static List<DbContext> dbContextList = new List<DbContext>();
 
+        /// <summary>
+        /// 根据指定的实体类型获取上下文
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public static DbContext GetDb(Type type)
         {
             if (!diclist.Any())
@@ -46,6 +51,11 @@ namespace DL.Core.ns.EFCore
             }
         }
 
+        /// <summary>
+        /// 获取上下文
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public static Type GetDbContext(Type type)
         {
             Type dbType = null;
@@ -62,6 +72,10 @@ namespace DL.Core.ns.EFCore
             return dbType;
         }
 
+        /// <summary>
+        /// 上下文初始化
+        /// </summary>
+        /// <param name="type"></param>
         public static void InitUnitDbContext(DbContext type)
         {
             dbContextList.Add(type);
