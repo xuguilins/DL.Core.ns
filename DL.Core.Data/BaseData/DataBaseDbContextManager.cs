@@ -13,8 +13,8 @@ namespace DL.Core.Data.BaseData
     /// </summary>
     public class DataBaseDbContextManager : IDataBaseDbContextManager
     {
-        private static ConcurrentDictionary<Type, IDataBaseContext> _contexts = new ConcurrentDictionary<Type, IDataBaseContext>();
-        private static ConcurrentDictionary<DataBaseType, IDataBaseContext> _typecontexts = new ConcurrentDictionary<DataBaseType, IDataBaseContext>();
+        private static readonly ConcurrentDictionary<Type, IDataBaseContext> _contexts = new ConcurrentDictionary<Type, IDataBaseContext>();
+        private static readonly ConcurrentDictionary<DataBaseType, IDataBaseContext> _typecontexts = new ConcurrentDictionary<DataBaseType, IDataBaseContext>();
 
         public IDataBaseContext GetDataBaseDbContext(Type type)
         {
