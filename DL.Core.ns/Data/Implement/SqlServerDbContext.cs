@@ -8,6 +8,7 @@ using DL.Core.ns.Configer;
 using DL.Core.ns.Logging;
 using DL.Core.ns.Extensiton;
 using System.Collections.Concurrent;
+using System.Linq;
 
 namespace DL.Core.ns.Data
 {
@@ -60,6 +61,13 @@ namespace DL.Core.ns.Data
 
         public override int ExecuteNonQuery(string sql, CommandType type, params DbParameter[] parameter)
         {
+            return Insert(sql, type, parameter);
+        }
+
+        #region [增删改]
+
+        private protected int Insert(string sql, CommandType type, params DbParameter[] parameter)
+        {
             try
             {
                 if (_sqlConnection.State == ConnectionState.Open)
@@ -67,7 +75,8 @@ namespace DL.Core.ns.Data
                     using (SqlCommand com = new SqlCommand(sql, _sqlConnection, _transaction))
                     {
                         com.CommandType = type;
-                        com.Parameters.AddRange(parameter);
+                        if (parameter != null)
+                            com.Parameters.AddRange(parameter);
                         return com.ExecuteNonQuery();
                     }
                 }
@@ -82,6 +91,8 @@ namespace DL.Core.ns.Data
                 throw;
             }
         }
+
+        #endregion [增删改]
 
         public override object ExecuteScalar(string sql, CommandType type, params DbParameter[] parameter)
         {
@@ -203,6 +214,7 @@ namespace DL.Core.ns.Data
             if (pairs.ContainsKey(connectionString))
             {
                 GetDbContext = pairs[connectionString];
+                _connectString = connectionString;
                 return pairs[connectionString];
             }
             else
@@ -211,6 +223,7 @@ namespace DL.Core.ns.Data
                 _sqlConnection.Open();
                 pairs.TryAdd(connectionString, _sqlConnection);
                 GetDbContext = _sqlConnection;
+                _connectString = connectionString;
                 return _sqlConnection;
             }
         }
@@ -258,6 +271,61 @@ namespace DL.Core.ns.Data
                 logger.Error($"执行SqlServer发生异常,command:参数化匿名对象获取数据表格 GetDataTable,sqlText:{sql},exMes:{ex.Message} ");
                 throw;
             }
+        }
+
+        /// <summary>
+        /// 实体类写入数据库
+        /// <see cref="enttiy">实体类结构字段必须与数据库保持一致</see>
+        /// </summary>
+        /// <typeparam name="TEnttiy"></typeparam>
+        /// <param name="enttiy">实体类</param>
+        /// <returns></returns>
+        public int InsertEntity<TEnttiy>(TEnttiy enttiy, string tableName) where TEnttiy : class
+        {
+            ConcurrentDictionary<string, object> pairs = new ConcurrentDictionary<string, object>();
+            var props = enttiy.GetType().GetProperties();
+            foreach (var item in props)
+            {
+                if (pairs.ContainsKey(item.Name))
+                    throw new Exception($"包含重复的属性名,写入失败");
+                var propName = item.Name;
+                var itemValue = item.GetValue(enttiy, null);
+                pairs.TryAdd(propName, itemValue);
+            }
+            if (pairs.Count > 0)
+            {
+                StringBuilder sb = new StringBuilder();
+                var keys = string.Join(",", pairs.Select(x => x.Key));
+                var values = string.Join(",", pairs.Select(x => "'" + x.Value + "'"));
+                sb.Append($"INSERT INTO {tableName} ({keys}) VALUES ({values})");
+                pairs.Clear();
+                return Insert(sb.ToString(), CommandType.Text, null);
+            }
+            else
+            {
+                return 1;
+            }
+        }
+
+     
+
+        /// <summary>
+        /// 批量实体写入数据库
+        ///<see cref="entities">实体类结构字段必须与数据库保持一致</see>
+        /// </summary>
+        /// <typeparam name="TEntity">s</typeparam>
+        /// <param name="entities">实体集合</param>
+        /// <returns></returns>
+        public int InsertEntityItems<TEntity>(IEnumerable<TEntity> entities, string tableName) where TEntity : class
+        {
+            using (SqlBulkCopy bluk = new SqlBulkCopy(_connectString))
+            {
+                bluk.DestinationTableName = tableName;
+
+                //bluk.ColumnMappings.Add()
+            }
+
+            return 0;
         }
 
         private IDbConnection DbContext()

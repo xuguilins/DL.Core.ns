@@ -9,6 +9,7 @@ using DL.Core.ns.Dependency;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.Extensions.DependencyInjection;
 using DL.Core.ns.Extensiton;
+using DL.Core.ns.Data;
 
 namespace 徐测试控制台
 {
@@ -17,13 +18,11 @@ namespace 徐测试控制台
         private static void Main(string[] args)
         {
             IServiceCollection services = new ServiceCollection();
-            ///引入DL.Core.ns 的扩展
-            ///1.如果需要操作数据库，直接使用 AddEngineDbContextPack<你的EF数据库上下文>
-            ///2.此上下文可以支持多个,最多支持3个数据库上下文
-            services.AddEngineDbContextPack<MyContext>();
-            ///3.初始化模块注入
-            services.AddEnginePack();
-            ///
+            ISqlServerDbContext context = new SqlServerDbContext();
+            context.CreateDbConnection("Data Source=.;Initial Catalog=CoreNs;User ID=sa;Password=0103");
+            var info = new TestUserInfo { CreatedTime = DateTime.Now, UsePass = "sdfsdfsd", UserName = "新的数据赏上下文" };
+            context.InsertEntity(info, "UserTest");
+
             Console.ReadKey();
         }
     }

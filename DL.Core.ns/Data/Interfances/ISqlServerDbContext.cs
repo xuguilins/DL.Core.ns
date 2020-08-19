@@ -37,5 +37,25 @@ namespace DL.Core.ns.Data
         /// <param name="parameter">匿名对象 new { }</param>
         /// <returns></returns>
         DataTable GetDataTable(string sql, CommandType type, object parameter);
+
+        /// <summary>
+        /// 实体类写入数据库
+        /// <see cref="enttiy">实体类结构字段必须与数据库保持一致</see>
+        /// </summary>
+        /// <typeparam name="TEnttiy"></typeparam>
+        /// <param name="enttiy">实体类</param>
+        /// <param name="tableName">数据表名称</param>
+        /// <returns></returns>
+        int InsertEntity<TEnttiy>(TEnttiy enttiy, string tableName) where TEnttiy : class;
+
+        /// <summary>
+        /// 批量实体写入数据库
+        ///<see cref="entities">实体类结构字段必须与数据库保持一致</see>
+        /// </summary>
+        /// <typeparam name="TEntity">s</typeparam>
+        /// <param name="entities">实体集合</param>
+        /// <param name="tableName">数据表名称</param>
+        /// <returns></returns>
+        int InsertEntityItems<TEntity>(IEnumerable<TEntity> entities, string tableName) where TEntity : class;
     }
 }
