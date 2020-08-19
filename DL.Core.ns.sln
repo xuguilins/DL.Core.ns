@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DL.Core.ns", "DL.Core.ns\DL
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "徐测试控制台", "徐测试控制台\徐测试控制台.csproj", "{531718CB-CA42-4BAA-8FEE-EFADFD592CB7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DL.Core.Data", "DL.Core.Data\DL.Core.Data.csproj", "{5F9FAE50-26CE-4D58-B989-9A1A23494B28}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DL.Core.utility", "DL.Core.utility\DL.Core.utility.csproj", "{6F487CDB-23BE-4A3D-BE04-090A2C019975}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{531718CB-CA42-4BAA-8FEE-EFADFD592CB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{531718CB-CA42-4BAA-8FEE-EFADFD592CB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{531718CB-CA42-4BAA-8FEE-EFADFD592CB7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F9FAE50-26CE-4D58-B989-9A1A23494B28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F9FAE50-26CE-4D58-B989-9A1A23494B28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F9FAE50-26CE-4D58-B989-9A1A23494B28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F9FAE50-26CE-4D58-B989-9A1A23494B28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F487CDB-23BE-4A3D-BE04-090A2C019975}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F487CDB-23BE-4A3D-BE04-090A2C019975}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F487CDB-23BE-4A3D-BE04-090A2C019975}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F487CDB-23BE-4A3D-BE04-090A2C019975}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

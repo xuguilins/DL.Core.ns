@@ -1,4 +1,4 @@
-﻿using DL.Core.ns.Entity;
+﻿using DL.Core.utility.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;

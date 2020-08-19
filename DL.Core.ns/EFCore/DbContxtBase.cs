@@ -1,5 +1,4 @@
-﻿using DL.Core.ns.Entity;
-using DL.Core.ns.Finder;
+﻿using DL.Core.ns.Finder;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

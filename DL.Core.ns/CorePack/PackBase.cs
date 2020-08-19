@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace DL.Core.ns.CorePack
+namespace DL.Core.ns
 {
     /// <summary>
     /// 模块包基类

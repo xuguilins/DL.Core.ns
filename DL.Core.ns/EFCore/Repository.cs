@@ -1,6 +1,4 @@
-﻿using DL.Core.ns.Entity;
-using DL.Core.ns.Extensiton;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +6,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using DL.Core.ns.EFCore;
+using DL.Core.utility.Entity;
 
 namespace DL.Core.ns.EFCore
 {

@@ -4,7 +4,7 @@ using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 using DL.Core.ns.Finder;
 using System.Linq;
-using DL.Core.ns.Dependency;
+using DL.Core.utility.Dependency;
 
 namespace DL.Core.ns.CorePack
 {

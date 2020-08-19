@@ -1,5 +1,5 @@
-﻿using DL.Core.ns.Dependency;
-using DL.Core.ns.Entity;
+﻿using DL.Core.utility.Dependency;
+using DL.Core.utility.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;

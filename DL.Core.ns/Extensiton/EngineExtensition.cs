@@ -1,5 +1,4 @@
 ﻿using DL.Core.ns.CorePack;
-using DL.Core.ns.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -11,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using Microsoft.Extensions.Caching.Memory;
 using DL.Core.ns.EFCore;
+using DL.Core.utility.Logging;
 
 namespace DL.Core.ns.Extensiton
 {
@@ -119,7 +119,7 @@ namespace DL.Core.ns.Extensiton
                 ServiceLocator.Instance.SetServiceCollection(services);
                 //服务构建器设置
                 ServiceLocator.Instance.SetProvider(provider);
-                var autoConfig = Configer.ConfigerManager.Instance.getCofiger().CodeConfig.AutoMigrationEnable;
+                var autoConfig = utility.Configer.ConfigerManager.Instance.getCofiger().CodeConfig.AutoMigrationEnable;
                 sb.Append($"准备检查是否开启自动迁移.【{autoConfig}】\r\n");
                 if (autoConfig)
                 {

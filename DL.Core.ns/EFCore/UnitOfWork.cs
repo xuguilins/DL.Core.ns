@@ -1,5 +1,5 @@
 ﻿using DL.Core.ns.Extensiton;
-using DL.Core.ns.Logging;
+using DL.Core.utility.Logging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System;
