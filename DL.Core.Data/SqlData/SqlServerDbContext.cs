@@ -10,6 +10,8 @@ using System.Linq;
 using DL.Core.Data.BaseData;
 using DL.Core.utility.Logging;
 using DL.Core.utility.Extendsition;
+using DL.Core.utility.Entity;
+using MySqlX.XDevAPI.Relational;
 
 namespace DL.Core.Data.SqlData
 {
@@ -62,12 +64,12 @@ namespace DL.Core.Data.SqlData
 
         public override int ExecuteNonQuery(string sql, CommandType type, params DbParameter[] parameter)
         {
-            return Insert(sql, type, parameter);
+            return ExecuteSqlServer(sql, type, parameter);
         }
 
         #region [增删改]
 
-        private protected int Insert(string sql, CommandType type, params DbParameter[] parameter)
+        private protected int ExecuteSqlServer(string sql, CommandType type, params DbParameter[] parameter)
         {
             try
             {
@@ -305,7 +307,7 @@ namespace DL.Core.Data.SqlData
                     list.Add(new SqlParameter($"@{item.Key}", item.Value));
                 }
                 pairs.Clear();
-                return Insert(sb.ToString(), CommandType.Text, list.ToArray());
+                return ExecuteSqlServer(sb.ToString(), CommandType.Text, list.ToArray());
             }
             else
             {
@@ -365,6 +367,44 @@ namespace DL.Core.Data.SqlData
                 return 0;
             }
         }
+        /// <summary>
+        /// 删除指定实体
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="enttiy">实体信息</param>
+        /// <param name="tableName">数据表名称</param>
+        /// <returns></returns>
+       public  int DeleteEntity<TEntity>(TEntity enttiy, string tableName) where TEntity : EntityBase
+        {
+            var propInfo = enttiy.GetType().GetProperty("Id");
+            var primaryKey = propInfo.GetValue(enttiy, null);
+            if (primaryKey == null)
+                throw new Exception("获取指定属性的值异常");
+            var DelSql = $"DELETE FROM {tableName} WHERE Id=@Id";
+            SqlParameter ps = new SqlParameter("@Id", primaryKey.ToString());
+            return ExecuteSqlServer(DelSql, CommandType.Text, ps);
+        }
+        /// <summary>
+        /// 批量删除实体
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="entities">实体集合</param>
+        /// <param name="tableName">数据表名称</param>
+        /// <returns></returns>
+        public int DeleteEntityItems<TEntity>(IEnumerable<TEntity> entities, string tableName) where TEntity : EntityBase
+        {
+            string primaryKeys = string.Empty;
+            foreach (var item in entities)
+            {
+                var props = item.GetType().GetProperty("Id");
+                var value = props.GetValue(item, null);
+                if (value != null)
+                    primaryKeys = string.Join(",", $"'{value}'");
+            }
+            var DelSql = $"DELETE FROM {tableName} WHERE Id IN ({primaryKeys})";
+            return ExecuteSqlServer(DelSql, CommandType.Text);
+        }
+
 
         private IDbConnection DbContext()
         {

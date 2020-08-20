@@ -1,4 +1,5 @@
 ﻿using DL.Core.Data.BaseData;
+using DL.Core.utility.Entity;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -39,6 +40,8 @@ namespace DL.Core.Data.SqlData
         /// <returns></returns>
         DataTable GetDataTable(string sql, CommandType type, object parameter);
 
+
+ 
         /// <summary>
         /// 实体类写入数据库
         /// <see cref="enttiy">实体类结构字段必须与数据库保持一致</see>
@@ -59,5 +62,22 @@ namespace DL.Core.Data.SqlData
         /// <param name="transation">是否使用事务</param>
         /// <returns></returns>
         int InsertEntityItems<TEntity>(IEnumerable<TEntity> entities, string tableName, bool transation = false) where TEntity : class;
+        /// <summary>
+        /// 删除指定实体
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="enttiy">实体信息</param>
+        /// <param name="tableName">数据表名称</param>
+        /// <returns></returns>
+        int DeleteEntity<TEntity>(TEntity enttiy, string tableName) where TEntity : EntityBase;
+        /// <summary>
+        /// 批量删除实体
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="entities">实体集合</param>
+        /// <param name="tableName">数据表名称</param>
+        /// <returns></returns>
+        int DeleteEntityItems<TEntity>(IEnumerable<TEntity> entities, string tableName) where TEntity : EntityBase;
+
     }
 }

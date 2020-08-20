@@ -18,7 +18,8 @@ namespace 徐测试控制台
     {
         private static void Main(string[] args)
         {
-            var id = StrExtensition.GetGuid();
+            ISqlServerDbContext db = new SqlServerDbContext();
+            //db.CreateDbConnection("");
 
             Console.ReadKey();
         }

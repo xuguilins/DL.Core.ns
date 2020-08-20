@@ -42,7 +42,7 @@ namespace DL.Core.utility.Logging
                     {
                         if (string.IsNullOrWhiteSpace(config?.CodeConfig?.LogPath))
                         {
-                            logDirPath = AppDomain.CurrentDomain.BaseDirectory;
+                            logDirPath = Directory.GetCurrentDirectory();
                         }
                         else
                         {
@@ -55,7 +55,7 @@ namespace DL.Core.utility.Logging
                     }
                     else
                     {
-                        logDirPath = AppDomain.CurrentDomain.BaseDirectory;
+                        logDirPath = Directory.GetCurrentDirectory();
                     }
                     pathdic.TryAdd("internal", logDirPath);
                 }
