@@ -10,6 +10,7 @@ using DL.Core.Data.SqlData;
 using DL.Core.Data.Extendsition;
 using DL.Core.utility.Entity;
 using DL.Core.ns.EFCore;
+using DL.Core.utility.Extendsition;
 
 namespace 徐测试控制台
 {
@@ -17,10 +18,7 @@ namespace 徐测试控制台
     {
         private static void Main(string[] args)
         {
-            IServiceCollection services = new ServiceCollection();
-            // 引入框架初始化
-            services.AddEngineDbContextPack<MyContext>();  //初始化数据库上下文，最多支持3个
-            services.AddEnginePack();// 模块注入，包含内置的事件、命令、仓储注入，或者后续的服务实现类的注入
+            var id = StrExtensition.GetGuid();
 
             Console.ReadKey();
         }
