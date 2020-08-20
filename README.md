@@ -65,6 +65,131 @@
     }
   
 ```
+## DL.Core.ns实际操作SQLSERVER数据库
+
+```
+
+using System;
+using DL.Core.utility.Entity;
+using DL.Core.Data.Extendsition;
+using DL.Core.Data.SqlData;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+using DL.Core.ns.EFCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using DL.Core.ns.Extensiton;
+using DL.Core.utility.Dependency;
+using DL.Core.ns.Locator;
+
+namespace SQL_ITMES
+{
+    internal class Program
+    {
+        private static void Main(string[] args)
+        {
+            IServiceCollection services = new ServiceCollection();
+            services.AddEngineDbContextPack<UserContext, TeacherContext>();
+            services.AddEnginePack();
+            var service = ServiceLocator.Instance.GetService<IUserService>();
+            service.CreateUser(new UserInfo { UsePass = "6666", UserName = "王二狗" });
+            Console.ReadKey();
+        }
+    }
+
+    #region [实体]
+
+    public class UserInfo : EntityBase
+    {
+        public string UserName { get; set; }
+        public string UsePass { get; set; }
+    }
+
+    public class TeacherInfo : EntityBase
+
+    {
+        public string TeacherName { get; set; }
+        public string TeacherAdderss { get; set; }
+    }
+
+    #endregion [实体]
+
+    #region [上下文]
+
+    public class UserContext : DbContextBase<UserContext>
+    {
+        public override string ConnectionString => "Data Source=.;Initial Catalog=CoreNs;Integrated Security=True";
+
+        public override void RegistConfiguration(ModelBuilder builder)
+        {
+            builder.ApplyConfiguration(new UserInfoConfigurtion());
+        }
+    }
+
+    public class TeacherContext : DbContextBase<TeacherContext>
+    {
+        public override string ConnectionString => "Data Source=.;Initial Catalog=EFTESTDEMO;Integrated Security=True";
+
+        public override void RegistConfiguration(ModelBuilder builder)
+        {
+            builder.ApplyConfiguration(new TeacherConfiguration());
+        }
+    }
+
+    #endregion [上下文]
+
+    #region [实体配置]
+
+    public class UserInfoConfigurtion : ConfigurationBase<UserInfo>
+    {
+        public override Type DbContextType => typeof(UserContext);
+
+        public override void Configure(EntityTypeBuilder<UserInfo> builder)
+        {
+            builder.ToTable("UserInfo");
+        }
+    }
+
+    public class TeacherConfiguration : ConfigurationBase<TeacherInfo>
+    {
+        public override Type DbContextType => typeof(TeacherContext);
+
+        public override void Configure(EntityTypeBuilder<TeacherInfo> builder)
+        {
+            builder.ToTable("TeacherInfo");
+        }
+    }
+
+    #endregion [实体配置]
+
+    #region [服务]
+
+    public interface IUserService : IScopeDependcy
+    {
+        void CreateUser(UserInfo info);
+    }
+
+    public class UserService : IUserService
+    {
+        private IRepository<UserInfo> _user;
+
+        public UserService(IRepository<UserInfo> repository)
+        {
+            _user = repository;
+        }
+
+        public void CreateUser(UserInfo info)
+        {
+            _user.AddEntity(info);
+        }
+    }
+
+    #endregion [服务]
+}
+
+```
+
+
+
 
 * DL.Core.utility
  

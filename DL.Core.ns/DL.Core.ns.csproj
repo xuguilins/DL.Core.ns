@@ -3,8 +3,9 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <Authors>余温</Authors>
-    <Description>封装EFCore进行操作数据库</Description>
-    <Version>1.7.0</Version>
+    <Description>封装EFCore进行操作数据库
+增加服务定位器</Description>
+    <Version>1.7.1</Version>
     <Copyright>余温</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>

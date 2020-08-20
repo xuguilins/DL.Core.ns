@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.Extensions.DependencyInjection;
 using DL.Core.ns.Extensiton;
 using DL.Core.Data;
-using DL.Core.utility.Locator;
 using DL.Core.Data.SqlData;
 using DL.Core.Data.Extendsition;
 using DL.Core.utility.Entity;
@@ -38,17 +37,6 @@ namespace 徐测试控制台
         public override void RegistConfiguration(ModelBuilder builder)
         {
             //IEntityTypeConfiguration
-        }
-    }
-
-    public class UserConfiguration : ConfigurationBase<UserTest>
-    {
-        public override Type DbContextType => //您的上下文
-
-
-        public override void Configure(EntityTypeBuilder<UserTest> builder)
-        {
-            // 实体配置
         }
     }
 }
