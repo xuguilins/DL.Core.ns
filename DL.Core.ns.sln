@@ -7,9 +7,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DL.Core.ns", "DL.Core.ns\DL
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "徐测试控制台", "徐测试控制台\徐测试控制台.csproj", "{531718CB-CA42-4BAA-8FEE-EFADFD592CB7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DL.Core.Data", "DL.Core.Data\DL.Core.Data.csproj", "{5F9FAE50-26CE-4D58-B989-9A1A23494B28}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DL.Core.Data", "DL.Core.Data\DL.Core.Data.csproj", "{5F9FAE50-26CE-4D58-B989-9A1A23494B28}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DL.Core.utility", "DL.Core.utility\DL.Core.utility.csproj", "{6F487CDB-23BE-4A3D-BE04-090A2C019975}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DL.Core.utility", "DL.Core.utility\DL.Core.utility.csproj", "{6F487CDB-23BE-4A3D-BE04-090A2C019975}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5B33F9FD-90B2-4212-B160-69D1883A9124}"
+	ProjectSection(SolutionItems) = preProject
+		DL.Core.ns.md = DL.Core.ns.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

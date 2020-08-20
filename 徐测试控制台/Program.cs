@@ -2,7 +2,6 @@
 using System.Data;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using DL.Core.ns.EFCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.Extensions.DependencyInjection;
 using DL.Core.ns.Extensiton;
@@ -10,6 +9,8 @@ using DL.Core.Data;
 using DL.Core.utility.Locator;
 using DL.Core.Data.SqlData;
 using DL.Core.Data.Extendsition;
+using DL.Core.utility.Entity;
+using DL.Core.ns.EFCore;
 
 namespace 徐测试控制台
 {
@@ -18,25 +19,16 @@ namespace 徐测试控制台
         private static void Main(string[] args)
         {
             IServiceCollection services = new ServiceCollection();
-            services.AddEngineDbContextPack<MyContext>();
-
-            IServiceProvider provider = services.BuildServiceProvider();
-            var service = provider.GetService<ISqlServerDbContext>();
-            var x = service.ExecuteNonQuery("", CommandType.Text);
-            //IServiceCollection services = new ServiceCollection();
-            //ISqlServerDbContext context = new SqlServerDbContext();
-            //context.CreateDbConnection("Data Source=.;Initial Catalog=CoreNs;User ID=sa;Password=0103");
-            //List<TestUserInfo> list = new List<TestUserInfo>();
-            //for (int i = 0; i < 100; i++)
-            //{
-            //    var info = new TestUserInfo { CreatedTime = DateTime.Now, UsePass = "sdfsdfsd" + i, UserName = "新的数据赏上下文" + i };
-            //    list.Add(info);
-            //}
-
-            //context.InsertEntityItems(list, "UserTest", false);
+            // 引入框架初始化
+            services.AddEngineDbContextPack<MyContext>();  //初始化数据库上下文，最多支持3个
+            services.AddEnginePack();// 模块注入，包含内置的事件、命令、仓储注入，或者后续的服务实现类的注入
 
             Console.ReadKey();
         }
+    }
+
+    public class UserTest : EntityBase
+    {
     }
 
     public class MyContext : DbContextBase<MyContext>
@@ -45,6 +37,18 @@ namespace 徐测试控制台
 
         public override void RegistConfiguration(ModelBuilder builder)
         {
+            //IEntityTypeConfiguration
+        }
+    }
+
+    public class UserConfiguration : ConfigurationBase<UserTest>
+    {
+        public override Type DbContextType => //您的上下文
+
+
+        public override void Configure(EntityTypeBuilder<UserTest> builder)
+        {
+            // 实体配置
         }
     }
 }
