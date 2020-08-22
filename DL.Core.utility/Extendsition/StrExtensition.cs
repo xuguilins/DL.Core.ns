@@ -144,21 +144,22 @@ namespace DL.Core.utility.Extendsition
             return dic;
         }
 
-        public static string GetGuid()
+        /// <summary>
+        /// 获取可排序的GUID
+        /// </summary>
+        /// <returns></returns>
+        public static string GetXGuid()
         {
-            var guidArray = Guid.NewGuid().ToByteArray();
-            var dtBase = new DateTime(1900, 1, 1);
-            var dtNow = DateTime.Now;
-            var days = new TimeSpan(dtNow.Ticks - dtBase.Ticks);
-            var msecs = new TimeSpan(dtNow.Ticks - new DateTime(dtNow.Year, dtNow.Month, dtNow.Day).Ticks);
-            var daysArray = BitConverter.GetBytes(days.Days);
-            var msecsArray = BitConverter.GetBytes((long)(msecs.TotalMilliseconds / 3.333333));
-            Array.Reverse(daysArray);
-            Array.Reverse(msecsArray);
-            Array.Copy(daysArray, daysArray.Length - 2, guidArray, guidArray.Length - 6, 2);
-            Array.Copy(msecsArray, msecsArray.Length - 4, guidArray, guidArray.Length - 4, 4);
-            var result = new Guid(guidArray).ToString("N").ToUpper();
-            return result;
+            var guid = Guid.NewGuid().ToString("N").ToUpper();
+            var bytes = System.Text.Encoding.UTF8.GetBytes(guid);
+            Array.Reverse(bytes);
+            string result = string.Empty;
+            for (int j = 0; j < 2; j++)
+            {
+                result += bytes[j];
+            }
+            var uid = guid.ExpenSubstr(15);
+            return result + uid;
         }
 
         #region 【字符串非空验证】

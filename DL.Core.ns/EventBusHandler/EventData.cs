@@ -8,7 +8,7 @@ namespace DL.Core.ns.EventBusHandler
 {
     public class EventData : IEventData
     {
-        private string _eventId = StrExtensition.GetGuid();
+        private string _eventId = StrExtensition.GetXGuid();
         private EventType _type = EventType.Info;
         private DateTime _time = StrExtensition.GetDateTime();
 

@@ -19,10 +19,24 @@ namespace 徐测试控制台
     {
         private static void Main(string[] args)
         {
-            IServiceCollection services = new ServiceCollection();
-            services.AddEngineDbContextPack<MyContext, UserContxt>();
-            IServiceProvider provider = services.BuildServiceProvider();
-            var service = provider.GetServices<IUnitOfWork>().ToList();
+            List<string> Nolist = new List<string>();
+            for (int i = 0; i < 10; i++)
+            {
+                Nolist.Add(StrExtensition.GetXGuid());
+            }
+            Console.WriteLine("····未排序输出······");
+            foreach (var item in Nolist)
+            {
+                Console.WriteLine(item);
+            }
+            var sorgList = Nolist;
+            sorgList.Sort();
+            Console.WriteLine("`····排序输出······");
+            foreach (var item in sorgList)
+            {
+                Console.WriteLine(item);
+            }
+            Console.WriteLine();
 
             Console.ReadKey();
         }
