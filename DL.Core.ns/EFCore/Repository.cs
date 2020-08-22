@@ -49,6 +49,12 @@ namespace DL.Core.ns.EFCore
             return _dbContext.SaveChanges();
         }
 
+        public int AddEntityItems(IEnumerable<TEntity> entities)
+        {
+            DbSet.AddRange(entities);
+            return _dbContext.SaveChanges();
+        }
+
         /// <summary>
         /// 更新实体
         /// </summary>
@@ -93,6 +99,17 @@ namespace DL.Core.ns.EFCore
         public async Task<int> AddEntityAsync(TEntity entity)
         {
             await DbSet.AddAsync(entity);
+            return await _dbContext.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// 异步新增批量实体
+        /// </summary>
+        /// <param name="entities"></param>
+        /// <returns></returns>
+        public async Task<int> AddEntityItemsAsync(IEnumerable<TEntity> entities)
+        {
+            await DbSet.AddRangeAsync(entities);
             return await _dbContext.SaveChangesAsync();
         }
 

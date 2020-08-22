@@ -7,6 +7,8 @@ namespace DL.Core.ns.EFCore
 {
     public interface IUnitOfWork
     {
+        Type DbContextType { get; }
+
         /// <summary>
         /// 是否开启事务
         /// </summary>

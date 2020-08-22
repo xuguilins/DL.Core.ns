@@ -16,7 +16,7 @@ namespace DL.Core.utility.Configer
 
         private ConfigerManager()
         {
-            var path = AppDomain.CurrentDomain.BaseDirectory;
+            var path = Directory.GetCurrentDirectory();
             configuration = new ConfigurationBuilder().SetBasePath(path).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).AddJsonFile("appsettings.Development.json", optional: true)
              .Build();
         }

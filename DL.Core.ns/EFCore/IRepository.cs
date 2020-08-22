@@ -32,6 +32,13 @@ namespace DL.Core.ns.EFCore
         int AddEntity(TEntity entity);
 
         /// <summary>
+        /// 新增批量实体
+        /// </summary>
+        /// <param name="entities"></param>
+        /// <returns></returns>
+        int AddEntityItems(IEnumerable<TEntity> entities);
+
+        /// <summary>
         /// 更新实体
         /// </summary>
         /// <param name="entity">实体对象</param>
@@ -62,6 +69,13 @@ namespace DL.Core.ns.EFCore
         /// <param name="entity">实体对象</param>
         /// <returns></returns>
         Task<int> AddEntityAsync(TEntity entity);
+
+        /// <summary>
+        /// 异步新增批量实体
+        /// </summary>
+        /// <param name="entities"></param>
+        /// <returns></returns>
+        Task<int> AddEntityItemsAsync(IEnumerable<TEntity> entities);
 
         /// <summary>
         /// 异步更新更新实体

@@ -20,7 +20,10 @@ namespace DL.Core.ns.EFCore
         public UnitOfWork(TDbContext Context)
         {
             _dbcontext = Context ?? throw new ArgumentNullException(nameof(Context));
+            DbContextType = Context.GetType();
         }
+
+        public Type DbContextType { get; private set; }
 
         /// <summary>
         /// 是否开启事务

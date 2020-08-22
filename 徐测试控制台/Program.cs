@@ -11,6 +11,7 @@ using DL.Core.Data.Extendsition;
 using DL.Core.utility.Entity;
 using DL.Core.ns.EFCore;
 using DL.Core.utility.Extendsition;
+using System.Linq;
 
 namespace 徐测试控制台
 {
@@ -18,8 +19,10 @@ namespace 徐测试控制台
     {
         private static void Main(string[] args)
         {
-            ISqlServerDbContext db = new SqlServerDbContext();
-            //db.CreateDbConnection("");
+            IServiceCollection services = new ServiceCollection();
+            services.AddEngineDbContextPack<MyContext, UserContxt>();
+            IServiceProvider provider = services.BuildServiceProvider();
+            var service = provider.GetServices<IUnitOfWork>().ToList();
 
             Console.ReadKey();
         }
@@ -36,6 +39,15 @@ namespace 徐测试控制台
         public override void RegistConfiguration(ModelBuilder builder)
         {
             //IEntityTypeConfiguration
+        }
+    }
+
+    public class UserContxt : DbContextBase<UserContxt>
+    {
+        public override string ConnectionString => "";
+
+        public override void RegistConfiguration(ModelBuilder builder)
+        {
         }
     }
 }
