@@ -19,31 +19,37 @@ namespace 徐测试控制台
     {
         private static void Main(string[] args)
         {
-            List<string> Nolist = new List<string>();
-            for (int i = 0; i < 10; i++)
+            Dictionary<string, object> pairs = new Dictionary<string, object>()
             {
-                Nolist.Add(StrExtensition.GetXGuid());
-            }
-            Console.WriteLine("····未排序输出······");
-            foreach (var item in Nolist)
-            {
-                Console.WriteLine(item);
-            }
-            var sorgList = Nolist;
-            sorgList.Sort();
-            Console.WriteLine("`····排序输出······");
-            foreach (var item in sorgList)
-            {
-                Console.WriteLine(item);
-            }
-            Console.WriteLine();
+                { "UserName" ,"老何"},
+                {"UserPass","123465" },
+                {"Extend",
+                   new { Age = 12, Sex="男"
+                   }
+                }
+                };
 
+            var data = pairs.ToObject<UserInfo>();
             Console.ReadKey();
         }
     }
 
     public class UserTest : EntityBase
     {
+        //  public int MyProperty { get; set; }
+    }
+
+    public class UserInfo
+    {
+        public string UserName { get; set; }
+        public string UserPass { get; set; }
+        //public UserPops Extend { get; set; }
+    }
+
+    public class UserPops
+    {
+        public int Age { get; set; }
+        public string Sex { get; set; }
     }
 
     public class MyContext : DbContextBase<MyContext>

@@ -127,7 +127,7 @@ namespace DL.Core.utility.Extendsition
         public static string GetGuid(string formatter = "N") => Guid.NewGuid().ToString(formatter);
 
         /// <summary>
-        /// 对象转字典
+        /// 对象转字典,不允许对象嵌套
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -142,6 +142,27 @@ namespace DL.Core.utility.Extendsition
                 dic.Add(name, val);
             }
             return dic;
+        }
+
+        /// <summary>
+        /// 字典转对象,仅支持一级
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static T ToObject<T>(this Dictionary<string, object> value) where T : class, new()
+        {
+            var model = new T();
+            var propList = model.GetType().GetProperties();
+            foreach (var item in value)
+            {
+                var info = propList.FirstOrDefault(m => m.Name.Equals(item.Key));
+                if (info != null)
+                {
+                    info.SetValue(model, item.Value);
+                }
+            }
+            return model;
         }
 
         /// <summary>
