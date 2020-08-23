@@ -12,6 +12,7 @@ using DL.Core.utility.Entity;
 using DL.Core.ns.EFCore;
 using DL.Core.utility.Extendsition;
 using System.Linq;
+using DL.Core.utility.Logging;
 
 namespace 徐测试控制台
 {
@@ -19,17 +20,8 @@ namespace 徐测试控制台
     {
         private static void Main(string[] args)
         {
-            Dictionary<string, object> pairs = new Dictionary<string, object>()
-            {
-                { "UserName" ,"老何"},
-                {"UserPass","123465" },
-                {"Extend",
-                   new { Age = 12, Sex="男"
-                   }
-                }
-                };
-
-            var data = pairs.ToObject<UserInfo>();
+            ILogger logger = LogManager.GetLogger<Program>();
+            logger.Debug("666");
             Console.ReadKey();
         }
     }

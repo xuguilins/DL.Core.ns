@@ -43,6 +43,16 @@ namespace DL.Core.utility.Logging
                         if (string.IsNullOrWhiteSpace(config?.CodeConfig?.LogPath))
                         {
                             logDirPath = Directory.GetCurrentDirectory();
+                            if (logDirPath.Contains("bin"))
+                            {
+                                int endIndex = logDirPath.IndexOf("bin");
+                                int startIndex = 0;
+                                logDirPath = logDirPath.Substring(startIndex, endIndex);
+                            }
+                            if (!logDirPath.EndsWith('\\'))
+                            {
+                                logDirPath = logDirPath + "\\";
+                            }
                         }
                         else
                         {
