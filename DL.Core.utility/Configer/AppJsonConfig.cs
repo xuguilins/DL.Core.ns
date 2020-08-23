@@ -102,5 +102,43 @@ namespace DL.Core.utility.Configer
         /// 授权码
         /// </summary>
         public string SendPass { get; set; }
+
+        /// <summary>
+        /// swagger的配置
+        /// </summary>
+        public SwaggerInfo Swagger { get; set; }
+    }
+
+    public class SwaggerInfo
+    {
+        /// <summary>
+        /// 名称
+        /// </summary>
+        public string SwaggerName { get; set; }
+
+        /// <summary>
+        /// 文档标题
+        /// </summary>
+        public string Title { get; set; }
+
+        /// <summary>
+        /// 描述
+        /// </summary>
+        public string SwaggerDesc { get; set; }
+
+        /// <summary>
+        /// 是否启用
+        /// </summary>
+        public bool Enable { get; set; }
+
+        /// <summary>
+        /// 版本号
+        /// </summary>
+        public string Version { get; set; }
+
+        /// <summary>
+        /// xml文件名
+        /// </summary>
+        public string XmlAssmblyName { get; set; }
     }
 }

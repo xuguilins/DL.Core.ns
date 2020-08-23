@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SwaggerTest</name>
+    </assembly>
+    <members>
+        <member name="M:SwaggerTest.Controllers.MyTestController.GetActionResult">
+            <summary>
+            获取结果集合
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SwaggerTest.Controllers.WeatherForecastController.Get">
+            <summary>
+            查询天气
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

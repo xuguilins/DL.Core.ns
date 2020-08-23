@@ -151,7 +151,7 @@ namespace DL.Core.utility.Extendsition
         public static string GetXGuid()
         {
             var guid = Guid.NewGuid().ToString("N").ToUpper();
-            var bytes = System.Text.Encoding.UTF8.GetBytes(guid);
+            var bytes = Encoding.UTF8.GetBytes(guid);
             Array.Reverse(bytes);
             string result = string.Empty;
             for (int j = 0; j < 2; j++)
@@ -200,10 +200,9 @@ namespace DL.Core.utility.Extendsition
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="parms"></param>
-        public static void CheckIEnumerable<T>(this IEnumerable<T> parms)
+        public static bool CheckIEnumerable<T>(this IEnumerable<T> parms)
         {
-            if (!parms.Any())
-                throw new Exception($"集合不能为空引用或集合数量不能为0");
+            return parms.Any();
         }
 
         /// <summary>
@@ -220,10 +219,9 @@ namespace DL.Core.utility.Extendsition
         /// 检查字典集合是否为空
         /// </summary>
         /// <param name="parms"></param>
-        public static void CheckDictionaryNotNull(this Dictionary<string, object> parms)
+        public static bool CheckDictionaryNotNull(this Dictionary<string, object> parms)
         {
-            if (!parms.Any())
-                throw new Exception($"字典集合不能为空或集合为0");
+            return parms.Any();
         }
 
         /// <summary>

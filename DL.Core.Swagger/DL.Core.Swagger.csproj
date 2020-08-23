@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>swagger扩展包，独立类库</Description>
+    <Authors>余温</Authors>
+    <Product>DL.Core.Swagger</Product>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DL.Core.utility" Version="1.7.5" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="5.5.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUi" Version="5.5.1" />
+  </ItemGroup>
+
+</Project>
