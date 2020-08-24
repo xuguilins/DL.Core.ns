@@ -66,6 +66,16 @@ namespace DL.Core.utility.Logging
                     else
                     {
                         logDirPath = Directory.GetCurrentDirectory();
+                        if (logDirPath.Contains("bin"))
+                        {
+                            int endIndex = logDirPath.IndexOf("bin");
+                            int startIndex = 0;
+                            logDirPath = logDirPath.Substring(startIndex, endIndex);
+                        }
+                        if (!logDirPath.EndsWith('\\'))
+                        {
+                            logDirPath = logDirPath + "\\";
+                        }
                     }
                     pathdic.TryAdd("internal", logDirPath);
                 }
