@@ -3,9 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Description>swagger扩展包，独立类库</Description>
+    <Description>修复已知bug</Description>
     <Authors>余温</Authors>
     <Product>DL.Core.Swagger</Product>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>

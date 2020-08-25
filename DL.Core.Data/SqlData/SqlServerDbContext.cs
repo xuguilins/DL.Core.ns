@@ -4,7 +4,6 @@ using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Text;
-using DL.Core.ns.Extensiton;
 using System.Collections.Concurrent;
 using System.Linq;
 using DL.Core.Data.BaseData;
@@ -367,6 +366,7 @@ namespace DL.Core.Data.SqlData
                 return 0;
             }
         }
+
         /// <summary>
         /// 删除指定实体
         /// </summary>
@@ -374,7 +374,7 @@ namespace DL.Core.Data.SqlData
         /// <param name="enttiy">实体信息</param>
         /// <param name="tableName">数据表名称</param>
         /// <returns></returns>
-       public  int DeleteEntity<TEntity>(TEntity enttiy, string tableName) where TEntity : EntityBase
+        public int DeleteEntity<TEntity>(TEntity enttiy, string tableName) where TEntity : EntityBase
         {
             var propInfo = enttiy.GetType().GetProperty("Id");
             var primaryKey = propInfo.GetValue(enttiy, null);
@@ -384,6 +384,7 @@ namespace DL.Core.Data.SqlData
             SqlParameter ps = new SqlParameter("@Id", primaryKey.ToString());
             return ExecuteSqlServer(DelSql, CommandType.Text, ps);
         }
+
         /// <summary>
         /// 批量删除实体
         /// </summary>
@@ -404,7 +405,6 @@ namespace DL.Core.Data.SqlData
             var DelSql = $"DELETE FROM {tableName} WHERE Id IN ({primaryKeys})";
             return ExecuteSqlServer(DelSql, CommandType.Text);
         }
-
 
         private IDbConnection DbContext()
         {
