@@ -20,8 +20,7 @@ namespace 徐测试控制台
     {
         private static void Main(string[] args)
         {
-            ILogger logger = LogManager.GetLogger<Program>();
-            logger.Debug("666");
+            Console.WriteLine(StrExtensition.GetDateGuid());
             Console.ReadKey();
         }
     }

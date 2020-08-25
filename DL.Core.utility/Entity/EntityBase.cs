@@ -7,7 +7,7 @@ namespace DL.Core.utility.Entity
 {
     public class EntityBase
     {
-        public string Id { get; set; } = StrExtensition.GetXGuid();
+        public string Id { get; set; } = StrExtensition.GetDateGuid();
 
         public DateTime CreatedTime { get; set; } = StrExtensition.GetDateTime();
     }

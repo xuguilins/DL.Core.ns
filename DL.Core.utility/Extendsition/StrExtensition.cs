@@ -166,6 +166,20 @@ namespace DL.Core.utility.Extendsition
         }
 
         /// <summary>
+        /// 获取时间排序的GUID
+        /// </summary>
+        /// <returns></returns>
+        public static string GetDateGuid()
+        {
+            var time = GetDataTime("ddHHmm");
+            long i = 1;
+            foreach (var bt in Guid.NewGuid().ToByteArray())
+                i *= bt + 1;
+            var result = string.Format("{0:x}", i - DateTime.Now.Ticks).ToUpper();
+            return time + result;
+        }
+
+        /// <summary>
         /// 获取可排序的GUID
         /// </summary>
         /// <returns></returns>
