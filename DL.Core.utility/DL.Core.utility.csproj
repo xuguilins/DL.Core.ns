@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <Version>1.7.5</Version>
+    <Version>1.7.6</Version>
     <Authors>余温</Authors>
-    <Description>修复swagger的配置</Description>
+    <Description>修复命名空间的问题</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
   </PropertyGroup>

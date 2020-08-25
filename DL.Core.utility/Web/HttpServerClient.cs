@@ -1,5 +1,5 @@
-﻿using DL.Core.ns.Extensiton;
-using DL.Core.utility.Extendsition;
+﻿using DL.Core.utility.Extendsition;
+using DL.Core.utility.Extensiton;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;

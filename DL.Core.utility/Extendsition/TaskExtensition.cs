@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DL.Core.ns.Extensiton
+namespace DL.Core.utility.Extensiton
 {
     public static class TaskExtensition
     {
