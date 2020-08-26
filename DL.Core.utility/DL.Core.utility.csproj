@@ -2,10 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <Version>1.7.9</Version>
+    <Version>1.8.0</Version>
     <Authors>余温</Authors>
-    <Description>修复GUID排序的问题
-增加扩展</Description>
+    <Description>修复命名空间</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
   </PropertyGroup>
