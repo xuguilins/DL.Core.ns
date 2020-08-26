@@ -3,10 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Description>调整版本号</Description>
+    <Description>支持多个xml文件,以英文逗号分割</Description>
     <Authors>余温</Authors>
     <Product>DL.Core.Swagger</Product>
-    <Version>1.0.2</Version>
+    <Version>1.2.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

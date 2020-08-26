@@ -47,10 +47,14 @@ namespace DL.Core.Swagger
                                 Version = version
                             });
                             //获取当前正在运行的程序集
-                            var xmlFile = $"{swg.XmlAssmblyName}";
-                            // 获取xml文件路径
-                            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                            options.IncludeXmlComments(xmlPath);
+                            if (string.IsNullOrWhiteSpace(swg.XmlAssmblyName))
+                                throw new Exception("无效的xml文件");
+                            var xmlList = swg.XmlAssmblyName.Split(',');
+                            foreach (var xml in xmlList)
+                            {
+                                var xmlPath = Path.Combine(AppContext.BaseDirectory, xml);
+                                options.IncludeXmlComments(xmlPath);
+                            }             
                         });
                     }
                 }
