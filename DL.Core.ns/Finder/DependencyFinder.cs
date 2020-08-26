@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using DL.Core.utility.Dependency;
+using DL.Core.utility.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -25,6 +26,13 @@ namespace DL.Core.ns.Finder
             //查找类型：
             var attbuitList = LoadTypes.Where(x => !x.IsAbstract && !x.IsInterface && x.IsDefined(typeof(AttbuiteDependency))).ToList();
             typeList.AddRange(attbuitList);
+            //得到类型
+            ILogger logger = LogManager.GetLogger<DependencyFinder>();
+            typeList.ForEach(m =>
+            {
+                logger.Info($"注入类：{m.Name}");
+            });
+
             return typeList.Distinct().ToArray();
         }
     }

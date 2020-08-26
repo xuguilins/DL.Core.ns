@@ -3,8 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <Authors>余温</Authors>
-    <Description>调整版本号</Description>
-    <Version>1.7.5</Version>
+    <Description>更新日志</Description>
+    <Version>1.7.7</Version>
     <Copyright>余温</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
