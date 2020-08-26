@@ -10,5 +10,10 @@ namespace DL.Core.ns.CommandFactory
         {
             return command.Execute();
         }
+
+        public T Execute<T>(Func<T> func) where T : class
+        {
+            return func();
+        }
     }
 }
