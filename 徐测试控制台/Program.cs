@@ -20,7 +20,13 @@ namespace 徐测试控制台
     {
         private static void Main(string[] args)
         {
-            Console.WriteLine(StrExtensition.GetDateGuid());
+            ISqlServerDbContext context = new SqlServerDbContext();
+            context.CreateDbConnection("Data Source=.;Initial Catalog=CoreNs;User ID=sa;Password=0103");
+            var user = new UserInfo { CreatedTime = DateTime.Now };
+            List<UserInfo> list = new List<UserInfo>();
+            list.Add(user);
+            context.InsertEntityItems(list);
+
             Console.ReadKey();
         }
     }
@@ -30,11 +36,11 @@ namespace 徐测试控制台
         //  public int MyProperty { get; set; }
     }
 
-    public class UserInfo
+    [TableAttubite("abc")]
+    public class UserInfo : EntityBase
     {
         public string UserName { get; set; }
         public string UserPass { get; set; }
-        //public UserPops Extend { get; set; }
     }
 
     public class UserPops

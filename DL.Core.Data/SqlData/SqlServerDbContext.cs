@@ -282,10 +282,12 @@ namespace DL.Core.Data.SqlData
         /// <typeparam name="TEnttiy"></typeparam>
         /// <param name="enttiy">实体类</param>
         /// <returns></returns>
-        public int InsertEntity<TEnttiy>(TEnttiy enttiy, string tableName) where TEnttiy : class
+        public int InsertEntity<TEnttiy>(TEnttiy enttiy, string tableName = null) where TEnttiy : class
         {
             ConcurrentDictionary<string, object> pairs = new ConcurrentDictionary<string, object>();
             var props = enttiy.GetType().GetProperties();
+            if (tableName == null)
+                tableName = GetTableNameType(enttiy.GetType());
             foreach (var item in props)
             {
                 if (pairs.ContainsKey(item.Name))
@@ -321,7 +323,7 @@ namespace DL.Core.Data.SqlData
         /// <typeparam name="TEntity">s</typeparam>
         /// <param name="entities">实体集合</param>
         /// <returns></returns>
-        public int InsertEntityItems<TEntity>(IEnumerable<TEntity> entities, string tableName, bool transation = false) where TEntity : class
+        public int InsertEntityItems<TEntity>(IEnumerable<TEntity> entities, string tableName = null, bool transation = false) where TEntity : class
         {
             try
             {
@@ -329,6 +331,11 @@ namespace DL.Core.Data.SqlData
                 var flag = false;
                 if (transation)
                     BeginTransation = transation;
+                if (tableName == null)
+                {
+                    var entity = entities.FirstOrDefault();
+                    tableName = GetTableNameType(entity.GetType());
+                }
                 using (SqlBulkCopy bluk = new SqlBulkCopy(_sqlConnection, SqlBulkCopyOptions.Default, _transaction))
                 {
                     bluk.DestinationTableName = tableName;
@@ -374,12 +381,17 @@ namespace DL.Core.Data.SqlData
         /// <param name="enttiy">实体信息</param>
         /// <param name="tableName">数据表名称</param>
         /// <returns></returns>
-        public int DeleteEntity<TEntity>(TEntity enttiy, string tableName) where TEntity : EntityBase
+        public int DeleteEntity<TEntity>(TEntity enttiy, string tableName = null) where TEntity : EntityBase
         {
             var propInfo = enttiy.GetType().GetProperty("Id");
             var primaryKey = propInfo.GetValue(enttiy, null);
             if (primaryKey == null)
                 throw new Exception("获取指定属性的值异常");
+            if (tableName == null)
+            {
+                var type = enttiy.GetType();
+                tableName = GetTableNameType(type);
+            }
             var DelSql = $"DELETE FROM {tableName} WHERE Id=@Id";
             SqlParameter ps = new SqlParameter("@Id", primaryKey.ToString());
             return ExecuteSqlServer(DelSql, CommandType.Text, ps);
@@ -392,7 +404,7 @@ namespace DL.Core.Data.SqlData
         /// <param name="entities">实体集合</param>
         /// <param name="tableName">数据表名称</param>
         /// <returns></returns>
-        public int DeleteEntityItems<TEntity>(IEnumerable<TEntity> entities, string tableName) where TEntity : EntityBase
+        public int DeleteEntityItems<TEntity>(IEnumerable<TEntity> entities, string tableName = null) where TEntity : EntityBase
         {
             string primaryKeys = string.Empty;
             foreach (var item in entities)
@@ -402,6 +414,9 @@ namespace DL.Core.Data.SqlData
                 if (value != null)
                     primaryKeys = string.Join(",", $"'{value}'");
             }
+            var entity = entities.FirstOrDefault();
+            if (tableName == null)
+                tableName = GetTableNameType(entity.GetType());
             var DelSql = $"DELETE FROM {tableName} WHERE Id IN ({primaryKeys})";
             return ExecuteSqlServer(DelSql, CommandType.Text);
         }
@@ -410,6 +425,23 @@ namespace DL.Core.Data.SqlData
         {
             IDbConnection db = new SqlConnection();
             return db;
+        }
+
+        private string GetTableNameType(Type type)
+        {
+            string tableName = string.Empty;
+
+            var attinfo = type.GetCustomAttributes(typeof(TableAttubite), false);
+            if (attinfo != null && attinfo.Length > 0)
+            {
+                var info = attinfo[0] as TableAttubite;
+                tableName = info.TableName;
+            }
+            else
+            {
+                tableName = type.Name;
+            }
+            return tableName;
         }
     }
 }
