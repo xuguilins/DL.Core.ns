@@ -3,8 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <Authors>余温</Authors>
-    <Description>更新日志</Description>
-    <Version>1.7.7</Version>
+    <Description>使用EFCore操作SqlServer数据库</Description>
+    <Version>2.0.0</Version>
     <Copyright>余温</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
