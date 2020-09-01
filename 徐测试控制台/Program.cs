@@ -20,16 +20,101 @@ namespace 徐测试控制台
     {
         private static void Main(string[] args)
         {
+            List<CpuInfo> list = new List<CpuInfo>();
+            for (int i = 0; i < 5000; i++)
+            {
+                list.Add(new CpuInfo { MouseBrand = $"{i}品牌", PriceRange = $"{i}", MouseContact = $"连接{i}", MouseInterfance = $"X{i}接口", Name = $"内存条{i}", SuitType = $"类型{i}", WorkType = $"方式{i}" });
+            }
             ISqlServerDbContext context = new SqlServerDbContext();
-            context.CreateDbConnection("Data Source=.;Initial Catalog=CoreNs;User ID=sa;Password=0103");
-            var user = new UserInfo { CreatedTime = DateTime.Now };
-            List<UserInfo> list = new List<UserInfo>();
-            list.Add(user);
-            context.InsertEntityItems(list);
-
+            context.CreateDbConnection("Data Source=.;Initial Catalog=ComputerServer;User ID=sa;Password=0103");
+            int result = context.InsertEntityItems(list);
+            Console.WriteLine(result);
             Console.ReadKey();
         }
     }
+
+    /// <summary>
+    /// CPU管理
+    /// </summary>
+    [TableAttubite("MouseInfo")]
+    public class CpuInfo : EntityBase
+    {
+        /// <summary>
+        /// 名称
+        /// </summary>
+        public string Name { get; set; }
+
+        /// 推荐品牌
+        /// </summary>
+        public string MouseBrand { get; set; }
+
+        /// <summary>
+        /// 价格区间
+        /// </summary>
+        public string PriceRange { get; set; }
+
+        /// <summary>
+        ///适用类型
+        /// </summary>
+        public string SuitType { get; set; }
+
+        /// <summary>
+        ///连接方式
+        /// </summary>
+        public string MouseContact { get; set; }
+
+        /// <summary>
+        ///鼠标接口
+        /// </summary>
+        public string MouseInterfance { get; set; }
+
+        /// <summary>
+        ///工作方式
+        /// </summary>
+        public string WorkType { get; set; }
+    }
+
+    #region [职责链模式]
+
+    public abstract class ManagerBoss
+    {
+        public ManagerBoss NextStep { get; set; }
+
+        public abstract void WriteMessage(int count);
+    }
+
+    public class Student : ManagerBoss
+    {
+        public override void WriteMessage(int count)
+        {
+            if (count > 3)
+            {
+                if (NextStep == null) throw new Exception("请指定职责链");
+                NextStep.WriteMessage(count);
+            }
+            else
+            {
+                Console.WriteLine("我可以直接消费");
+            }
+        }
+    }
+
+    public class Teacher : ManagerBoss
+    {
+        public override void WriteMessage(int count)
+        {
+            if (count >= 3 && count <= 7)
+            {
+                Console.WriteLine("我是老师，我可以直接消费");
+            }
+            else
+            {
+                NextStep.WriteMessage(count);
+            }
+        }
+    }
+
+    #endregion [职责链模式]
 
     public class UserTest : EntityBase
     {

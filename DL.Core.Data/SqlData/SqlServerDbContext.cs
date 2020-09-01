@@ -322,6 +322,8 @@ namespace DL.Core.Data.SqlData
         /// </summary>
         /// <typeparam name="TEntity">s</typeparam>
         /// <param name="entities">实体集合</param>
+        /// <param name="transation">是否开启事务</param>
+        /// <param name="tableName">实际表名称</param>
         /// <returns></returns>
         public int InsertEntityItems<TEntity>(IEnumerable<TEntity> entities, string tableName = null, bool transation = false) where TEntity : class
         {
