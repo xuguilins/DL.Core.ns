@@ -13,6 +13,7 @@ using DL.Core.ns.EFCore;
 using DL.Core.utility.Extendsition;
 using System.Linq;
 using DL.Core.utility.Logging;
+using System.IO;
 
 namespace 徐测试控制台
 {
@@ -20,15 +21,6 @@ namespace 徐测试控制台
     {
         private static void Main(string[] args)
         {
-            List<CpuInfo> list = new List<CpuInfo>();
-            for (int i = 0; i < 5000; i++)
-            {
-                list.Add(new CpuInfo { MouseBrand = $"{i}品牌", PriceRange = $"{i}", MouseContact = $"连接{i}", MouseInterfance = $"X{i}接口", Name = $"内存条{i}", SuitType = $"类型{i}", WorkType = $"方式{i}" });
-            }
-            ISqlServerDbContext context = new SqlServerDbContext();
-            context.CreateDbConnection("Data Source=.;Initial Catalog=ComputerServer;User ID=sa;Password=0103");
-            int result = context.InsertEntityItems(list);
-            Console.WriteLine(result);
             Console.ReadKey();
         }
     }

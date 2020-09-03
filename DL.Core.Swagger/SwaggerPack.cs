@@ -48,13 +48,13 @@ namespace DL.Core.Swagger
                             });
                             //获取当前正在运行的程序集
                             if (string.IsNullOrWhiteSpace(swg.XmlAssmblyName))
-                                throw new Exception("无效的xml文件");
+                                throw new Exception("无效的xml文件,请在配置文件中配置所需的xml文件");
                             var xmlList = swg.XmlAssmblyName.Split(',');
                             foreach (var xml in xmlList)
                             {
                                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xml);
                                 options.IncludeXmlComments(xmlPath);
-                            }             
+                            }
                         });
                     }
                 }
