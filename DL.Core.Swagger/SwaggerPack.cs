@@ -9,6 +9,7 @@ using DL.Core.utility.Configer;
 using System.Reflection;
 using System.IO;
 using Microsoft.AspNetCore.Builder;
+using DL.Core.utility.Logging;
 
 namespace DL.Core.Swagger
 {
@@ -18,6 +19,7 @@ namespace DL.Core.Swagger
         private static string title = string.Empty;
         private static bool engalbe = false;
         private static string docName = string.Empty;
+        private static ILogger logger = LogManager.GetLogger();
 
         /// <summary>
         /// DLCore针对Swagger引用的扩展
@@ -26,38 +28,45 @@ namespace DL.Core.Swagger
         /// <returns></returns>
         public static IServiceCollection AddSwaggerPack(this IServiceCollection services)
         {
-            var swaggerInfo = ConfigerManager.Instance.getCofiger();
-            if (swaggerInfo != null)
+            try
             {
-                if (swaggerInfo.CodeConfig.Swagger != null)
+                var swaggerInfo = ConfigerManager.Instance.getCofiger();
+                if (swaggerInfo != null)
                 {
-                    var swg = swaggerInfo.CodeConfig.Swagger;
-                    if (swg.Enable)
+                    if (swaggerInfo.CodeConfig.Swagger != null)
                     {
-                        engalbe = swg.Enable;
-                        title = swg.Title;
-                        version = swg.Version;
-                        docName = swg.SwaggerName;
-                        services.AddSwaggerGen(options =>
+                        var swg = swaggerInfo.CodeConfig.Swagger;
+                        if (swg.Enable)
                         {
-                            options.SwaggerDoc(docName, new Microsoft.OpenApi.Models.OpenApiInfo
+                            engalbe = swg.Enable;
+                            title = swg.Title;
+                            version = swg.Version;
+                            docName = swg.SwaggerName;
+                            services.AddSwaggerGen(options =>
                             {
-                                Description = swg.SwaggerDesc,
-                                Title = title,
-                                Version = version
+                                options.SwaggerDoc(docName, new Microsoft.OpenApi.Models.OpenApiInfo
+                                {
+                                    Description = swg.SwaggerDesc,
+                                    Title = title,
+                                    Version = version
+                                });
+                                //获取当前正在运行的程序集
+                                if (string.IsNullOrWhiteSpace(swg.XmlAssmblyName))
+                                    throw new Exception("无效的xml文件,请在配置文件中配置所需的xml文件");
+                                var xmlList = swg.XmlAssmblyName.Split(',');
+                                foreach (var xml in xmlList)
+                                {
+                                    var xmlPath = Path.Combine(AppContext.BaseDirectory, xml);
+                                    options.IncludeXmlComments(xmlPath);
+                                }
                             });
-                            //获取当前正在运行的程序集
-                            if (string.IsNullOrWhiteSpace(swg.XmlAssmblyName))
-                                throw new Exception("无效的xml文件,请在配置文件中配置所需的xml文件");
-                            var xmlList = swg.XmlAssmblyName.Split(',');
-                            foreach (var xml in xmlList)
-                            {
-                                var xmlPath = Path.Combine(AppContext.BaseDirectory, xml);
-                                options.IncludeXmlComments(xmlPath);
-                            }
-                        });
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                logger.Error($"创建swagger文件发生异常:${ex.Message}");
             }
             return services;
         }
@@ -68,13 +77,20 @@ namespace DL.Core.Swagger
         /// <param name="app"></param>
         public static void UseSwaggerPack(this IApplicationBuilder app)
         {
-            if (engalbe)
+            try
             {
-                app.UseSwagger();
-                app.UseSwaggerUI(option =>
+                if (engalbe)
                 {
-                    option.SwaggerEndpoint($"/swagger/{docName}/swagger.json", docName);
-                });
+                    app.UseSwagger();
+                    app.UseSwaggerUI(option =>
+                    {
+                        option.SwaggerEndpoint($"/swagger/{docName}/swagger.json", docName);
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error($"Use Swagger发生异常，ex:{ex.Message}");
             }
         }
     }
