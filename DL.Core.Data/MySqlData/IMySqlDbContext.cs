@@ -9,7 +9,7 @@ namespace DL.Core.Data.MySqlData
     /// <summary>
     /// 操作MySql数据库接口
     /// </summary>
-    public interface IMySqlDbContext : IDataBaseContext, IDisposable
+    public interface IMySqlDbContext : IDataBaseContext
     {
         /// <summary>
         /// 是否允许开启事务

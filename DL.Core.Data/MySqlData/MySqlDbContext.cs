@@ -50,15 +50,6 @@ namespace DL.Core.Data.MySqlData
             }
         }
 
-        public void Dispose()
-        {
-            if (_connection != null)
-            {
-                _connection.Close();
-                _connection.Dispose();
-            }
-        }
-
         public override int ExecuteNonQuery(string sql, CommandType type, params DbParameter[] parameter)
         {
             int result = -1;

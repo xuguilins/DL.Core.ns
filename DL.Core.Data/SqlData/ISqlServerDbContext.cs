@@ -11,7 +11,7 @@ namespace DL.Core.Data.SqlData
     /// <summary>
     /// SqlServer操作接口
     /// </summary>
-    public interface ISqlServerDbContext : IDataBaseContext, IDisposable
+    public interface ISqlServerDbContext : IDataBaseContext
     {
         /// <summary>
         /// 是否允许开启事务

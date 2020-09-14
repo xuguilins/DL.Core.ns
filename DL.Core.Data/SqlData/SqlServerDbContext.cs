@@ -48,16 +48,6 @@ namespace DL.Core.Data.SqlData
             }
         }
 
-        public void Dispose()
-        {
-            if (_sqlConnection != null)
-            {
-                _sqlConnection.Close();
-                _sqlConnection.Dispose();
-            }
-        }
-
-        //public override IDbConnection GetDbContext { get;  }
         public override IDbConnection GetDbContext { get; set; }
 
         public override DataBaseType Type => DataBaseType.SqlServer;

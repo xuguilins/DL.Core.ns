@@ -23,8 +23,10 @@ namespace 徐测试控制台
         private static void Main(string[] args)
         {
             ISqlServerDbContext context = new SqlServerDbContext();
-            context.CreateDbConnection("Data Source=.;Initial Catalog=CoreNs;User ID=sa;Password=0103");
-            context.CreateSqlServerTable();
+            context.CreateDbConnection("Data Source=.;Initial Catalog=DL.Admin.Manager;User ID=sa;Password=0103");
+            DataModelEntity info = new DataModelEntity { CreateUser = "徐贵林", IsEnable = "是", ModelCode = "T_USERINFO", ModelDesc = "用户信息管理", ModelName = "用户信息表" };
+            context.InsertEntity(info);
+
             //   name.GetType().ChangeType()
 
             #region [测试]
@@ -64,6 +66,39 @@ namespace 徐测试控制台
 
             Console.ReadKey();
         }
+    }
+
+    /// <summary>
+    /// 数据模型实体
+    /// </summary>
+    [TableAttubite("SYS_DataModelInfo")]
+    public class DataModelEntity : EntityBase
+    {
+        /// <summary>
+        /// 数据模型名称
+        /// </summary>
+        public string ModelName { get; set; }
+
+        /// <summary>
+        /// 数据模型代码
+        /// </summary>
+        public string ModelCode { get; set; }
+
+        /// <summary>
+        /// 数据模型描述
+        /// </summary>
+        [PropAttbilteLength("200")]
+        public string ModelDesc { get; set; }
+
+        /// <summary>
+        /// 创建者
+        /// </summary>
+        public string CreateUser { get; set; }
+
+        /// <summary>
+        /// 是否启用
+        /// </summary>
+        public string IsEnable { get; set; }
     }
 
     #region [职责链模式]
