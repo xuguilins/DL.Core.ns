@@ -11,6 +11,7 @@ using DL.Core.utility.Logging;
 using DL.Core.utility.Extendsition;
 using DL.Core.utility.Entity;
 using MySqlX.XDevAPI.Relational;
+using System.Linq.Expressions;
 
 namespace DL.Core.Data.SqlData
 {
@@ -432,7 +433,6 @@ namespace DL.Core.Data.SqlData
         private string GetTableNameType(Type type)
         {
             string tableName = string.Empty;
-
             var attinfo = type.GetCustomAttributes(typeof(TableAttubite), false);
             if (attinfo != null && attinfo.Length > 0)
             {

@@ -14,6 +14,7 @@ using DL.Core.utility.Extendsition;
 using System.Linq;
 using DL.Core.utility.Logging;
 using System.IO;
+using DL.Core.Data.InitDatabase;
 
 namespace 徐测试控制台
 {
@@ -21,49 +22,48 @@ namespace 徐测试控制台
     {
         private static void Main(string[] args)
         {
+            ISqlServerDbContext context = new SqlServerDbContext();
+            context.CreateDbConnection("Data Source=.;Initial Catalog=CoreNs;User ID=sa;Password=0103");
+            context.CreateSqlServerTable();
+            //   name.GetType().ChangeType()
+
+            #region [测试]
+
+            //List<MouseInfo> mianList = new List<MouseInfo>();
+            //List<BoardInfo> boardList = new List<BoardInfo>();
+            //List<ChassisInfo> chassList = new List<ChassisInfo>();
+            //List<MonitorInfo> xsqList = new List<MonitorInfo>();
+            //List<PhyInfo> phyList = new List<PhyInfo>();
+            //List<NetWorkInfo> netList = new List<NetWorkInfo>();
+            //List<PowerSourceInfo> plist = new List<PowerSourceInfo>();
+            //List<RadiatorInfo> slqlist = new List<RadiatorInfo>();
+            //List<SoundCardInfo> sklist = new List<SoundCardInfo>();
+            //ISqlServerDbContext dbContext = new SqlServerDbContext();
+            //List<VgaInfo> vlist = new List<VgaInfo>();
+            //List<VoiceBoxInfo> voicelist = new List<VoiceBoxInfo>();
+            ////   dbContext.CreateDbConnection(conStr);
+            //for (int i = 1; i < 100; i++)
+            //{
+            //    voicelist.Add(new VoiceBoxInfo { FuncName = $"显存{i}", Name = $"音箱{i}", PriceRange = $"价格{i}", VoiceBrand = $"品牌{i}", VoiceMater = $"SYSTEM{i}", VoiceSystem = $"SYSTEM{i}", VoiceType = $"LX{i}" });
+            //    // vlist.Add(new VgaInfo { VgaRam = $"显存{i}", Name = $"散热器{i}", PriceRange = $"价格{i}", VgaBrand = $"品牌{i}", VgaCenter = $"SYSTEM{i}", VgaIo = $"接口{i}", VgaType = $"LX{i}" });
+            //    // sklist.Add(new SoundCardInfo { BusInterfance = $"接口{i}", Name = $"散热器{i}", PriceRange = $"价格{i}", SoundBrand = $"品牌{i}", SoundSystem = $"SYSTEM{i}", SteupType = $"FS{i}", SuitType = $"LX{i}" });
+            //    // slqlist.Add(new RadiatorInfo { HotpipesCount = $"热管{i}", Name = $"散热器{i}", PriceRange = $"价格{i}", RadiatorBrand = $"品牌{i}", RadiatorFs = $"FS{i}", RadiatorType = $"LX{i}", TemperatureContrl = $"{i}°" });
+            //    //plist.Add(new PowerSourceInfo { Name = $"电源{i}", OutletType = $"出线{i}", PowerBrand = $"品牌{i}", PowerType = $"LX{i}", PriceRange = $"{i}", Certification = $"U{i}", Ratedpower = $"{i}QWH" });
+            //    //netList.Add(new NetWorkInfo { AppNetWorkType = $"网络{i}", BusType = $"总线{i}", Name = $"网卡{i}", NetSpeed = $"{i}速率", NetWorkBrand = $"品牌{i}", NetWorkInterfance = $"接口{i}", PriceRange = $"价格{i}" });
+            //    //phyList.Add(new PhyInfo { Name = $"物理{i}", Hc = $"{i}缓存", PriceRange = $"价格{i}", PhyBrand = $"品牌{i}", PhyInterType = $"接口{i}", PhySize = $"{i}", Zs = $"{i}转" });
+            //    //xsqList.Add(new MonitorInfo { MonitorBrand = $"品牌{i}", MonitorSize = $"{i}*1920", Name = $"显示器{i}", PanelType = $"M10{i}", PriceRange = $"价格{i}", ProductType = $"LX{i}", VideoInterfance = $"接口{i}" });
+            //    //mianList.Add(new MouseInfo { MouseBrand = $"品牌{i}", MouseContact = $"LJ{i}", MouseInterfance = $"接口A{i}", SuitType = $"LX{i}", WorkType = $"DDR{i}", Name = $"主板{i}", PriceRange = $"价格{i}" });
+            //    //boardList.Add(new BoardInfo { BoardBrand = $"双飞燕{i}", BoardInterfance = $"JK{i}", BoardJs = $"ALO{i}", BoardPositon = "加用", ContactType = $"LJ{i}", Name = $"键盘{i}", PriceRange = $"{i}" });
+            //    //chassList.Add(new ChassisInfo { Name = $"机箱{i}", PriceRange = $"价格{i}", ChassisBrand = $"品牌{i}", ChassisLine = $"L{i}", ChassisStr = $"结构{i}", ChassisType = $"LX{i}", PowerType = $"DDD{i}" });
+            //}
+            //Console.WriteLine("写入");
+            //dbContext.InsertEntityItems(voicelist, "VoiceBoxInfo");
+            //Console.WriteLine("写入完毕");
+
+            #endregion [测试]
+
             Console.ReadKey();
         }
-    }
-
-    /// <summary>
-    /// CPU管理
-    /// </summary>
-    [TableAttubite("MouseInfo")]
-    public class CpuInfo : EntityBase
-    {
-        /// <summary>
-        /// 名称
-        /// </summary>
-        public string Name { get; set; }
-
-        /// 推荐品牌
-        /// </summary>
-        public string MouseBrand { get; set; }
-
-        /// <summary>
-        /// 价格区间
-        /// </summary>
-        public string PriceRange { get; set; }
-
-        /// <summary>
-        ///适用类型
-        /// </summary>
-        public string SuitType { get; set; }
-
-        /// <summary>
-        ///连接方式
-        /// </summary>
-        public string MouseContact { get; set; }
-
-        /// <summary>
-        ///鼠标接口
-        /// </summary>
-        public string MouseInterfance { get; set; }
-
-        /// <summary>
-        ///工作方式
-        /// </summary>
-        public string WorkType { get; set; }
     }
 
     #region [职责链模式]
@@ -108,16 +108,15 @@ namespace 徐测试控制台
 
     #endregion [职责链模式]
 
-    public class UserTest : EntityBase
-    {
-        //  public int MyProperty { get; set; }
-    }
-
     [TableAttubite("abc")]
     public class UserInfo : EntityBase
     {
+        [PropAttbilteLength("100")]
         public string UserName { get; set; }
+
         public string UserPass { get; set; }
+        public int Count { get; set; }
+        public decimal Money { get; set; }
     }
 
     public class UserPops
