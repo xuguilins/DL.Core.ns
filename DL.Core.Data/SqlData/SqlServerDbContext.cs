@@ -228,7 +228,7 @@ namespace DL.Core.Data.SqlData
         /// <param name="type">SQL语句类型</param>
         /// <param name="parameter">匿名对象 new { }</param>
         /// <returns></returns>
-        public DataTable GetDataTable(string sql, CommandType type, object parameter)
+        public DataTable GetDataTableWithObject(string sql, CommandType type, object parameter)
         {
             string newSql = sql;
             if (parameter != null)
@@ -244,7 +244,7 @@ namespace DL.Core.Data.SqlData
                 if (_sqlConnection.State == ConnectionState.Open)
                 {
                     DataTable ds = new DataTable();
-                    using (SqlCommand com = new SqlCommand(sql, _sqlConnection, _transaction))
+                    using (SqlCommand com = new SqlCommand(newSql, _sqlConnection, _transaction))
                     {
                         com.CommandType = type;
                         using (SqlDataAdapter da = new SqlDataAdapter(com))
@@ -434,6 +434,15 @@ namespace DL.Core.Data.SqlData
                 tableName = type.Name;
             }
             return tableName;
+        }
+
+        public void Dispose()
+        {
+            if (_sqlConnection != null)
+            {
+                _sqlConnection.Close();
+                _sqlConnection.Dispose();
+            }
         }
     }
 }

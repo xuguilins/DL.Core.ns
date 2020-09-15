@@ -3,8 +3,9 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <Authors>余温</Authors>
-    <Description>使用EFCore操作SqlServer数据库</Description>
-    <Version>2.0.1</Version>
+    <Description>个人使用EFCore操作SqlServer数据库
+修复读取配置的问题</Description>
+    <Version>2.0.2</Version>
     <Copyright>余温</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>

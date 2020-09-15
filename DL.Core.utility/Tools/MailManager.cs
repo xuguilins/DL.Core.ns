@@ -7,6 +7,7 @@ using System.Linq;
 using System.IO;
 using DL.Core.utility.ResultEnttiy;
 using DL.Core.utility.Logging;
+using DL.Core.utility.Configer;
 
 namespace DL.Core.utility.Tools
 {
@@ -89,25 +90,25 @@ namespace DL.Core.utility.Tools
             try
             {
                 SmtpClient smtp = new SmtpClient();
-                var config = Configer.ConfigerManager.Instance.getCofiger()?.CodeConfig;
+                var config = Configer.ConfigerManager.Instance.Configuration.GetMailSetting();
                 if (config != null)
                 {
-                    smtp.Host = config.StmpHost;
+                    smtp.Host = config.SmtpHost;
                     if (useSsl)
                     {
-                        smtp.Port = string.IsNullOrWhiteSpace(config.StmpPort) ? 587 : Convert.ToInt32(config.StmpPort);
+                        smtp.Port = config.SmtpPort <= 0 ? 587 : Convert.ToInt32(config.SmtpPort);
                     }
                     else
                     {
-                        smtp.Port = string.IsNullOrWhiteSpace(config.StmpPort) ? 25 : Convert.ToInt32(config.StmpPort);
+                        smtp.Port = config.SmtpPort <= 0 ? 25 : Convert.ToInt32(config.SmtpPort);
                     }
-                    if (string.IsNullOrWhiteSpace(config.SendUser) && string.IsNullOrWhiteSpace(config.SendPass))
+                    if (string.IsNullOrWhiteSpace(config.SendUser) && string.IsNullOrWhiteSpace(config.SmtpPass))
                     {
                         smtp.Credentials = new NetworkCredential(senduser, sendpass);
                     }
                     else
                     {
-                        smtp.Credentials = new NetworkCredential(config.SendUser, config.SendPass);
+                        smtp.Credentials = new NetworkCredential(config.SendUser, config.SmtpPass);
                     }
                 }
                 smtp.EnableSsl = useSsl;

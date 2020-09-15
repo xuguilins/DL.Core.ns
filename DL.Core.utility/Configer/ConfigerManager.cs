@@ -19,43 +19,25 @@ namespace DL.Core.utility.Configer
             var path = Directory.GetCurrentDirectory();
             configuration = new ConfigurationBuilder().SetBasePath(path).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).AddJsonFile("appsettings.Development.json", optional: true)
              .Build();
+            Configuration = configuration;
         }
 
         public override string FileName => "appsettings.json";
         public static ConfigerManager Instance = lazyList.Value;
+        public IConfiguration Configuration { get; set; }
 
-        /// <summary>
-        /// 读取配置文件
-        /// </summary>
-        /// <returns></returns>
-        public AppJsonConfig getCofiger()
+        public IConfiguration Build()
         {
-            AppJsonConfig config = null;
-            foreach (var item in BasePath)
+            if (configuration != null)
             {
-                var path = item + FileName;
-                if (File.Exists(path))
-                {
-                    using (StreamReader stream = new StreamReader(path, Encoding.UTF8))
-                    {
-                        var jsondata = stream.ReadToEnd().Trim();
-                        config = jsondata.FromJson<AppJsonConfig>();
-                    }
-                }
+                return configuration;
             }
-            return config;
-        }
-
-        /// <summary>
-        ///直接 获取配置文件的属性的值
-        /// 多级如下 code:email:username
-        /// 以"："区分多级
-        /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public string GetValue(string key)
-        {
-            return configuration[key];
+            else
+            {
+                var path = Directory.GetCurrentDirectory();
+                return new ConfigurationBuilder().SetBasePath(path).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).AddJsonFile("appsettings.Development.json", optional: true)
+             .Build();
+            }
         }
     }
 }

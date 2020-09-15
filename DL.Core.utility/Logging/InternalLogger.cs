@@ -36,33 +36,8 @@ namespace DL.Core.utility.Logging
                 }
                 else
                 {
-                    var config = ConfigerManager.Instance.getCofiger();
-                    if (config != null)
-                    {
-                        if (string.IsNullOrWhiteSpace(config?.CodeConfig?.LogPath))
-                        {
-                            logDirPath = Directory.GetCurrentDirectory();
-                            if (logDirPath.Contains("bin"))
-                            {
-                                int endIndex = logDirPath.IndexOf("bin");
-                                int startIndex = 0;
-                                logDirPath = logDirPath.Substring(startIndex, endIndex);
-                            }
-                            if (!logDirPath.EndsWith('\\'))
-                            {
-                                logDirPath = logDirPath + "\\";
-                            }
-                        }
-                        else
-                        {
-                            logDirPath = config.CodeConfig.LogPath;
-                            if (!logDirPath.EndsWith('\\'))
-                            {
-                                logDirPath = logDirPath + "\\";
-                            }
-                        }
-                    }
-                    else
+                    var logpath = ConfigerManager.Instance.Configuration.GetSetting("LogPath");
+                    if (string.IsNullOrWhiteSpace(logpath))
                     {
                         logDirPath = Directory.GetCurrentDirectory();
                         if (logDirPath.Contains("bin"))
@@ -76,6 +51,15 @@ namespace DL.Core.utility.Logging
                             logDirPath = logDirPath + "\\";
                         }
                     }
+                    else
+                    {
+                        logDirPath = logpath;
+                        if (!logDirPath.EndsWith('\\'))
+                        {
+                            logDirPath = logDirPath + "\\";
+                        }
+                    }
+
                     pathdic.TryAdd("internal", logDirPath);
                 }
                 switch (level)

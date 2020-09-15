@@ -3,16 +3,19 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Description>支持多个xml文件,以英文逗号分割，需在配置文件配置</Description>
+    <Description>个人swagger扩展</Description>
     <Authors>余温</Authors>
     <Product>DL.Core.Swagger</Product>
-    <Version>2.0.1</Version>
+    <Version>2.0.2</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DL.Core.utility" Version="1.7.5" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="5.5.1" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUi" Version="5.5.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DL.Core.utility\DL.Core.utility.csproj" />
   </ItemGroup>
 
 </Project>

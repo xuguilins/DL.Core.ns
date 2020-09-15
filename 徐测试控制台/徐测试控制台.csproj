@@ -19,5 +19,5 @@
     <ProjectReference Include="..\DL.Core.ns\DL.Core.ns.csproj" />
   </ItemGroup>
 
-  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="utf" /></VisualStudio></ProjectExtensions>
 </Project>

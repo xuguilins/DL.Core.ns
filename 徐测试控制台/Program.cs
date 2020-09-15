@@ -15,6 +15,8 @@ using System.Linq;
 using DL.Core.utility.Logging;
 using System.IO;
 using DL.Core.Data.InitDatabase;
+using Microsoft.Extensions.Configuration;
+using DL.Core.utility.Configer;
 
 namespace 徐测试控制台
 {
@@ -22,12 +24,9 @@ namespace 徐测试控制台
     {
         private static void Main(string[] args)
         {
-            ISqlServerDbContext context = new SqlServerDbContext();
-            context.CreateDbConnection("Data Source=.;Initial Catalog=DL.Admin.Manager;User ID=sa;Password=0103");
-            DataModelEntity info = new DataModelEntity { CreateUser = "徐贵林", IsEnable = "是", ModelCode = "T_USERINFO", ModelDesc = "用户信息管理", ModelName = "用户信息表" };
-            context.InsertEntity(info);
+            var config = ConfigerManager.Instance.Configuration;
 
-            //   name.GetType().ChangeType()
+            //config.GetValue()
 
             #region [测试]
 

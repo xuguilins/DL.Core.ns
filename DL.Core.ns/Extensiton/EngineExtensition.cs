@@ -11,6 +11,7 @@ using System.Linq;
 using Microsoft.Extensions.Caching.Memory;
 using DL.Core.ns.EFCore;
 using DL.Core.utility.Logging;
+using DL.Core.utility.Configer;
 
 namespace DL.Core.ns.Extensiton
 {
@@ -119,9 +120,9 @@ namespace DL.Core.ns.Extensiton
                 ServiceLocator.Instance.SetServiceCollection(services);
                 //服务构建器设置
                 ServiceLocator.Instance.SetProvider(provider);
-                var autoConfig = utility.Configer.ConfigerManager.Instance.getCofiger().CodeConfig.AutoMigrationEnable;
-                sb.Append($"准备检查是否开启自动迁移.【{autoConfig}】\r\n");
-                if (autoConfig)
+                var autoConfig = utility.Configer.ConfigerManager.Instance.Configuration.GetDbSetting();
+                sb.Append($"准备检查是否开启自动迁移.【{autoConfig.AutoEFMigrationEnable}】\r\n");
+                if (autoConfig.AutoEFMigrationEnable)
                 {
                     var contexts = DbContextManager.GetMeomryDbContxt();
                     sb.Append($"统计数据库上下文数量:{contexts.Count}\r\n");

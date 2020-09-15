@@ -2,12 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <Version>2.0.2</Version>
+    <Version>2.0.3</Version>
     <Authors>余温</Authors>
     <Product>DL.Core.ns</Product>
-    <Description>操作SqlServer、MySqlServer数据库
-增加SqlServer数据表创建功能
-修复资源释放的问题</Description>
+    <Description>个人操作SqlServer、MySqlServer数据库
+修复自动创建表的问题</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 

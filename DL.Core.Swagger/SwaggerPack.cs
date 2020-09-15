@@ -30,12 +30,12 @@ namespace DL.Core.Swagger
         {
             try
             {
-                var swaggerInfo = ConfigerManager.Instance.getCofiger();
+                var swaggerInfo = ConfigerManager.Instance.Configuration.GetSwaggerSetting();
                 if (swaggerInfo != null)
                 {
-                    if (swaggerInfo.CodeConfig.Swagger != null)
+                    if (swaggerInfo != null)
                     {
-                        var swg = swaggerInfo.CodeConfig.Swagger;
+                        var swg = swaggerInfo;
                         if (swg.Enable)
                         {
                             engalbe = swg.Enable;
