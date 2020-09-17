@@ -63,6 +63,7 @@ namespace DL.Core.Data.SqlData
         {
             try
             {
+                ValidateConnectionState(_sqlConnection);
                 if (_sqlConnection.State == ConnectionState.Open)
                 {
                     using (SqlCommand com = new SqlCommand(sql, _sqlConnection, _transaction))
@@ -75,6 +76,7 @@ namespace DL.Core.Data.SqlData
                 }
                 else
                 {
+                    logger.Info($"数据库连接已关闭。。。");
                     return -1;
                 }
             }
@@ -91,6 +93,7 @@ namespace DL.Core.Data.SqlData
         {
             try
             {
+                ValidateConnectionState(_sqlConnection);
                 if (_sqlConnection.State == ConnectionState.Open)
                 {
                     using (SqlCommand com = new SqlCommand(sql, _sqlConnection, _transaction))
@@ -102,7 +105,8 @@ namespace DL.Core.Data.SqlData
                 }
                 else
                 {
-                    return -1;
+                    logger.Info($"数据库连接已关闭。。。");
+                    return null;
                 }
             }
             catch (Exception ex)
@@ -116,6 +120,7 @@ namespace DL.Core.Data.SqlData
         {
             try
             {
+                ValidateConnectionState(_sqlConnection);
                 if (_sqlConnection.State == ConnectionState.Open)
                 {
                     DataSet ds = new DataSet();
@@ -132,6 +137,7 @@ namespace DL.Core.Data.SqlData
                 }
                 else
                 {
+                    logger.Info($"数据库连接已关闭。。。");
                     return null;
                 }
             }
@@ -146,6 +152,7 @@ namespace DL.Core.Data.SqlData
         {
             try
             {
+                ValidateConnectionState(_sqlConnection);
                 if (_sqlConnection.State == ConnectionState.Open)
                 {
                     DataTable ds = new DataTable();
@@ -162,6 +169,7 @@ namespace DL.Core.Data.SqlData
                 }
                 else
                 {
+                    logger.Info($"数据库连接已关闭。。。");
                     return null;
                 }
             }
@@ -208,7 +216,18 @@ namespace DL.Core.Data.SqlData
             {
                 GetDbContext = pairs[connectionString];
                 _connectString = connectionString;
-                return pairs[connectionString];
+                var con = pairs[connectionString];
+                if (con == null)
+                {
+                    _sqlConnection = new SqlConnection(connectionString);
+                    _sqlConnection.Open();
+                }
+                else
+                {
+                    if (con.State == ConnectionState.Closed)
+                        con.Open();
+                }
+                return con;
             }
             else
             {
@@ -443,6 +462,25 @@ namespace DL.Core.Data.SqlData
                 _sqlConnection.Close();
                 _sqlConnection.Dispose();
             }
+        }
+
+        /// <summary>
+        /// 验证数据库连接
+        /// </summary>
+        /// <param name="sqlConnection"></param>
+        private void ValidateConnectionState(SqlConnection sqlConnection)
+        {
+            if (sqlConnection == null)
+            {
+                sqlConnection = new SqlConnection(_connectString);
+                sqlConnection.Open();
+            }
+            else
+            {
+                if (sqlConnection.State == ConnectionState.Closed)
+                    sqlConnection.Open();
+            }
+            _sqlConnection = sqlConnection;
         }
     }
 }
