@@ -26,7 +26,14 @@ namespace 徐测试控制台
         {
             var config = ConfigerManager.Instance.Configuration;
 
-            //config.GetValue()
+            ISqlServerDbContext context = new SqlServerDbContext();
+            context.CreateDbConnection("Data Source=119.45.179.76;Initial Catalog=DL.Admin.Manager;User ID=sa;Password=0103");
+            List<MenuInfo> list = new List<MenuInfo>
+            {
+                new MenuInfo{ MenuName="数据模型配置", IsEnable="是",  Url="Home/DataModelIndex"  },
+                new MenuInfo{ MenuName="菜单配置", IsEnable="是",  Url="Home/MenuIndex"  }
+            };
+            context.InsertEntityItems(list);
 
             #region [测试]
 
@@ -65,6 +72,30 @@ namespace 徐测试控制台
 
             Console.ReadKey();
         }
+    }
+
+    [TableAttubite("MenuInfo")]
+    public class MenuInfo : EntityBase
+    {
+        /// <summary>
+        /// 菜单名称
+        /// </summary>
+        public string MenuName { get; set; }
+
+        /// <summary>
+        /// 菜单地址
+        /// </summary>
+        public string Url { get; set; }
+
+        /// <summary>
+        /// 父级菜单
+        /// </summary>
+        public string ParentId { get; set; }
+
+        /// <summary>
+        /// 是否启用
+        /// </summary>
+        public string IsEnable { get; set; }
     }
 
     /// <summary>

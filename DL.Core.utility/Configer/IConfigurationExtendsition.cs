@@ -76,11 +76,10 @@ namespace DL.Core.utility.Configer
         public static ConnectionString GetConStrSetting(this IConfiguration configuration)
         {
             var con = new ConnectionString();
-            var config = configuration.GetSection("DL:Setting:ConnectionString");
-            con.Default = configuration["default"];
-            con.SqlDefault = configuration["SqlDefault"];
-            con.MySqlDefault = configuration["MySqlDefault"];
-            con.OracleDefault = configuration["OracleDefault"];
+            con.Default = configuration["ConnectionString:default"];
+            con.SqlDefault = configuration["ConnectionString:SqlDefault"];
+            con.MySqlDefault = configuration["ConnectionString:MySqlDefault"];
+            con.OracleDefault = configuration["ConnectionString:OracleDefault"];
             return con;
         }
     }
