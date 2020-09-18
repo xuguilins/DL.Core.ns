@@ -120,7 +120,7 @@ namespace DL.Core.ns.Extensiton
                 ServiceLocator.Instance.SetServiceCollection(services);
                 //服务构建器设置
                 ServiceLocator.Instance.SetProvider(provider);
-                var autoConfig = utility.Configer.ConfigerManager.Instance.Configuration.GetDbSetting();
+                var autoConfig = utility.Configer.ConfigerManager.Instance.Configuration.GetDLDbSetting();
                 sb.Append($"准备检查是否开启自动迁移.【{autoConfig.AutoEFMigrationEnable}】\r\n");
                 if (autoConfig.AutoEFMigrationEnable)
                 {

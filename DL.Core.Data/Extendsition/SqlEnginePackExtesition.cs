@@ -25,7 +25,7 @@ namespace DL.Core.Data.Extendsition
                 services.AddScoped<IMySqlDbContext, MySqlDbContext>();
                 services.AddScoped<IDataBaseDbContextManager, DataBaseDbContextManager>();
                 //自动构建表
-                var dbconfig = ConfigerManager.Instance.Configuration.GetDbSetting();
+                var dbconfig = ConfigerManager.Instance.Configuration.GetDLDbSetting();
                 if (dbconfig.AutoAdoNetMiagraionEnable)
                 {
                     ISqlServerDbContext service = new SqlServerDbContext();

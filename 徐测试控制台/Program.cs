@@ -26,14 +26,7 @@ namespace 徐测试控制台
         {
             var config = ConfigerManager.Instance.Configuration;
 
-            ISqlServerDbContext context = new SqlServerDbContext();
-            context.CreateDbConnection("Data Source=119.45.179.76;Initial Catalog=DL.Admin.Manager;User ID=sa;Password=0103");
-            List<MenuInfo> list = new List<MenuInfo>
-            {
-                new MenuInfo{ MenuName="数据模型配置", IsEnable="是",  Url="Home/DataModelIndex"  },
-                new MenuInfo{ MenuName="菜单配置", IsEnable="是",  Url="Home/MenuIndex"  }
-            };
-            context.InsertEntityItems(list);
+            config.GetConStrSetting();
 
             #region [测试]
 

@@ -90,7 +90,7 @@ namespace DL.Core.utility.Tools
             try
             {
                 SmtpClient smtp = new SmtpClient();
-                var config = Configer.ConfigerManager.Instance.Configuration.GetMailSetting();
+                var config = Configer.ConfigerManager.Instance.Configuration.GetDLMailSetting();
                 if (config != null)
                 {
                     smtp.Host = config.SmtpHost;

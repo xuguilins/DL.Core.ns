@@ -11,22 +11,22 @@ namespace DL.Core.utility.Configer
     public static class IConfigurationExtendsition
     {
         /// <summary>
-        /// 获取Setting下面的最小级别配置
+        /// 获取DL节点的Setting下面的最小级别配置
         /// </summary>
         /// <param name="configuration"></param>
         /// <param name="key"></param>
         /// <returns></returns>
-        public static string GetSetting(this IConfiguration configuration, string key)
+        public static string GetDLSetting(this IConfiguration configuration, string key)
         {
             return configuration["DL:Setting:" + key];
         }
 
         /// <summary>
-        /// 获取邮件配置
+        /// 获取DL节点的邮件配置
         /// </summary>
         /// <param name="configuration"></param>
         /// <returns></returns>
-        public static Mail GetMailSetting(this IConfiguration configuration)
+        public static Mail GetDLMailSetting(this IConfiguration configuration)
         {
             var info = new Mail();
             var config = configuration.GetSection("DL:Setting:Mail");
@@ -38,11 +38,11 @@ namespace DL.Core.utility.Configer
         }
 
         /// <summary>
-        /// 获取DbConfig配置
+        /// 获取DL节点的DbConfig配置
         /// </summary>
         /// <param name="configuration"></param>
         /// <returns></returns>
-        public static DbConfig GetDbSetting(this IConfiguration configuration)
+        public static DbConfig GetDLDbSetting(this IConfiguration configuration)
         {
             var config = configuration.GetSection("DL:Setting:DbConfig");
             var db = new DbConfig();
@@ -52,7 +52,7 @@ namespace DL.Core.utility.Configer
         }
 
         /// <summary>
-        /// 获取Swagger配置
+        /// 获取DL节点的Swagger配置
         /// </summary>
         /// <param name="configuration"></param>
         /// <returns></returns>

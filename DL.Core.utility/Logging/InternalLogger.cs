@@ -36,7 +36,7 @@ namespace DL.Core.utility.Logging
                 }
                 else
                 {
-                    var logpath = ConfigerManager.Instance.Configuration.GetSetting("LogPath");
+                    var logpath = ConfigerManager.Instance.Configuration.GetDLSetting("LogPath");
                     if (string.IsNullOrWhiteSpace(logpath))
                     {
                         logDirPath = Directory.GetCurrentDirectory();
