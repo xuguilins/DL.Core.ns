@@ -203,6 +203,14 @@ namespace DL.Core.Data.SqlData
             {
                 throw;
             }
+            finally
+            {
+                if (_transaction != null)
+                {
+                    _transaction.Dispose();
+                    _transaction = null;
+                }
+            }
         }
 
         /// <summary>
