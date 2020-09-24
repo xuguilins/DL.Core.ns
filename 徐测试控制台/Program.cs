@@ -19,6 +19,7 @@ using Microsoft.Extensions.Configuration;
 using DL.Core.utility.Configer;
 using System.Text;
 using DL.Core.utility.Web;
+using DL.Core.utility.Table;
 
 namespace 徐测试控制台
 {
@@ -26,6 +27,13 @@ namespace 徐测试控制台
     {
         private static void Main(string[] args)
         {
+            var connstr = "Data Source=.;Initial Catalog=CoreNs;User ID=sa;Password=0103";
+            ISqlServerDbContext context = new SqlServerDbContext();
+            context.CreateDbConnection(connstr);
+            DataTable dt = context.GetDataTable("SELECT * FROM UserInfo", CommandType.Text);
+            var list = dt.ToObjectList<UserInfo>();
+            list[1].ToDictionary();
+
             #region [测试]
 
             //List<MouseInfo> mianList = new List<MouseInfo>();
@@ -164,15 +172,12 @@ namespace 徐测试控制台
 
     #endregion [职责链模式]
 
-    [TableAttubite("abc")]
+    [TableAttubite("UserInfo")]
     public class UserInfo : EntityBase
     {
-        [PropAttbilteLength("100")]
         public string UserName { get; set; }
 
         public string UserPass { get; set; }
-        public int Count { get; set; }
-        public decimal Money { get; set; }
     }
 
     public class UserPops

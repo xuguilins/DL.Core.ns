@@ -312,7 +312,8 @@ namespace DL.Core.Data.SqlData
                     throw new Exception($"包含重复的属性名,写入失败");
                 var propName = item.Name;
                 var itemValue = item.GetValue(enttiy, null);
-                pairs.TryAdd(propName, itemValue);
+                if (itemValue != null)
+                    pairs.TryAdd(propName, itemValue);
             }
             if (pairs.Count > 0)
             {
@@ -375,7 +376,6 @@ namespace DL.Core.Data.SqlData
                         DataRow row = dt.NewRow();
                         foreach (var perty in property)
                         {
-                            var value = perty.GetValue(entity, null);
                             row[perty.Name] = perty.GetValue(entity, null);
                         }
                         dt.Rows.Add(row);

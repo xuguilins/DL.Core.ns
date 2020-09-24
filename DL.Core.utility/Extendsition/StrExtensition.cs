@@ -127,7 +127,7 @@ namespace DL.Core.utility.Extendsition
         public static string GetGuid(string formatter = "N") => Guid.NewGuid().ToString(formatter);
 
         /// <summary>
-        /// 对象转字典,不允许对象嵌套
+        /// 仅支持对象T转字典,不允许对象嵌套
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>

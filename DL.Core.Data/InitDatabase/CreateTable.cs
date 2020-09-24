@@ -27,7 +27,6 @@ namespace DL.Core.Data.InitDatabase
                 IEntityFinder finder = new EntityFinder();
                 var types = finder.FinderAllType();
                 //遍历所有实体，并且创建数据表结构
-
                 logger.Info($"准备解析实体。。。。");
                 foreach (var item in types)
                 {
