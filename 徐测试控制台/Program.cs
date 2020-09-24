@@ -18,6 +18,7 @@ using DL.Core.Data.InitDatabase;
 using Microsoft.Extensions.Configuration;
 using DL.Core.utility.Configer;
 using System.Text;
+using DL.Core.utility.Web;
 
 namespace 徐测试控制台
 {
@@ -25,26 +26,6 @@ namespace 徐测试控制台
     {
         private static void Main(string[] args)
         {
-            List<string> list = new List<string>();
-            list.Add("1");
-            list.Add("2");
-            list.Add("3");
-            StringBuilder sb = new StringBuilder();
-            var data = string.Join("\r\n", list.Select(x => sb.Append($"{x}")));
-            var str = "1,2,3,4";
-            var datas = str.Split(',');
-            for (int i = 0; i < list.Count; i++)
-            {
-                for (int j = 0; j < datas.Length; j++)
-                {
-                    Console.WriteLine("我是内部循环，准备跳出哦");
-                    break;
-                }
-                Console.WriteLine("跳出内部循环,我在外部循环");
-            }
-
-            Console.WriteLine(data);
-
             #region [测试]
 
             //List<MouseInfo> mianList = new List<MouseInfo>();

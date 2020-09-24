@@ -102,6 +102,19 @@ namespace DL.Core.utility.Web
         /// <summary>
         /// Post请求网络Api接口
         /// </summary>
+        /// <param name="url">请求地址</param>
+        /// <param name="json">json字符串</param>
+        /// <returns></returns>
+        public async Task<string> PostApiAsync(string url, string json = null)
+        {
+            var data = await PostJson(url, json);
+            var result = await data.Content.ReadAsStringAsync();
+            return await result.toTask();
+        }
+
+        /// <summary>
+        /// Post请求网络Api接口
+        /// </summary>
         /// <typeparam name="T">返回参数</typeparam>
         /// <param name="url">请求地址</param>
         /// <param name="pairs">请求参数</param>
@@ -109,6 +122,20 @@ namespace DL.Core.utility.Web
         public async Task<T> PostApiAsync<T>(string url, Dictionary<string, object> pairs = null) where T : class
         {
             var data = await Post(url, pairs);
+            var result = await data.Content.ReadAsStringAsync();
+            return await result.FromJson<T>().toTask();
+        }
+
+        /// <summary>
+        /// Post请求网络Api接口
+        /// </summary>
+        /// <typeparam name="T">返回参数</typeparam>
+        /// <param name="url">请求地址</param>
+        /// <param name="json">请求参数</param>
+        /// <returns></returns>
+        public async Task<T> PostApiAsync<T>(string url, string json = null) where T : class
+        {
+            var data = await PostJson(url, json);
             var result = await data.Content.ReadAsStringAsync();
             return await result.FromJson<T>().toTask();
         }
@@ -129,6 +156,19 @@ namespace DL.Core.utility.Web
         /// <summary>
         /// Post请求网络Api接口
         /// </summary>
+        /// <param name="url">请求地址</param>
+        /// <param name="pairs">请求参数</param>
+        /// <returns></returns>
+        public string PostApi(string url, string json = null)
+        {
+            var data = PostJson(url, json).Result;
+            var result = data.Content.ReadAsStringAsync().Result;
+            return result;
+        }
+
+        /// <summary>
+        /// Post请求网络Api接口
+        /// </summary>
         /// <typeparam name="T">返回参数</typeparam>
         /// <param name="url">请求地址</param>
         /// <param name="pairs">请求参数</param>
@@ -136,6 +176,20 @@ namespace DL.Core.utility.Web
         public T PostApi<T>(string url, Dictionary<string, object> pairs = null) where T : class
         {
             var data = Post(url, pairs).Result;
+            var result = data.Content.ReadAsStringAsync().Result;
+            return result.FromJson<T>();
+        }
+
+        /// <summary>
+        /// Post请求网络Api接口
+        /// </summary>
+        /// <typeparam name="T">返回参数</typeparam>
+        /// <param name="url">请求地址</param>
+        /// <param name="json">json字符串</param>
+        /// <returns></returns>
+        public T PostApi<T>(string url, string json = null) where T : class
+        {
+            var data = PostJson(url, json).Result;
             var result = data.Content.ReadAsStringAsync().Result;
             return result.FromJson<T>();
         }
@@ -169,6 +223,21 @@ namespace DL.Core.utility.Web
             if (pairs != null)
             {
                 StringContent content = new StringContent(pairs.ToJson(), Encoding.UTF8, "application/json");
+                var data = await HttpClient.PostAsync(url, content);
+                return await data.toTask();
+            }
+            else
+            {
+                var data = await HttpClient.PostAsync(url, null);
+                return await data.toTask();
+            }
+        }
+
+        private async Task<HttpResponseMessage> PostJson(string url, string json = null)
+        {
+            if (json != null)
+            {
+                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
                 var data = await HttpClient.PostAsync(url, content);
                 return await data.toTask();
             }

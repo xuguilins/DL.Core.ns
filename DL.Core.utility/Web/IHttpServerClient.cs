@@ -64,11 +64,27 @@ namespace DL.Core.utility.Web
         /// <summary>
         /// Post请求网络Api接口
         /// </summary>
+        /// <param name="url">请求地址</param>
+        /// <param name="json">json字符串</param>
+        /// <returns></returns>
+        Task<string> PostApiAsync(string url, string json = null);
+
+        /// <summary>
+        /// Post请求网络Api接口
+        /// </summary>
         /// <typeparam name="T">返回参数</typeparam>
         /// <param name="url">请求地址</param>
         /// <param name="pairs">请求参数</param>
         /// <returns></returns>
         Task<T> PostApiAsync<T>(string url, Dictionary<string, object> pairs = null) where T : class;
+
+        /// <summary>
+        /// Post请求网络Api接口
+        /// </summary>
+        /// <param name="url">请求地址</param>
+        /// <param name="json">json字符串</param>
+        /// <returns></returns>
+        Task<T> PostApiAsync<T>(string url, string json = null) where T : class;
 
         /// <summary>
         /// Post请求网络Api接口
@@ -81,10 +97,26 @@ namespace DL.Core.utility.Web
         /// <summary>
         /// Post请求网络Api接口
         /// </summary>
+        /// <param name="url">请求地址</param>
+        /// <param name="json">json字符串</param>
+        string PostApi(string url, string json = null);
+
+        /// <summary>
+        /// Post请求网络Api接口
+        /// </summary>
         /// <typeparam name="T">返回参数</typeparam>
         /// <param name="url">请求地址</param>
         /// <param name="pairs">请求参数</param>
         /// <returns></returns>
         T PostApi<T>(string url, Dictionary<string, object> pairs = null) where T : class;
+
+        /// <summary>
+        /// Post请求网络Api接口
+        /// </summary>
+        /// <typeparam name="T">返回参数</typeparam>
+        /// <param name="url">请求地址</param>
+        /// <param name="json">json字符串</param>
+        /// <returns></returns>
+        T PostApi<T>(string url, string json = null) where T : class;
     }
 }
