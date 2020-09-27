@@ -65,6 +65,7 @@ namespace DL.Core.utility.Configer
             swg.SwaggerDesc = config["SwaggerDesc"];
             swg.Version = config["Version"];
             swg.XmlAssmblyName = config["XmlAssmblyName"];
+            swg.Authorization = Convert.ToBoolean(config["Authorization"]);
             return swg;
         }
 

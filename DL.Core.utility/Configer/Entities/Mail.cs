@@ -80,6 +80,11 @@ namespace DL.Core.utility.Configer.Entities
         /// xml文件名
         /// </summary>
         public string XmlAssmblyName { get; set; }
+
+        /// <summary>
+        /// 是否启用授权
+        /// </summary>
+        public bool Authorization { get; set; }
     }
 
     /// <summary>

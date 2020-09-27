@@ -10,6 +10,7 @@ using System.Reflection;
 using System.IO;
 using Microsoft.AspNetCore.Builder;
 using DL.Core.utility.Logging;
+using Microsoft.OpenApi.Models;
 
 namespace DL.Core.Swagger
 {
@@ -50,7 +51,30 @@ namespace DL.Core.Swagger
                                     Title = title,
                                     Version = version
                                 });
-                                //获取当前正在运行的程序集
+
+                                if (swg.Authorization)
+                                {
+                                    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                                    {
+                                        Description = "请求头中需要添加Jwt授权Token：Bearer Token",
+                                        Name = "Authorization",
+                                        In = ParameterLocation.Header,
+                                        Type = SecuritySchemeType.ApiKey
+                                    });
+                                    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                                    {
+                                        {
+                                            new OpenApiSecurityScheme
+                                            {
+                                                Reference = new OpenApiReference {
+                                                    Type = ReferenceType.SecurityScheme,
+                                                    Id = "Bearer"
+                                                }
+                                            },
+                                            new string[] { }
+                                        }
+                                    });
+                                }
                                 if (string.IsNullOrWhiteSpace(swg.XmlAssmblyName))
                                     throw new Exception("无效的xml文件,请在配置文件中配置所需的xml文件");
                                 var xmlList = swg.XmlAssmblyName.Split(',');
