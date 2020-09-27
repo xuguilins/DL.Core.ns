@@ -3,11 +3,11 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Description>个人Swagger类库,版本号修订,优化部分方法
+    <Description>个人Swagger类库,版本号修订,增加权限验证
 </Description>
     <Authors>余温</Authors>
     <Product>DL.Core.Swagger</Product>
-    <Version>3.0.0</Version>
+    <Version>3.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
