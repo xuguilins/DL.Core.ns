@@ -23,6 +23,9 @@ namespace DL.Core.utility.Configer
             }
         }
 
+        /// <summary>
+        /// 文件名称
+        /// </summary>
         public virtual string FileName { get; }
     }
 }

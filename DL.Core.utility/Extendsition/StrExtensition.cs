@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -281,5 +282,39 @@ namespace DL.Core.utility.Extendsition
         }
 
         #endregion 【字符串非空验证】
+
+        #region [字节与流的转换]
+
+        /// <summary>
+        /// Strem转字节
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <returns></returns>
+        public static byte[] ToByte(this Stream stream)
+        {
+            byte[] bytes = new byte[stream.Length];
+            stream.Read(bytes, 0, bytes.Length);
+            return bytes;
+        }
+
+        /// <summary>
+        /// 数据转字节
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static byte[] ToByte(this string data) => Encoding.UTF8.GetBytes(data);
+
+        /// <summary>
+        /// 转字节流
+        /// </summary>
+        /// <param name="bytes"></param>
+        /// <returns></returns>
+        public static MemoryStream ToStream(this byte[] bytes)
+        {
+            MemoryStream ms = new MemoryStream(bytes);
+            return ms;
+        }
+
+        #endregion [字节与流的转换]
     }
 }

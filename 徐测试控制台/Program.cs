@@ -27,15 +27,12 @@ namespace 徐测试控制台
     {
         private static void Main(string[] args)
         {
-            var date = Convert.ToDateTime("2020-09-25 17:58:28.490087");
-            int a = (DateTime.Now - date).Hours;
-            Console.WriteLine(a);
-            //var connstr = "Data Source=.;Initial Catalog=CoreNs;User ID=sa;Password=0103";
-            //ISqlServerDbContext context = new SqlServerDbContext();
-            //context.CreateDbConnection(connstr);
-            //DataTable dt = context.GetDataTable("SELECT * FROM UserInfo", CommandType.Text);
-            //var list = dt.ToObjectList<UserInfo>();
-            //list[1].ToDictionary();
+            var a = "123";
+            var t = a.ToByte();
+
+            var stream = t.ToStream();
+
+            var d = stream.ToByte();
 
             #region [测试]
 
