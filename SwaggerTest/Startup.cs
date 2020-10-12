@@ -10,6 +10,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using DL.Core.Swagger;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace SwaggerTest
 {
@@ -26,6 +29,7 @@ namespace SwaggerTest
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSwaggerPack();
+      
             services.AddControllers();
         }
 
@@ -40,7 +44,7 @@ namespace SwaggerTest
             app.UseRouting();
             app.UseSwaggerPack();
             app.UseAuthorization();
-
+            app.UseAuthentication();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

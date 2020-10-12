@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -27,6 +28,7 @@ namespace SwaggerTest.Controllers
         /// 查询天气
         /// </summary>
         /// <returns></returns>
+        [Authorize]
         [HttpGet("Get")]
         public IEnumerable<WeatherForecast> Get()
         {
