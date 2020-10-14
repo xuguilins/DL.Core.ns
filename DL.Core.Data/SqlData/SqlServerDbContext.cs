@@ -235,6 +235,7 @@ namespace DL.Core.Data.SqlData
                     if (con.State == ConnectionState.Closed)
                         con.Open();
                 }
+                SqlConnection = con;
                 return con;
             }
             else
@@ -244,6 +245,7 @@ namespace DL.Core.Data.SqlData
                 pairs.TryAdd(connectionString, _sqlConnection);
                 GetDbContext = _sqlConnection;
                 _connectString = connectionString;
+                SqlConnection = _sqlConnection;
                 return _sqlConnection;
             }
         }
@@ -446,7 +448,10 @@ namespace DL.Core.Data.SqlData
             IDbConnection db = new SqlConnection();
             return db;
         }
-
+        /// <summary>
+        /// 当前数据链接对象
+        /// </summary>
+        public SqlConnection SqlConnection { get; private set; }
         private string GetTableNameType(Type type)
         {
             string tableName = string.Empty;

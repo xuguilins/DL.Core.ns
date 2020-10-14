@@ -80,5 +80,9 @@ namespace DL.Core.Data.SqlData
         int DeleteEntityItems<TEntity>(IEnumerable<TEntity> entities, string tableName = null) where TEntity : EntityBase;
 
         void Dispose();
+        /// <summary>
+        /// 当前数据链接对象
+        /// </summary>
+        SqlConnection SqlConnection { get; }
     }
 }
