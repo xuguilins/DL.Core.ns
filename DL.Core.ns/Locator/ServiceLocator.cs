@@ -24,8 +24,8 @@ namespace DL.Core.ns.Locator
             this._provider = provider;
         }
 
-        public IServiceProvider GetProvider  => _provider;
-    
+        public IServiceProvider GetProvider { get; set; }
+
         /// <summary>
         /// 设置服务集合
         /// </summary>

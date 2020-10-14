@@ -20,6 +20,8 @@ using DL.Core.utility.Configer;
 using System.Text;
 using DL.Core.utility.Web;
 using DL.Core.utility.Table;
+using DL.Core.utility.Dependency;
+using DL.Core.ns.Locator;
 
 namespace 徐测试控制台
 {
@@ -27,17 +29,77 @@ namespace 徐测试控制台
     {
         private static void Main(string[] args)
         {
-         
-
+            //IServiceCollection services = new ServiceCollection();
+            //services.AddEngineDbContextPack<UserContext>();
+            //services.AddEnginePack();
+            //var provider = services.BuildServiceProvider();
+            //var unit = provider.GetService<IUnitOfWork>();
+            //// unit.BeginTransaction = true;
+            using (var context = new UserContext())
+            {
+                context.Set<UserInfo>().Add(new UserInfo
+                {
+                    UserName = "小米手机",
+                    UsePass = "1111"
+                });
+                context.SaveChanges();
+            }
+            var service = ServiceLocator.Instance.GetService<IUserService>();
+            service.CreateUser(new UserInfo
+            {
+                UserName = "小米手机",
+                UsePass = "1111"
+            });
             Console.ReadKey();
         }
     }
 }
-public class iDemoProduct:EntityBase
+
+public interface IUserService : IScopeDependcy
 {
-    public string ProdCode { get; set; }
-    public string Name { get; set; }
-    public string Price { get; set; }
-    public string Unit { get; set; }
-    public string UpdateDate { get; set; }
+    void CreateUser(UserInfo info);
+}
+
+public class UserService : IUserService
+{
+    private IRepository<UserInfo> _userRepository;
+
+    public UserService(IRepository<UserInfo> repository)
+    {
+        _userRepository = repository;
+    }
+
+    public void CreateUser(UserInfo info)
+    {
+        //var context = ServiceLocator.Instance.GetService<IUnitOfWork>();
+        // context.BeginTransaction = true;
+        // _userRepository.UnitOfWork.BeginTransaction = true;
+        _userRepository.AddEntity(info);
+    }
+}
+
+public class UserContext : DbContextBase<UserContext>
+{
+    public override string ConnectionString => "Data Source=.;Initial Catalog=UserInfo;User ID=sa;Password=0103";
+
+    public override void RegistConfiguration(ModelBuilder builder)
+    {
+        builder.ApplyConfiguration(new UserInfoEntityTypeConfiguration());
+    }
+}
+
+public class UserInfoEntityTypeConfiguration : ConfigurationBase<UserInfo>
+{
+    public override Type DbContextType => typeof(UserContext);
+
+    public override void Configure(EntityTypeBuilder<UserInfo> builder)
+    {
+        builder.ToTable("UserInfo");
+    }
+}
+
+public class UserInfo : EntityBase
+{
+    public string UserName { get; set; }
+    public string UsePass { get; set; }
 }

@@ -22,16 +22,20 @@ namespace DL.Core.ns.EFCore
         private DbContext _dbContext;
         private DbSet<TEntity> DbSet = null;
         private IServiceProvider _provider;
+
         public Repository()
         {
             _dbContext = DbContextManager.GetDb(typeof(TEntity)) ?? throw new Exception("数据库上下文不存在");
             DbSet = _dbContext.Set<TEntity>();
             _provider = ServiceLocator.Instance.GetProvider;
+            //var datas = _provider.GetServices<IUnitOfWork>().ToList();
             UnitOfWork = _provider.GetServices<IUnitOfWork>().FirstOrDefault(x => x.DbContextType == DbContextManager.DbContextType);
         }
 
         #region [同步方法]
+
         public IUnitOfWork UnitOfWork { get; private set; }
+
         /// <summary>
         ///跟踪查询实体
         /// </summary>
