@@ -12,6 +12,10 @@ namespace DL.Core.ns.EFCore
     [IgnoreDependency]
     public interface IRepository<TEntity> where TEntity : EntityBase
     {
+        /// <summary>
+        /// 当前工作单元对象
+        /// </summary>
+        public IUnitOfWork UnitOfWork { get; }
         #region [同步方法]
 
         /// <summary>

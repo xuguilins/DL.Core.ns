@@ -13,7 +13,7 @@ namespace DL.Core.ns.EFCore
     {
         private static ConcurrentDictionary<Type, List<IEntityTypeRegiest>> diclist = new ConcurrentDictionary<Type, List<IEntityTypeRegiest>>();
         private static List<DbContext> dbContextList = new List<DbContext>();
-
+        public static Type DbContextType { get; set; }
         /// <summary>
         /// 根据指定的实体类型获取上下文
         /// </summary>
@@ -24,6 +24,7 @@ namespace DL.Core.ns.EFCore
             if (!diclist.Any())
                 throw new AggregateException("未设置对应的实体配置且未设置实体对应的数据上下文");
             var dbContext = GetDbContext(type);
+            DbContextType = dbContext;
             return Activator.CreateInstance(dbContext) as DbContext;
         }
 

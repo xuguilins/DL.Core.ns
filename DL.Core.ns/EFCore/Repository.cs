@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using DL.Core.ns.EFCore;
 using DL.Core.utility.Entity;
+using DL.Core.ns.Locator;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DL.Core.ns.EFCore
 {
@@ -19,19 +21,21 @@ namespace DL.Core.ns.EFCore
     {
         private DbContext _dbContext;
         private DbSet<TEntity> DbSet = null;
-
+        private IServiceProvider _provider;
         public Repository()
         {
             _dbContext = DbContextManager.GetDb(typeof(TEntity)) ?? throw new Exception("数据库上下文不存在");
             DbSet = _dbContext.Set<TEntity>();
+            _provider = ServiceLocator.Instance.GetProvider;
+            UnitOfWork = _provider.GetServices<IUnitOfWork>().FirstOrDefault(x => x.DbContextType == DbContextManager.DbContextType);
         }
 
         #region [同步方法]
-
+        public IUnitOfWork UnitOfWork { get; private set; }
         /// <summary>
         ///跟踪查询实体
         /// </summary>
-        public IQueryable<TEntity> TrackEntities => DbSet.AsQueryable();
+        public IQueryable<TEntity> TrackEntities => DbSet.AsTracking();
 
         /// <summary>
         /// 非跟踪查询实体
