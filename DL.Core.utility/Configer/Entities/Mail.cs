@@ -85,6 +85,14 @@ namespace DL.Core.utility.Configer.Entities
         /// 是否启用授权
         /// </summary>
         public bool Authorization { get; set; }
+        /// <summary>
+        /// 密钥
+        /// </summary>
+        public string JwtSecret { get; set; }
+        /// <summary>
+        /// 发行人
+        /// </summary>
+        public string Issuer { get; set; }
     }
 
     /// <summary>

@@ -27,7 +27,7 @@ namespace 徐测试控制台
     {
         private static void Main(string[] args)
         {
-            
+         
 
             Console.ReadKey();
         }

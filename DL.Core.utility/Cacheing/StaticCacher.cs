@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text;
 
-namespace DL.Core.ns.Cacheing
+namespace DL.Core.utility.Cacher
 {
     /// <summary>
     /// 静态内存缓存
@@ -14,7 +14,7 @@ namespace DL.Core.ns.Cacheing
 
         /// <summary>
         ///  设置静态缓存
-        ///  若key存在,抛异常
+        ///  若key存在,则更新原有的缓存值
         /// </summary>
         /// <param name="key">键</param>
         /// <param name="val">值</param>
@@ -26,7 +26,8 @@ namespace DL.Core.ns.Cacheing
             }
             else
             {
-                throw new ArgumentNullException($"{key}", $"指定的key“{key}”已存在");
+                pairs[key] = val;
+                //throw new ArgumentNullException($"{key}", $"指定的key“{key}”已存在");
             }
         }
 

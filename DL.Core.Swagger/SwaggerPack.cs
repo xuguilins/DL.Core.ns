@@ -101,12 +101,12 @@ namespace DL.Core.Swagger
                                     {
                                         // 是否开启签名认证
                                         ValidateIssuerSigningKey = true,
-                                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("123")), //密钥
+                                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(swg.JwtSecret)), //密钥
                                         // 发行人验证，这里要和token类中Claim类型的发行人保持一致
                                         ValidateIssuer = true,
-                                        ValidIssuer = "Admin",//发行人
-                                        ValidateAudience = true,
-                                        ValidAudience = "User",//接收人
+                                        ValidIssuer = swg.Issuer,//发行人
+                                        ValidateAudience = false,
+                                        ValidAudience = swg.Issuer,//接收人
                                         ValidateLifetime = true,
                                         ClockSkew = TimeSpan.Zero,
                                     };
